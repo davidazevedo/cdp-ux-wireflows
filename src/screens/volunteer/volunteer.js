@@ -160,24 +160,20 @@ export class VolunteerScreen {
 
             // Add required fields array
             this.requiredFields = [
-                'volunteerName',
-                'volunteerCpf',
-                'volunteerBirthdate',
-                'volunteerPhone',
-                'volunteerEmail',
-                'volunteerAddress',
-                'volunteerCity',
-                'volunteerState'
+                'volunteer-name',
+                'volunteerGender',
+                'volunteer-birthdate',
+                'volunteer-city',
+                'volunteer-cpf',
+                'volunteer-location'
             ];
 
             // Add assisted required fields array
             this.assistedRequiredFields = [
-                'assistedName',
-                'assistedCpf',
-                'assistedPhone',
-                'assistedAddress',
-                'assistedCity',
-                'assistedState'
+                'assisted-name',
+                'assisted-cpf',
+                'assisted-phone',
+                'assisted-location'
             ];
 
             // Add social name elements
@@ -1137,28 +1133,25 @@ export class VolunteerScreen {
 
     async handleVolunteerSubmit() {
         try {
-            const { isValid, errors } = this.validateForm();
-            
-            if (!isValid) {
-                errors.forEach(error => {
-                    alert(error);
-                });
+            // Validate form
+            if (!this.validateForm('volunteer')) {
                 return;
             }
 
+            // Collect form data
             const formData = {
-                name: this.volunteerName.value,
-                socialName: this.volunteerSocialName.value,
-                birthdate: this.volunteerBirthdate.value,
-                gender: this.volunteerGender.value,
-                city: this.volunteerCity.value,
-                address: this.volunteerAddress.value,
-                cpf: this.volunteerCpf.value,
-                nis: this.volunteerNis.value,
-                homeless: document.querySelector('input[name="homeless"]:checked')?.value,
+                name: this.volunteerName?.value || '',
+                socialName: this.volunteerSocialName?.value || '',
+                birthdate: this.volunteerBirthdate?.value || '',
+                gender: this.volunteerGender?.value || '',
+                city: this.volunteerCity?.value || '',
+                address: this.volunteerAddress?.value || '',
+                cpf: this.volunteerCpf?.value || '',
+                nis: this.volunteerNis?.value || '',
+                homeless: document.querySelector('input[name="homeless"]:checked')?.value || '',
                 fillingFor: Array.from(document.querySelectorAll('input[name="filling_for"]:checked')).map(cb => cb.value),
-                location: this.volunteerLocation.value,
-                photo: this.volunteerPhoto.files[0],
+                location: this.volunteerLocation?.value || '',
+                photo: this.volunteerPhoto?.files[0] || null,
                 role: 'volunteer',
                 timestamp: new Date().getTime()
             };
@@ -1179,6 +1172,8 @@ export class VolunteerScreen {
             this.updateUIState();
             
             // Show success message
+            showMessage('Dados salvos com sucesso!', 'success');
+            
             if (this.submitVolunteerBtn) {
                 this.submitVolunteerBtn.innerHTML = '<span class="material-icons">check</span> Dados recebidos com sucesso!';
                 this.submitVolunteerBtn.style.backgroundColor = 'var(--success-color)';
@@ -1193,64 +1188,71 @@ export class VolunteerScreen {
 
         } catch (error) {
             console.error('Erro ao salvar dados:', error);
-            alert('Houve um problema ao enviar seus dados. Tente novamente mais tarde.');
+            showMessage('Erro ao salvar dados. Por favor, tente novamente.', 'error');
             
             if (this.submitVolunteerBtn) {
                 this.submitVolunteerBtn.innerHTML = '<span class="material-icons">error</span> Erro ao salvar';
                 this.submitVolunteerBtn.style.backgroundColor = 'var(--error-color)';
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    this.submitVolunteerBtn.disabled = false;
+                    this.submitVolunteerBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
+                    this.submitVolunteerBtn.style.backgroundColor = 'var(--primary-color)';
+                }, 2000);
             }
         }
     }
 
-    validateForm() {
+    validateForm(formType = 'volunteer') {
+        const form = formType === 'volunteer' ? this.volunteerForm : this.assistedForm;
+        const requiredFields = formType === 'volunteer' ? this.requiredFields : this.assistedRequiredFields;
         let isValid = true;
-        const errors = [];
+        let firstInvalidField = null;
 
-        // Validar nome
-        if (!this.volunteerName?.value.trim()) {
-            errors.push('Por favor, preencha o campo obrigatório: Nome Completo');
-            isValid = false;
+        // Remove todas as mensagens de erro anteriores
+        form.querySelectorAll('.error-message').forEach(msg => msg.remove());
+        form.querySelectorAll('.invalid').forEach(field => field.classList.remove('invalid'));
+
+        requiredFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (!field) return;
+
+            const value = field.value.trim();
+            let fieldError = '';
+
+            if (!value) {
+                fieldError = 'Este campo é obrigatório';
+            } else if (fieldId.includes('cpf') && !this.validateCPF(value)) {
+                fieldError = 'CPF inválido';
+            } else if (fieldId.includes('birthdate') && !this.validateBirthDate(value)) {
+                fieldError = 'Data de nascimento inválida';
+            } else if (fieldId.includes('email') && !this.validateEmail(value)) {
+                fieldError = 'E-mail inválido';
+            }
+
+            if (fieldError) {
+                isValid = false;
+                field.classList.add('invalid');
+                
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message show';
+                errorMessage.textContent = fieldError;
+                field.parentElement.appendChild(errorMessage);
+
+                if (!firstInvalidField) {
+                    firstInvalidField = field;
+                }
+            }
+        });
+
+        if (!isValid && firstInvalidField) {
+            firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstInvalidField.focus();
+            showMessage('Por favor, corrija os campos marcados em vermelho.', 'error');
         }
 
-        // Validar município
-        if (!this.volunteerCity?.value.trim()) {
-            errors.push('Por favor, preencha o campo obrigatório: Município');
-            isValid = false;
-        }
-
-        // Validar CPF
-        if (this.volunteerCpf?.value && !this.validateCPF(this.volunteerCpf.value)) {
-            errors.push('O CPF informado não é válido. Verifique e tente novamente.');
-            isValid = false;
-        }
-
-        // Validar data de nascimento
-        if (this.volunteerBirthdate?.value && !this.validateBirthDate(this.volunteerBirthdate.value)) {
-            errors.push('Informe uma data válida no formato dd/mm/aaaa.');
-            isValid = false;
-        }
-
-        // Validar situação de rua
-        const homelessRadio = document.querySelector('input[name="homeless"]:checked');
-        if (!homelessRadio) {
-            errors.push('Por favor, informe se está em situação de rua.');
-            isValid = false;
-        }
-
-        // Validar quem está preenchendo
-        const fillingForCheckbox = document.querySelector('input[name="filling_for"]:checked');
-        if (!fillingForCheckbox) {
-            errors.push('Por favor, informe quem está preenchendo o formulário.');
-            isValid = false;
-        }
-
-        // Validar localização
-        if (!this.volunteerLocation?.value) {
-            errors.push('Por favor, obtenha a localização.');
-            isValid = false;
-        }
-
-        return { isValid, errors };
+        return isValid;
     }
 
     validateCPF(cpf) {
@@ -1326,6 +1328,96 @@ export class VolunteerScreen {
         }
 
         return true;
+    }
+
+    validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    async getLocation(button) {
+        try {
+            if (!navigator.geolocation) {
+                showMessage('Geolocalização não é suportada pelo seu navegador.', 'error');
+                return;
+            }
+
+            const input = button.closest('.input-wrapper').querySelector('input');
+            if (!input) return;
+
+            // Desabilita o botão e mostra loading
+            button.disabled = true;
+            button.innerHTML = '<span class="material-icons">sync</span> Obtendo localização...';
+            showMessage('Obtendo sua localização...', 'info');
+
+            const position = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject, {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                });
+            });
+
+            const { latitude, longitude } = position.coords;
+            
+            // Usa a API do Nominatim para obter o endereço
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+            );
+            
+            if (!response.ok) {
+                throw new Error('Erro ao obter endereço');
+            }
+
+            const data = await response.json();
+            const address = data.display_name;
+            
+            // Atualiza o input e o botão
+            input.value = address;
+            input.classList.add('location-obtained');
+            button.innerHTML = '<span class="material-icons">check</span> Localização obtida';
+            button.disabled = true;
+            
+            // Remove mensagem de erro se existir
+            const errorMessage = input.parentElement.querySelector('.error-message');
+            if (errorMessage) {
+                errorMessage.remove();
+            }
+            
+            showMessage('Localização obtida com sucesso!', 'success');
+            
+            // Salva os dados da localização
+            const locationData = {
+                latitude,
+                longitude,
+                address,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('locationData', JSON.stringify(locationData));
+            
+        } catch (error) {
+            console.error('Erro ao obter localização:', error);
+            
+            // Adiciona mensagem de erro abaixo do input
+            const input = button.closest('.input-wrapper').querySelector('input');
+            if (input) {
+                input.classList.add('invalid');
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message show';
+                errorMessage.textContent = 'Erro ao obter localização. Por favor, tente novamente.';
+                input.parentElement.appendChild(errorMessage);
+                
+                // Rola até o input com erro
+                input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                input.focus();
+            }
+            
+            showMessage('Erro ao obter localização. Por favor, tente novamente.', 'error');
+            
+            // Reseta o botão
+            button.disabled = false;
+            button.innerHTML = '<span class="material-icons">my_location</span> Obter Localização';
+        }
     }
 }
 
