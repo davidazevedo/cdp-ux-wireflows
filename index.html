@@ -153,5 +153,157 @@
             });
         });
     </script>
+
+        <!-- Modal de Cadastro de Assistido -->
+        <div id="assistedForm" class="modal" role="dialog" aria-labelledby="assisted-form-title">
+            <div class="modal-content">
+                <span class="close-modal" aria-label="Fechar">&times;</span>
+                <div class="form-section">
+                    <h2 id="assisted-form-title">Cadastro de Assistido</h2>
+                    
+                    <div class="photo-upload">
+                        <div id="assisted-photo-preview" class="photo-preview" role="button" tabindex="0" aria-label="Adicionar foto">
+                            <span class="material-icons">add_a_photo</span>
+                            <p>Adicionar foto</p>
+                        </div>
+                        <input type="file" id="assisted-photo" accept="image/*" class="hidden" aria-label="Selecionar foto">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="assisted-name" id="assisted-name-label">Nome Completo *</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="assisted-name" placeholder="Nome completo" required aria-labelledby="assisted-name-label">
+                            <button type="button" class="voice-input-btn" data-input="assisted-name" aria-label="Usar entrada de voz">
+                                <span class="material-icons">mic</span>
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="assisted-nickname" id="assisted-nickname-label">Apelido</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="assisted-nickname" placeholder="Como a pessoa prefere ser chamada" aria-labelledby="assisted-nickname-label">
+                            <button type="button" class="voice-input-btn" data-input="assisted-nickname" aria-label="Usar entrada de voz">
+                                <span class="material-icons">mic</span>
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="assisted-cpf" id="assisted-cpf-label">CPF *</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="assisted-cpf" placeholder="CPF" required aria-labelledby="assisted-cpf-label">
+                            <button type="button" class="voice-input-btn" data-input="assisted-cpf" aria-label="Usar entrada de voz">
+                                <span class="material-icons">mic</span>
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="assisted-nis" id="assisted-nis-label">NIS</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="assisted-nis" placeholder="Número do NIS" maxlength="11" aria-labelledby="assisted-nis-label">
+                            <button type="button" class="voice-input-btn" data-input="assisted-nis" aria-label="Usar entrada de voz">
+                                <span class="material-icons">mic</span>
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="assisted-phone" id="assisted-phone-label">Telefone *</label>
+                        <div class="input-wrapper">
+                            <input type="tel" id="assisted-phone" placeholder="Telefone" required aria-labelledby="assisted-phone-label">
+                            <button type="button" class="voice-input-btn" data-input="assisted-phone" aria-label="Usar entrada de voz">
+                                <span class="material-icons">mic</span>
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="assisted-location" id="assisted-location-label">Localização *</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="assisted-location" placeholder="Localização" readonly required aria-labelledby="assisted-location-label">
+                            <button type="button" id="assisted-location-btn" class="btn btn-primary" aria-label="Obter localização">
+                                <span class="material-icons">location_on</span>
+                                Obter Localização
+                            </button>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label id="situations-label">Situações de Vulnerabilidade</label>
+                        <div id="situations-grid" class="situations-grid" role="group" aria-labelledby="situations-label">
+                            <label class="situation-checkbox">
+                                <input type="checkbox" name="situation" value="idoso">
+                                <span class="material-icons">elderly</span>
+                                Idoso
+                            </label>
+                            <label class="situation-checkbox">
+                                <input type="checkbox" name="situation" value="crianca">
+                                <span class="material-icons">child_care</span>
+                                Criança
+                            </label>
+                            <label class="situation-checkbox">
+                                <input type="checkbox" name="situation" value="gestante">
+                                <span class="material-icons">pregnant_woman</span>
+                                Gestante
+                            </label>
+                            <label class="situation-checkbox">
+                                <input type="checkbox" name="situation" value="deficiente">
+                                <span class="material-icons">accessible</span>
+                                PCD
+                            </label>
+                            <label class="situation-checkbox">
+                                <input type="checkbox" name="situation" value="doente">
+                                <span class="material-icons">sick</span>
+                                Doente Crônico
+                            </label>
+                            <label class="situation-checkbox">
+                                <input type="checkbox" name="situation" value="desempregado">
+                                <span class="material-icons">work_off</span>
+                                Desempregado
+                            </label>
+                            <label class="situation-checkbox">
+                                <input type="checkbox" name="situation" value="sem_teto">
+                                <span class="material-icons">house</span>
+                                Sem Teto
+                            </label>
+                            <label class="situation-checkbox">
+                                <input type="checkbox" name="situation" value="refugiado">
+                                <span class="material-icons">flight</span>
+                                Refugiado
+                            </label>
+                            <label class="situation-checkbox">
+                                <input type="checkbox" name="situation" value="indigena">
+                                <span class="material-icons">groups</span>
+                                Indígena
+                            </label>
+                            <label class="situation-checkbox">
+                                <input type="checkbox" name="situation" value="quilombola">
+                                <span class="material-icons">groups</span>
+                                Quilombola
+                            </label>
+                            <label class="situation-checkbox">
+                                <input type="checkbox" name="situation" value="lgbtqia">
+                                <span class="material-icons">diversity_3</span>
+                                LGBTQIA+
+                            </label>
+                            <label class="situation-checkbox">
+                                <input type="checkbox" name="situation" value="violencia">
+                                <span class="material-icons">gpp_bad</span>
+                                Vítima de Violência
+                            </label>
+                        </div>
+                    </div>
+    
+                    <div class="form-actions">
+                        <button type="button" id="submit-assisted" class="btn btn-primary" aria-label="Confirmar cadastro">
+                            <span class="material-icons">check</span>
+                            Confirmar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </body>
 </html> 

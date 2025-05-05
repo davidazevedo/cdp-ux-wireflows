@@ -57,24 +57,6 @@ export class VolunteerScreen {
         this.photoFile = null;
         this.volunteerData = {};
         
-        // Add required fields array
-        this.requiredFields = [
-            'volunteer-name',
-            'volunteerGender',
-            'volunteer-birthdate',
-            'volunteer-city',
-            'volunteer-cpf',
-            'volunteer-location'
-        ];
-
-        // Add assisted required fields array
-        this.assistedRequiredFields = [
-            'assisted-name',
-            'assisted-cpf',
-            'assisted-phone',
-            'assisted-location'
-        ];
-        
         // Wait for DOM to be ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.initialize());
@@ -82,7 +64,7 @@ export class VolunteerScreen {
             this.initialize();
         }
         
-        // Tornar o método navigateToKitchens disponível globalmente
+        // Make methods available globally
         window.navigateToKitchens = (index) => this.navigateToKitchens(index);
         window.removeAssisted = (index) => this.removeAssisted(index);
     }
@@ -94,40 +76,22 @@ export class VolunteerScreen {
                 return;
             }
 
-            // Primeiro, inicializa os elementos
+            // Initialize elements
             this.initializeElements();
             
-            // Depois, cria os modais
-            this.createModals();
-            
-            // Continua com o resto da inicialização
+            // Setup event listeners
             this.setupEventListeners();
-            this.initializeVoiceInput();
-            this.initializeSpeechRecognition();
+            
+            // Add location buttons
+            this.addLocationButtons();
+            
+            // Load cached data
             this.loadCachedData();
-            this.initializeGeolocation();
+            
+            // Update UI state
             this.updateUIState();
-
-            // Adiciona event listener para o botão de adicionar assistido
-            const addAssistedBtn = document.getElementById('add-assisted');
-            if (addAssistedBtn) {
-                addAssistedBtn.addEventListener('click', () => {
-                    console.log('Botão de adicionar assistido clicado');
-                    this.showAssistedForm();
-                });
-            }
-
-            // Adiciona event listener para o botão de fechar do modal
-            const closeModalBtn = document.querySelector('#assisted-form .close-modal');
-            if (closeModalBtn) {
-                closeModalBtn.addEventListener('click', () => {
-                    console.log('Botão de fechar modal clicado');
-                    this.hideAssistedForm();
-                });
-            }
-
         } catch (error) {
-            console.error('Erro ao inicializar a tela:', error);
+            console.error('Error initializing volunteer screen:', error);
         }
     }
 
@@ -150,7 +114,7 @@ export class VolunteerScreen {
             this.citySuggestions = document.getElementById('city-suggestions');
 
             // Assisted form elements
-            this.assistedForm = document.getElementById('assisted-form');
+            this.assistedForm = document.getElementById('assistedForm');
             this.assistedPhoto = document.getElementById('assisted-photo');
             this.assistedName = document.getElementById('assisted-name');
             this.assistedNickname = document.getElementById('assisted-nickname');
@@ -165,7 +129,7 @@ export class VolunteerScreen {
             // Other elements
             this.addAssistedBtn = document.getElementById('add-assisted');
             this.assistedList = document.getElementById('assisted-list');
-            this.emptyListMessage = document.getElementById('empty-list-message');
+            this.emptyListMessage = document.querySelector('.empty-list-message');
             this.logoutBtn = document.getElementById('logoutBtn');
 
             // Volunteer profile elements
@@ -179,6 +143,10 @@ export class VolunteerScreen {
             this.volunteerPhotoPreview = document.getElementById('volunteer-photo-preview');
             this.assistedPhotoPreview = document.getElementById('assisted-photo-preview');
 
+            // Modal elements
+            this.photoModal = document.getElementById('photo-modal');
+            this.photoModalContent = document.getElementById('photo-modal-content');
+
             // Verifica se os elementos necessários foram encontrados
             if (!this.volunteerForm) {
                 console.error('Formulário de cidadão apoiador não encontrado');
@@ -189,6 +157,28 @@ export class VolunteerScreen {
 
             // Inicializar autocomplete de municípios
             this.initializeCityAutocomplete();
+
+            // Add required fields array
+            this.requiredFields = [
+                'volunteerName',
+                'volunteerCpf',
+                'volunteerBirthdate',
+                'volunteerPhone',
+                'volunteerEmail',
+                'volunteerAddress',
+                'volunteerCity',
+                'volunteerState'
+            ];
+
+            // Add assisted required fields array
+            this.assistedRequiredFields = [
+                'assistedName',
+                'assistedCpf',
+                'assistedPhone',
+                'assistedAddress',
+                'assistedCity',
+                'assistedState'
+            ];
 
             // Add social name elements
             this.socialNameGroup = document.getElementById('social-name-group');
@@ -208,909 +198,109 @@ export class VolunteerScreen {
             if (this.socialNameGroup) {
                 this.socialNameGroup.style.display = 'none';
             }
+
+            // Initialize modals
+            this.initializeModals();
         } catch (error) {
             console.error('Erro ao inicializar elementos:', error);
         }
     }
 
-    applyMasks() {
+    initializeModals() {
         try {
-            // CPF mask
-            if (this.volunteerCpf) {
-                this.volunteerCpf.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 11) {
-                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-                        e.target.value = value;
-                    }
-                });
-            }
-
-            if (this.assistedCpf) {
-                this.assistedCpf.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 11) {
-                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-                        e.target.value = value;
-                    }
-                });
-            }
-
-            // Birth date mask
-            if (this.volunteerBirthdate) {
-                this.volunteerBirthdate.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 8) {
-                        value = value.replace(/(\d{2})(\d)/, '$1/$2');
-                        value = value.replace(/(\d{2})(\d)/, '$1/$2');
-                        e.target.value = value;
-                    }
-                });
-            }
-
-            // Phone mask
-            if (this.assistedPhone) {
-                this.assistedPhone.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 11) {
-                        if (value.length <= 10) {
-                            value = value.replace(/(\d{2})(\d)/, '($1) $2');
-                            value = value.replace(/(\d{4})(\d)/, '$1-$2');
-                        } else {
-                            value = value.replace(/(\d{2})(\d)/, '($1) $2');
-                            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-                        }
-                        e.target.value = value;
-                    }
-                });
-
-                // Handle paste event
-                this.assistedPhone.addEventListener('paste', (e) => {
-                    e.preventDefault();
-                    const pastedData = e.clipboardData.getData('text').replace(/\D/g, '');
-                    let value = pastedData;
-                    if (value.length <= 11) {
-                        if (value.length <= 10) {
-                            value = value.replace(/(\d{2})(\d)/, '($1) $2');
-                            value = value.replace(/(\d{4})(\d)/, '$1-$2');
-                        } else {
-                            value = value.replace(/(\d{2})(\d)/, '($1) $2');
-                            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-                        }
-                        e.target.value = value;
-                    }
-                });
-            }
-
-            // NIS mask (11 digits)
-            if (this.volunteerNis) {
-                this.volunteerNis.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 11) {
-                        e.target.value = value;
-                    }
-                });
-            }
-
-        } catch (error) {
-            console.error('Erro ao aplicar máscaras:', error);
-        }
-    }
-
-    initializeCityAutocomplete() {
-        // Lista de municípios de Pernambuco (exemplo)
-        const cities = [
-            "Recife", "Olinda", "Jaboatão dos Guararapes", "Caruaru", "Petrolina",
-            "Paulista", "Cabo de Santo Agostinho", "Camaragibe", "Garanhuns", "Vitória de Santo Antão"
-        ];
-
-        this.volunteerCity.addEventListener('input', () => {
-            const input = this.volunteerCity.value.toLowerCase();
-            const filteredCities = cities.filter(city => 
-                city.toLowerCase().includes(input)
-            );
-
-            this.showCitySuggestions(filteredCities);
-        });
-
-        this.volunteerCity.addEventListener('blur', () => {
-            setTimeout(() => {
-                this.citySuggestions.style.display = 'none';
-            }, 200);
-        });
-    }
-
-    showCitySuggestions(cities) {
-        this.citySuggestions.innerHTML = '';
-        this.citySuggestions.style.display = 'block';
-
-        cities.forEach(city => {
-            const div = document.createElement('div');
-            div.textContent = city;
-            div.addEventListener('click', () => {
-                this.volunteerCity.value = city;
-                this.citySuggestions.style.display = 'none';
-            });
-            this.citySuggestions.appendChild(div);
-        });
-    }
-
-    validateForm() {
-        let isValid = true;
-        const errors = [];
-
-        // Validar nome
-        if (!this.volunteerName.value.trim()) {
-            errors.push('Por favor, preencha o campo obrigatório: Nome Completo');
-            isValid = false;
-        }
-
-        // Validar município
-        if (!this.volunteerCity.value.trim()) {
-            errors.push('Por favor, preencha o campo obrigatório: Município');
-            isValid = false;
-        }
-
-        // Validar CPF
-        if (this.volunteerCpf.value && !this.validateCPF(this.volunteerCpf.value)) {
-            errors.push('O CPF informado não é válido. Verifique e tente novamente.');
-            isValid = false;
-        }
-
-        // Validar data de nascimento
-        if (this.volunteerBirthdate.value && !this.validateBirthDate(this.volunteerBirthdate.value)) {
-            errors.push('Informe uma data válida no formato dd/mm/aaaa.');
-            isValid = false;
-        }
-
-        // Validar situação de rua
-        const homelessRadio = document.querySelector('input[name="homeless"]:checked');
-        if (!homelessRadio) {
-            errors.push('Por favor, informe se está em situação de rua.');
-            isValid = false;
-        }
-
-        // Validar quem está preenchendo
-        const fillingForCheckbox = document.querySelector('input[name="filling_for"]:checked');
-        if (!fillingForCheckbox) {
-            errors.push('Por favor, informe quem está preenchendo o formulário.');
-            isValid = false;
-        }
-
-        // Validar localização
-        if (!this.volunteerLocation.value) {
-            errors.push('Por favor, obtenha a localização.');
-            isValid = false;
-        }
-
-        return { isValid, errors };
-    }
-
-    validateBirthDate(date) {
-        // Check format
-        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(date)) {
-            return false;
-        }
-
-        // Split date
-        const [day, month, year] = date.split('/').map(Number);
-
-        // Check if date is valid
-        const dateObj = new Date(year, month - 1, day);
-        if (dateObj.getFullYear() !== year || 
-            dateObj.getMonth() !== month - 1 || 
-            dateObj.getDate() !== day) {
-            return false;
-        }
-
-        // Check if date is not in the future
-        const today = new Date();
-        if (dateObj > today) {
-            return false;
-        }
-
-        // Check if age is reasonable (between 0 and 120 years)
-        const age = today.getFullYear() - year;
-        if (age < 0 || age > 120) {
-            return false;
-        }
-
-        return true;
-    }
-
-    handleLogout() {
-        if (confirm('Tem certeza que deseja sair? Todos os dados serão apagados.')) {
-            // Limpa todos os dados do localStorage
-            localStorage.removeItem('volunteerCache');
-            localStorage.removeItem('assistedList');
-            
-            // Reseta o estado da aplicação
-            this.assistedList = [];
-            this.volunteerLocation = null;
-            this.assistedLocation = null;
-            this.locationConfirmed = false;
-            
-            // Atualiza a UI
-            this.updateUIState();
-            
-            // Navega para a tela inicial
-            this.screenLoader.loadScreen('welcome');
-        }
-    }
-
-    addLocationButtons() {
-        // Add location button to volunteer form
-        const volunteerLocationGroup = document.createElement('div');
-        volunteerLocationGroup.className = 'form-group';
-        volunteerLocationGroup.appendChild(this.volunteerLocationBtn);
-        this.volunteerForm.querySelector('.form-section').appendChild(volunteerLocationGroup);
-
-        // Add location button to assisted form
-        const assistedLocationGroup = document.createElement('div');
-        assistedLocationGroup.className = 'form-group';
-        assistedLocationGroup.appendChild(this.assistedLocationBtn);
-        this.assistedForm.appendChild(assistedLocationGroup);
-    }
-
-    createLocationButton(id) {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'location-btn';
-        btn.id = id;
-        btn.innerHTML = '<span class="material-icons">location_on</span> Obter Localização';
-        btn.addEventListener('click', () => this.getLocation(btn));
-        return btn;
-    }
-
-    initializeGeolocation() {
-        if (!navigator.geolocation) {
-            console.error('Geolocation is not supported by this browser.');
-            return;
-        }
-    }
-
-    async getLocation(button) {
-        try {
-            if (!navigator.geolocation) {
-                throw new Error('Geolocalização não é suportada neste navegador');
-            }
-
-            // Desabilita o botão e mostra indicador de carregamento
-            button.disabled = true;
-            button.innerHTML = '<span class="material-icons">sync</span> Obtendo localização...';
-
-            const position = await new Promise((resolve, reject) => {
-                navigator.geolocation.getCurrentPosition(resolve, reject, {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
-                });
-            });
-
-            const location = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude
-            };
-
-            // Determina qual input deve receber a localização
-            const locationInput = button.id === 'volunteer-location-btn' 
-                ? document.getElementById('volunteer-location')
-                : document.getElementById('assisted-location');
-
-            if (locationInput) {
-                locationInput.value = `${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}`;
-                locationInput.classList.add('location-obtained');
-                
-                // Atualiza o botão para mostrar sucesso
-                button.innerHTML = '<span class="material-icons">check_circle</span> Localização obtida';
-                button.classList.add('success');
-                
-                // Habilita o botão novamente após 2 segundos
-                setTimeout(() => {
-                    button.disabled = false;
-                }, 2000);
-            }
-
-        } catch (error) {
-            console.error('Erro ao obter localização:', error);
-            
-            // Atualiza o botão para mostrar erro
-            button.innerHTML = '<span class="material-icons">error</span> Erro ao obter localização';
-            button.classList.add('error');
-            
-            // Habilita o botão novamente após 2 segundos
-            setTimeout(() => {
-                button.disabled = false;
-                button.innerHTML = '<span class="material-icons">location_on</span> Obter Localização';
-                button.classList.remove('error');
-            }, 2000);
-            
-            alert('Não foi possível obter a localização. Por favor, verifique as permissões do navegador e tente novamente.');
-        }
-    }
-
-    showLocationInfo(form, location) {
-        const existingInfo = form.querySelector('.location-info');
-        if (existingInfo) {
-            existingInfo.remove();
-        }
-
-        const locationInfo = document.createElement('div');
-        locationInfo.className = 'location-info';
-        locationInfo.innerHTML = `
-            <span class="material-icons">location_on</span>
-            <span>Lat: ${location.latitude.toFixed(6)}, Long: ${location.longitude.toFixed(6)}</span>
-        `;
-        form.appendChild(locationInfo);
-    }
-
-    addMicrophoneButtons() {
-        // Add microphone button to name input
-        const nameGroup = this.volunteerName.parentElement;
-        const nameMicBtn = this.createMicrophoneButton(this.volunteerName);
-        nameGroup.appendChild(nameMicBtn);
-
-        // Add microphone button to assisted name input
-        const assistedNameInput = document.getElementById('assistedName');
-        if (assistedNameInput) {
-            const assistedNameGroup = assistedNameInput.parentElement;
-            const assistedNameMicBtn = this.createMicrophoneButton(assistedNameInput);
-            assistedNameGroup.appendChild(assistedNameMicBtn);
-        }
-    }
-
-    createMicrophoneButton(inputElement) {
-        const micBtn = document.createElement('button');
-        micBtn.type = 'button';
-        micBtn.className = 'mic-btn';
-        micBtn.innerHTML = '<span class="material-icons">mic</span>';
-        micBtn.addEventListener('click', () => this.startSpeechRecognition(inputElement));
-        return micBtn;
-    }
-
-    initializeSpeechRecognition() {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) {
-            console.error('Speech recognition not supported in this browser');
-            return;
-        }
-
-        this.recognition = new SpeechRecognition();
-        this.recognition.continuous = false;
-        this.recognition.interimResults = false;
-        this.recognition.lang = 'pt-BR';
-
-        this.recognition.onstart = () => {
-            console.log('Voice recognition started');
-            if (this.currentInput) {
-                this.currentInput.classList.add('listening');
-            }
-        };
-
-        this.recognition.onend = () => {
-            console.log('Voice recognition ended');
-            if (this.currentInput) {
-                this.currentInput.classList.remove('listening');
-            }
-        };
-
-        this.recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            if (this.currentInput) {
-                this.currentInput.value = transcript;
-                this.validateInput(this.currentInput);
-                this.checkFormValidity();
-            }
-        };
-
-        this.recognition.onerror = (event) => {
-            console.error('Speech recognition error:', event.error);
-            if (this.currentInput) {
-                this.currentInput.classList.remove('listening');
-            }
-        };
-    }
-
-    handleVoiceInput(button) {
-        const inputId = button.getAttribute('data-input');
-        const input = document.getElementById(inputId);
-        
-        if (!input) {
-            console.error('Input element not found:', inputId);
-            return;
-        }
-
-        try {
-            if (!this.recognition) {
-                this.initializeSpeechRecognition();
-            }
-
-            if (button.classList.contains('listening')) {
-                this.recognition.stop();
-                button.classList.remove('listening');
-                return;
-            }
-
-            this.currentInput = input;
-            button.classList.add('listening');
-            this.recognition.start();
-        } catch (error) {
-            console.error('Error in voice input:', error);
-            button.classList.remove('listening');
-        }
-    }
-
-    setupEventListeners() {
-        try {
-            if (!this.volunteerPhotoPreview || !this.volunteerPhoto) {
-                console.error('Photo elements not found');
-                return;
-            }
-
-            // Volunteer form event listeners
-            if (this.volunteerPhoto) {
-                this.volunteerPhoto.addEventListener('change', (event) => this.handlePhotoUpload(event, 'volunteer'));
-            }
-            if (this.volunteerPhotoPreview) {
-                this.volunteerPhotoPreview.addEventListener('click', () => this.volunteerPhoto?.click());
-            }
-
-            // Assisted form event listeners
-            const addAssistedBtn = document.getElementById('add-assisted');
-            if (addAssistedBtn) {
-                addAssistedBtn.addEventListener('click', () => {
-                    console.log('Botão de adicionar assistido clicado (setupEventListeners)');
-                    this.showAssistedForm();
-                });
-            }
-
-            // Add close button event listener for assisted form
-            const closeAssistedFormBtn = document.querySelector('#assisted-form .close-modal');
-            if (closeAssistedFormBtn) {
-                closeAssistedFormBtn.addEventListener('click', () => {
-                    console.log('Botão de fechar modal clicado (setupEventListeners)');
-                    this.hideAssistedForm();
-                });
-            }
-
-            // Add submit button event listener for assisted form
-            const submitAssistedBtn = document.getElementById('submit-assisted');
-            if (submitAssistedBtn) {
-                submitAssistedBtn.addEventListener('click', () => {
-                    console.log('Botão de submit do formulário de assistido clicado');
-                    this.handleAssistedSubmit();
-                });
-            }
-
-            // Add photo upload event listeners for assisted form
-            const assistedPhoto = document.getElementById('assisted-photo');
-            const assistedPhotoPreview = document.getElementById('assisted-photo-preview');
-            if (assistedPhoto && assistedPhotoPreview) {
-                assistedPhoto.addEventListener('change', (event) => this.handlePhotoUpload(event, 'assisted'));
-                assistedPhotoPreview.addEventListener('click', () => assistedPhoto.click());
-            }
-
-            // Add location button event listener for assisted form
-            const assistedLocationBtn = document.getElementById('assisted-location-btn');
-            if (assistedLocationBtn) {
-                assistedLocationBtn.addEventListener('click', () => this.getLocation(assistedLocationBtn));
-            }
-
-            // Modal close events
-            this.elements.closeModalBtn.forEach(button => {
-                button.addEventListener('click', () => this.closeModals());
-            });
-
-            // Voice input events
-            this.initializeVoiceInput();
-
-            // Logout event
-            if (this.logoutBtn) {
-                this.logoutBtn.addEventListener('click', () => this.handleLogout());
-            }
-
-            // Add CPF validation
-            if (this.volunteerCpf) {
-                this.volunteerCpf.addEventListener('blur', () => {
-                    const cpf = this.volunteerCpf.value;
-                    const errorMessage = this.volunteerCpf.parentElement.nextElementSibling;
-                    
-                    if (cpf && !this.validateCPF(cpf)) {
-                        errorMessage.textContent = 'CPF inválido';
-                        errorMessage.classList.add('show');
-                        this.volunteerCpf.classList.add('invalid');
-                    } else {
-                        errorMessage.classList.remove('show');
-                        this.volunteerCpf.classList.remove('invalid');
-                    }
-                });
-            }
-
-            if (this.assistedCpf) {
-                this.assistedCpf.addEventListener('blur', () => {
-                    const cpf = this.assistedCpf.value;
-                    const errorMessage = this.assistedCpf.parentElement.nextElementSibling;
-                    
-                    if (cpf && !this.validateCPF(cpf)) {
-                        errorMessage.textContent = 'CPF inválido';
-                        errorMessage.classList.add('show');
-                        this.assistedCpf.classList.add('invalid');
-                    } else {
-                        errorMessage.classList.remove('show');
-                        this.assistedCpf.classList.remove('invalid');
-                    }
-                });
-            }
-
-            // Add birth date validation
-            if (this.volunteerBirthdate) {
-                this.volunteerBirthdate.addEventListener('blur', () => {
-                    const date = this.volunteerBirthdate.value;
-                    const errorMessage = this.volunteerBirthdate.parentElement.nextElementSibling;
-                    
-                    if (date && !this.validateBirthDate(date)) {
-                        errorMessage.textContent = 'Data de nascimento inválida';
-                        errorMessage.classList.add('show');
-                        this.volunteerBirthdate.classList.add('invalid');
-                    } else {
-                        errorMessage.classList.remove('show');
-                        this.volunteerBirthdate.classList.remove('invalid');
-                    }
-                });
-            }
-
-            // Add input event listeners for form validation
-            this.requiredFields.forEach(fieldId => {
-                const field = document.getElementById(fieldId);
-                if (field) {
-                    field.addEventListener('input', () => this.checkFormValidity());
-                }
-            });
-
-            this.assistedRequiredFields.forEach(fieldId => {
-                const field = document.getElementById(fieldId);
-                if (field) {
-                    field.addEventListener('input', () => this.checkAssistedFormValidity());
-                }
-            });
-
-            // Add form submission event listener
-            if (this.volunteerForm) {
-                this.volunteerForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleVolunteerSubmit();
-                });
-            }
-
-            // Add click event listener for submit button
-            if (this.submitVolunteerBtn) {
-                this.submitVolunteerBtn.addEventListener('click', () => {
-                    this.handleVolunteerSubmit();
-                });
-            }
-
-            // Add auto-fill button event listener
-            const autoFillBtn = document.getElementById('auto-fill');
-            if (autoFillBtn) {
-                autoFillBtn.addEventListener('click', () => this.autoFillForm());
-            }
-
-            // Adicionar listeners para validação em tempo real
-            const formInputs = document.querySelectorAll('#volunteer-form input, #volunteer-form select');
-            formInputs.forEach(input => {
-                input.addEventListener('input', () => {
-                    console.log('Input changed:', input.id, input.value);
-                    this.checkFormValidity();
-                });
-                input.addEventListener('change', () => {
-                    console.log('Change event:', input.id, input.value);
-                    this.checkFormValidity();
-                });
-            });
-
-            // Adicionar listener para radio buttons e checkboxes
-            const radioGroups = document.querySelectorAll('input[type="radio"], input[type="checkbox"]');
-            radioGroups.forEach(input => {
-                input.addEventListener('change', () => {
-                    console.log('Radio/Checkbox changed:', input.name, input.checked);
-                    this.checkFormValidity();
-                });
-            });
-        } catch (error) {
-            console.error('Erro ao configurar event listeners:', error);
-        }
-    }
-
-    validateInput(input) {
-        const value = input.value.trim();
-        let isValid = true;
-        let errorMessage = '';
-
-        switch (input.id) {
-            case 'name':
-                isValid = value.length >= 3;
-                errorMessage = 'Nome deve ter pelo menos 3 caracteres';
-                break;
-            case 'cpf':
-                isValid = this.validateCPF(value);
-                errorMessage = 'CPF inválido';
-                break;
-            case 'phone':
-                isValid = value.replace(/\D/g, '').length >= 10;
-                errorMessage = 'Telefone inválido';
-                break;
-        }
-
-        this.updateInputValidation(input, isValid, errorMessage);
-        return isValid;
-    }
-
-    validateCPF(cpf) {
-        // Remove all non-numeric characters
-        cpf = cpf.replace(/[^\d]/g, '');
-
-        // Check if it has 11 digits
-        if (cpf.length !== 11) {
-            return false;
-        }
-
-        // Check if all digits are the same
-        if (/^(\d)\1{10}$/.test(cpf)) {
-            return false;
-        }
-
-        // Validate first digit
-        let sum = 0;
-        for (let i = 0; i < 9; i++) {
-            sum += parseInt(cpf.charAt(i)) * (10 - i);
-        }
-        let remainder = 11 - (sum % 11);
-        if (remainder === 10 || remainder === 11) {
-            remainder = 0;
-        }
-        if (remainder !== parseInt(cpf.charAt(9))) {
-            return false;
-        }
-
-        // Validate second digit
-        sum = 0;
-        for (let i = 0; i < 10; i++) {
-            sum += parseInt(cpf.charAt(i)) * (11 - i);
-        }
-        remainder = 11 - (sum % 11);
-        if (remainder === 10 || remainder === 11) {
-            remainder = 0;
-        }
-        if (remainder !== parseInt(cpf.charAt(10))) {
-            return false;
-        }
-
-        return true;
-    }
-
-    updateInputValidation(input, isValid, errorMessage) {
-        const formGroup = input.parentElement;
-        const errorElement = formGroup.querySelector('.error-message') || document.createElement('div');
-        
-        if (!formGroup.querySelector('.error-message')) {
-            errorElement.className = 'error-message';
-            formGroup.appendChild(errorElement);
-        }
-
-        if (!isValid) {
-            input.classList.add('invalid');
-            errorElement.textContent = errorMessage;
-        } else {
-            input.classList.remove('invalid');
-            errorElement.textContent = '';
-        }
-    }
-
-    formatCPF() {
-        let value = this.volunteerCpf.value.replace(/\D/g, '');
-        if (value.length <= 11) {
-            value = value.replace(/(\d{3})(\d)/, '$1.$2');
-            value = value.replace(/(\d{3})(\d)/, '$1.$2');
-            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            this.volunteerCpf.value = value;
-        }
-    }
-
-    formatPhone() {
-        let value = this.volunteerPhone.value.replace(/\D/g, '');
-        if (value.length <= 11) {
-            value = value.replace(/(\d{2})(\d)/, '($1) $2');
-            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-            this.volunteerPhone.value = value;
-        }
-    }
-
-    async handlePhotoUpload(event, type) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        if (!file.type.startsWith('image/')) {
-            alert('Por favor, selecione apenas arquivos de imagem.');
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const photoData = e.target.result;
-            const previewElement = type === 'volunteer' ? this.volunteerPhotoPreview : this.assistedPhotoPreview;
-            
-            if (previewElement) {
-                previewElement.innerHTML = '';
-                const img = document.createElement('img');
-                img.src = photoData;
-                img.alt = 'Foto do ' + (type === 'volunteer' ? 'voluntário' : 'assistido');
-                previewElement.appendChild(img);
-            }
-
-            this.savePhotoToCache(photoData, type);
-        };
-
-        reader.readAsDataURL(file);
-    }
-
-    savePhotoToCache(photoData, type) {
-        const cache = JSON.parse(localStorage.getItem('volunteerCache') || '{}');
-        
-        if (type === 'volunteer') {
-            cache.volunteer = {
-                ...cache.volunteer,
-                photo: photoData
-            };
-        } else {
-            cache.assisted = {
-                ...cache.assisted,
-                photo: photoData
-            };
-        }
-        
-        localStorage.setItem('volunteerCache', JSON.stringify(cache));
-    }
-
-    async handleVolunteerSubmit() {
-        const { isValid, errors } = this.validateForm();
-        
-        if (!isValid) {
-            errors.forEach(error => {
-                alert(error);
-            });
-            return;
-        }
-
-        const formData = {
-            name: this.volunteerName.value,
-            socialName: this.volunteerSocialName.value,
-            birthdate: this.volunteerBirthdate.value,
-            gender: this.volunteerGender.value,
-            city: this.volunteerCity.value,
-            address: this.volunteerAddress.value,
-            cpf: this.volunteerCpf.value,
-            nis: this.volunteerNis.value,
-            homeless: document.querySelector('input[name="homeless"]:checked').value,
-            fillingFor: Array.from(document.querySelectorAll('input[name="filling_for"]:checked')).map(cb => cb.value),
-            location: this.volunteerLocation.value,
-            photo: this.volunteerPhoto.files[0],
-            role: 'volunteer'
-        };
-
-        try {
-            this.submitVolunteerBtn.disabled = true;
-            this.submitVolunteerBtn.innerHTML = '<span class="material-icons">sync</span> Salvando...';
-
-            // Salvar no localStorage como userData
-            localStorage.setItem('userData', JSON.stringify(formData));
-            
-            // Atualizar o perfil do voluntário
-            this.updateVolunteerProfile(formData.name, formData.photo);
-            
-            // Atualizar o estado da UI
-            this.updateUIState();
-            
-            this.submitVolunteerBtn.innerHTML = '<span class="material-icons">check</span> Dados recebidos com sucesso!';
-            this.submitVolunteerBtn.style.backgroundColor = 'var(--success-color)';
-
-            setTimeout(() => {
-                this.submitVolunteerBtn.disabled = false;
-                this.submitVolunteerBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
-                this.submitVolunteerBtn.style.backgroundColor = 'var(--primary-color)';
-            }, 2000);
-
-        } catch (error) {
-            console.error('Erro ao salvar dados:', error);
-            alert('Houve um problema ao enviar seus dados. Tente novamente mais tarde.');
-            this.submitVolunteerBtn.innerHTML = '<span class="material-icons">error</span> Erro ao salvar';
-            this.submitVolunteerBtn.style.backgroundColor = 'var(--error-color)';
-        }
-    }
-
-    loadCachedData() {
-        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-        if (userData && userData.role === 'volunteer') {
-            const now = new Date().getTime();
-            const oneDay = 24 * 60 * 60 * 1000;
-
-            if (now - userData.timestamp < oneDay) {
-                // Preencher formulário com dados em cache
-                this.volunteerCpf.value = userData.cpf || '';
-                this.volunteerName.value = userData.name || '';
-                this.volunteerSocialName.value = userData.socialName || '';
-                this.volunteerBirthdate.value = userData.birthdate || '';
-                this.volunteerGender.value = userData.gender || '';
-                this.volunteerCity.value = userData.city || '';
-                this.volunteerAddress.value = userData.address || '';
-                this.volunteerNis.value = userData.nis || '';
-                
-                if (userData.photo) {
-                    const photoPreview = document.getElementById('volunteer-photo-preview');
-                    const avatar = document.querySelector('.volunteer-avatar');
-                    
-                    if (photoPreview) {
-                        photoPreview.style.backgroundImage = `url(${userData.photo})`;
-                        photoPreview.classList.add('has-photo');
-                    }
-                    
-                    if (avatar) {
-                        avatar.style.backgroundImage = `url(${userData.photo})`;
-                        avatar.classList.add('has-photo');
-                    }
+            // Initialize assisted form modal
+            if (this.assistedForm) {
+                // Add close button event listener
+                const closeBtn = this.assistedForm.querySelector('.close-modal');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => this.hideAssistedForm());
                 }
 
-                if (userData.location) {
-                    this.volunteerLocation.value = userData.location;
-                    this.showLocationInfo(this.elements.volunteerForm, userData.location);
-                    this.volunteerLocationBtn.innerHTML = '<span class="material-icons">check_circle</span> Localização Obtida';
-                    this.volunteerLocationBtn.disabled = true;
+                // Add click outside to close
+                this.assistedForm.addEventListener('click', (e) => {
+                    if (e.target === this.assistedForm) {
+                        this.hideAssistedForm();
+                    }
+                });
+
+                // Add submit button event listener
+                if (this.submitAssistedBtn) {
+                    this.submitAssistedBtn.addEventListener('click', () => this.handleAssistedSubmit());
                 }
 
-                // Carregar lista de assistidos do cache
-                if (userData.assistedList) {
-                    this.assistedList = userData.assistedList;
+                // Ensure modal is in the DOM
+                if (!document.body.contains(this.assistedForm)) {
+                    document.body.appendChild(this.assistedForm);
                 }
-
-                // Update profile
-                this.updateVolunteerProfile(userData.name, userData.photo);
-
-                // Update UI state
-                this.updateUIState();
             } else {
-                // Cache expirado
-                localStorage.removeItem('userData');
-                this.assistedList = [];
-                this.updateUIState();
+                console.error('Modal de assistido não encontrado');
             }
-        } else {
-            // Cache vazio - habilitar formulário
-            this.assistedList = [];
-            this.updateUIState();
+
+            // Initialize photo modal
+            if (this.photoModal) {
+                // Add close button event listener
+                const closeBtn = this.photoModal.querySelector('.close-modal');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => this.closeModals());
+                }
+
+                // Add click outside to close
+                this.photoModal.addEventListener('click', (e) => {
+                    if (e.target === this.photoModal) {
+                        this.closeModals();
+                    }
+                });
+
+                // Ensure modal is in the DOM
+                if (!document.body.contains(this.photoModal)) {
+                    document.body.appendChild(this.photoModal);
+                }
+            }
+        } catch (error) {
+            console.error('Erro ao inicializar modais:', error);
         }
     }
 
     showAssistedForm() {
-        const assistedForm = document.getElementById('assisted-form');
-        if (assistedForm) {
-            assistedForm.style.display = 'flex';
-            assistedForm.classList.add('active');
+        try {
+            if (!this.assistedForm) {
+                console.error('Modal de assistido não encontrado');
+                return;
+            }
+
+            // Ensure modal is in the DOM
+            if (!document.body.contains(this.assistedForm)) {
+                document.body.appendChild(this.assistedForm);
+            }
+
             // Reset form when opening
             this.resetAssistedForm();
-        } else {
-            console.error('Modal de assistido não encontrado');
+            
+            // Show modal
+            this.assistedForm.style.display = 'flex';
+            this.assistedForm.classList.add('active');
+
+            // Focus first input
+            if (this.assistedName) {
+                this.assistedName.focus();
+            }
+        } catch (error) {
+            console.error('Erro ao mostrar formulário de assistido:', error);
         }
     }
 
     hideAssistedForm() {
-        const assistedForm = document.getElementById('assisted-form');
-        if (assistedForm) {
-            assistedForm.style.display = 'none';
-            assistedForm.classList.remove('active');
+        try {
+            if (!this.assistedForm) {
+                console.error('Modal de assistido não encontrado');
+                return;
+            }
+
+            this.assistedForm.style.display = 'none';
+            this.assistedForm.classList.remove('active');
             this.resetAssistedForm();
+        } catch (error) {
+            console.error('Erro ao esconder formulário de assistido:', error);
         }
     }
 
@@ -1257,7 +447,7 @@ export class VolunteerScreen {
             const addAssistedBtn = document.getElementById('add-assisted');
             const assistedList = document.getElementById('assisted-list');
             const volunteerForm = document.getElementById('volunteer-form');
-            const assistedForm = document.getElementById('assisted-form');
+            const assistedForm = document.getElementById('assistedForm');
             const assistedSection = document.getElementById('assisted-section');
             
             // Verificar se há dados no localStorage
@@ -1344,14 +534,17 @@ export class VolunteerScreen {
     }
 
     closeModals() {
-        if (this.photoModal) {
-            this.photoModal.classList.remove('active');
-        }
-        if (this.elements.locationModal) {
-            this.elements.locationModal.classList.remove('active');
-        }
-        if (this.elements.assistedForm) {
-            this.elements.assistedForm.classList.remove('active');
+        try {
+            if (this.photoModal) {
+                this.photoModal.style.display = 'none';
+                this.photoModal.classList.remove('active');
+            }
+            if (this.assistedForm) {
+                this.assistedForm.style.display = 'none';
+                this.assistedForm.classList.remove('active');
+            }
+        } catch (error) {
+            console.error('Erro ao fechar modais:', error);
         }
     }
 
@@ -1393,7 +586,7 @@ export class VolunteerScreen {
             const addAssistedBtn = document.getElementById('add-assisted');
             if (addAssistedBtn) {
                 addAssistedBtn.addEventListener('click', () => {
-                    const assistedForm = document.getElementById('assisted-form');
+                    const assistedForm = document.getElementById('assistedForm');
                     if (assistedForm) {
                         assistedForm.style.display = 'flex';
                         assistedForm.classList.add('active');
@@ -1410,17 +603,45 @@ export class VolunteerScreen {
         const submitButton = document.getElementById('submit-volunteer');
         if (!submitButton) return;
 
-        let isValid = true;
+        // Lista de campos obrigatórios
+        const requiredFields = [
+            'volunteer-name',
+            'volunteerGender',
+            'volunteer-birthdate',
+            'volunteer-city',
+            'volunteer-cpf',
+            'volunteer-location'
+        ];
 
-        // Verificar campos obrigatórios
-        this.requiredFields.forEach(fieldId => {
+        // Verificar se todos os campos obrigatórios estão preenchidos
+        let isValid = true;
+        requiredFields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
-            if (!field || !field.value.trim()) {
-                isValid = false;
+            if (field) {
+                if (field.type === 'radio' || field.type === 'checkbox') {
+                    // Para grupos de radio/checkbox, verificar se algum está selecionado
+                    const groupName = field.name;
+                    const isChecked = document.querySelector(`input[name="${groupName}"]:checked`);
+                    if (!isChecked) {
+                        isValid = false;
+                    }
+                } else {
+                    // Para outros campos, verificar se tem valor
+                    if (!field.value || !field.value.trim()) {
+                        isValid = false;
+                    }
+                }
             }
         });
 
-        // Verificar se a situação de rua foi selecionada
+        // Verificar se o nome social é obrigatório (quando checkbox está marcado)
+        if (this.socialNameCheckbox && this.socialNameCheckbox.checked) {
+            if (!this.volunteerSocialName || !this.volunteerSocialName.value.trim()) {
+                isValid = false;
+            }
+        }
+
+        // Verificar se está em situação de rua foi selecionado
         const homelessSelected = document.querySelector('input[name="homeless"]:checked');
         if (!homelessSelected) {
             isValid = false;
@@ -1614,9 +835,501 @@ export class VolunteerScreen {
             this.submitAssistedBtn.style.backgroundColor = 'var(--error-color)';
         }
     }
+
+    applyMasks() {
+        try {
+            // CPF mask
+            if (this.volunteerCpf) {
+                this.volunteerCpf.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length <= 11) {
+                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                        e.target.value = value;
+                    }
+                });
+            }
+
+            if (this.assistedCpf) {
+                this.assistedCpf.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length <= 11) {
+                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                        e.target.value = value;
+                    }
+                });
+            }
+
+            // Birth date mask
+            if (this.volunteerBirthdate) {
+                this.volunteerBirthdate.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length <= 8) {
+                        value = value.replace(/(\d{2})(\d)/, '$1/$2');
+                        value = value.replace(/(\d{2})(\d)/, '$1/$2');
+                        e.target.value = value;
+                    }
+                });
+            }
+
+            // Phone mask
+            if (this.assistedPhone) {
+                this.assistedPhone.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length <= 11) {
+                        if (value.length <= 10) {
+                            value = value.replace(/(\d{2})(\d)/, '($1) $2');
+                            value = value.replace(/(\d{4})(\d)/, '$1-$2');
+                        } else {
+                            value = value.replace(/(\d{2})(\d)/, '($1) $2');
+                            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+                        }
+                        e.target.value = value;
+                    }
+                });
+            }
+
+            // NIS mask (11 digits)
+            if (this.volunteerNis) {
+                this.volunteerNis.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length <= 11) {
+                        e.target.value = value;
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Erro ao aplicar máscaras:', error);
+        }
+    }
+
+    initializeCityAutocomplete() {
+        try {
+            // Lista de municípios de Pernambuco
+            const cities = [
+                "Recife", "Olinda", "Jaboatão dos Guararapes", "Caruaru", "Petrolina",
+                "Paulista", "Cabo de Santo Agostinho", "Camaragibe", "Garanhuns", "Vitória de Santo Antão"
+            ];
+
+            if (this.volunteerCity && this.citySuggestions) {
+                this.volunteerCity.addEventListener('input', () => {
+                    const input = this.volunteerCity.value.toLowerCase();
+                    const filteredCities = cities.filter(city => 
+                        city.toLowerCase().includes(input)
+                    );
+
+                    this.showCitySuggestions(filteredCities);
+                });
+
+                this.volunteerCity.addEventListener('blur', () => {
+                    setTimeout(() => {
+                        if (this.citySuggestions) {
+                            this.citySuggestions.style.display = 'none';
+                        }
+                    }, 200);
+                });
+            }
+        } catch (error) {
+            console.error('Erro ao inicializar autocomplete de municípios:', error);
+        }
+    }
+
+    showCitySuggestions(cities) {
+        if (!this.citySuggestions) return;
+
+        this.citySuggestions.innerHTML = '';
+        this.citySuggestions.style.display = 'block';
+
+        cities.forEach(city => {
+            const div = document.createElement('div');
+            div.textContent = city;
+            div.addEventListener('click', () => {
+                if (this.volunteerCity) {
+                    this.volunteerCity.value = city;
+                    this.citySuggestions.style.display = 'none';
+                }
+            });
+            this.citySuggestions.appendChild(div);
+        });
+    }
+
+    addLocationButtons() {
+        try {
+            // Add location button to volunteer form
+            if (this.volunteerLocationBtn && this.volunteerForm) {
+                const volunteerLocationGroup = document.createElement('div');
+                volunteerLocationGroup.className = 'form-group';
+                volunteerLocationGroup.appendChild(this.volunteerLocationBtn);
+                const formSection = this.volunteerForm.querySelector('.form-section');
+                if (formSection) {
+                    formSection.appendChild(volunteerLocationGroup);
+                }
+            }
+
+            // Add location button to assisted form
+            if (this.assistedLocationBtn && this.assistedForm) {
+                const assistedLocationGroup = document.createElement('div');
+                assistedLocationGroup.className = 'form-group';
+                assistedLocationGroup.appendChild(this.assistedLocationBtn);
+                const formSection = this.assistedForm.querySelector('.form-section');
+                if (formSection) {
+                    formSection.appendChild(assistedLocationGroup);
+                }
+            }
+        } catch (error) {
+            console.error('Error adding location buttons:', error);
+        }
+    }
+
+    setupEventListeners() {
+        try {
+            // Volunteer form event listeners
+            if (this.volunteerPhoto) {
+                this.volunteerPhoto.addEventListener('change', (event) => this.handlePhotoUpload(event, 'volunteer'));
+            }
+            if (this.volunteerPhotoPreview) {
+                this.volunteerPhotoPreview.addEventListener('click', () => this.volunteerPhoto?.click());
+            }
+
+            // Assisted form event listeners
+            if (this.addAssistedBtn) {
+                this.addAssistedBtn.addEventListener('click', () => {
+                    this.showAssistedForm();
+                });
+            }
+
+            // Add photo upload event listeners for assisted form
+            if (this.assistedPhoto && this.assistedPhotoPreview) {
+                this.assistedPhoto.addEventListener('change', (event) => this.handlePhotoUpload(event, 'assisted'));
+                this.assistedPhotoPreview.addEventListener('click', () => this.assistedPhoto.click());
+            }
+
+            // Add location button event listener for assisted form
+            if (this.assistedLocationBtn) {
+                this.assistedLocationBtn.addEventListener('click', () => this.getLocation(this.assistedLocationBtn));
+            }
+
+            // Add location button event listener for volunteer form
+            if (this.volunteerLocationBtn) {
+                this.volunteerLocationBtn.addEventListener('click', () => this.getLocation(this.volunteerLocationBtn));
+            }
+
+            // Add form submission event listener
+            if (this.volunteerForm) {
+                this.volunteerForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleVolunteerSubmit();
+                });
+            }
+
+            // Add click event listener for submit button
+            if (this.submitVolunteerBtn) {
+                this.submitVolunteerBtn.addEventListener('click', () => this.handleVolunteerSubmit());
+            }
+
+            // Add auto-fill button event listener
+            const autoFillBtn = document.getElementById('auto-fill');
+            if (autoFillBtn) {
+                autoFillBtn.addEventListener('click', () => this.autoFillForm());
+            }
+
+            // Add input event listeners for form validation
+            if (this.requiredFields) {
+                this.requiredFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.addEventListener('input', () => this.checkFormValidity());
+                    }
+                });
+            }
+
+            if (this.assistedRequiredFields) {
+                this.assistedRequiredFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.addEventListener('input', () => this.checkAssistedFormValidity());
+                    }
+                });
+            }
+
+            // Add logout event listener
+            if (this.logoutBtn) {
+                this.logoutBtn.addEventListener('click', () => this.handleLogout());
+            }
+
+            // Initialize voice input
+            this.initializeVoiceInput();
+        } catch (error) {
+            console.error('Erro ao configurar event listeners:', error);
+        }
+    }
+
+    loadCachedData() {
+        try {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            if (userData && userData.role === 'volunteer') {
+                const now = new Date().getTime();
+                const oneDay = 24 * 60 * 60 * 1000;
+
+                if (now - userData.timestamp < oneDay) {
+                    // Preencher formulário com dados em cache
+                    if (this.volunteerCpf) this.volunteerCpf.value = userData.cpf || '';
+                    if (this.volunteerName) this.volunteerName.value = userData.name || '';
+                    if (this.volunteerSocialName) this.volunteerSocialName.value = userData.socialName || '';
+                    if (this.volunteerBirthdate) this.volunteerBirthdate.value = userData.birthdate || '';
+                    if (this.volunteerGender) this.volunteerGender.value = userData.gender || '';
+                    if (this.volunteerCity) this.volunteerCity.value = userData.city || '';
+                    if (this.volunteerAddress) this.volunteerAddress.value = userData.address || '';
+                    if (this.volunteerNis) this.volunteerNis.value = userData.nis || '';
+                    
+                    if (userData.photo) {
+                        if (this.volunteerPhotoPreview) {
+                            this.volunteerPhotoPreview.style.backgroundImage = `url(${userData.photo})`;
+                            this.volunteerPhotoPreview.classList.add('has-photo');
+                        }
+                        
+                        if (this.volunteerAvatar) {
+                            this.volunteerAvatar.style.backgroundImage = `url(${userData.photo})`;
+                            this.volunteerAvatar.classList.add('has-photo');
+                        }
+                    }
+
+                    if (userData.location && this.volunteerLocation) {
+                        this.volunteerLocation.value = userData.location;
+                        if (this.volunteerLocationBtn) {
+                            this.volunteerLocationBtn.innerHTML = '<span class="material-icons">check_circle</span> Localização Obtida';
+                            this.volunteerLocationBtn.disabled = true;
+                        }
+                    }
+
+                    // Carregar lista de assistidos do cache
+                    if (userData.assistedList) {
+                        this.assistedList = userData.assistedList;
+                    }
+
+                    // Update profile
+                    this.updateVolunteerProfile(userData.name, userData.photo);
+
+                    // Update UI state
+                    this.updateUIState();
+                } else {
+                    // Cache expirado
+                    localStorage.removeItem('userData');
+                    this.assistedList = [];
+                    this.updateUIState();
+                }
+            } else {
+                // Cache vazio - habilitar formulário
+                this.assistedList = [];
+                this.updateUIState();
+            }
+        } catch (error) {
+            console.error('Erro ao carregar dados em cache:', error);
+            // Em caso de erro, limpa o cache e reseta o estado
+            localStorage.removeItem('userData');
+            this.assistedList = [];
+            this.updateUIState();
+        }
+    }
+
+    async handleVolunteerSubmit() {
+        try {
+            const { isValid, errors } = this.validateForm();
+            
+            if (!isValid) {
+                errors.forEach(error => {
+                    alert(error);
+                });
+                return;
+            }
+
+            const formData = {
+                name: this.volunteerName.value,
+                socialName: this.volunteerSocialName.value,
+                birthdate: this.volunteerBirthdate.value,
+                gender: this.volunteerGender.value,
+                city: this.volunteerCity.value,
+                address: this.volunteerAddress.value,
+                cpf: this.volunteerCpf.value,
+                nis: this.volunteerNis.value,
+                homeless: document.querySelector('input[name="homeless"]:checked')?.value,
+                fillingFor: Array.from(document.querySelectorAll('input[name="filling_for"]:checked')).map(cb => cb.value),
+                location: this.volunteerLocation.value,
+                photo: this.volunteerPhoto.files[0],
+                role: 'volunteer',
+                timestamp: new Date().getTime()
+            };
+
+            // Disable submit button and show loading state
+            if (this.submitVolunteerBtn) {
+                this.submitVolunteerBtn.disabled = true;
+                this.submitVolunteerBtn.innerHTML = '<span class="material-icons">sync</span> Salvando...';
+            }
+
+            // Save to localStorage
+            localStorage.setItem('userData', JSON.stringify(formData));
+            
+            // Update volunteer profile
+            this.updateVolunteerProfile(formData.name, formData.photo);
+            
+            // Update UI state
+            this.updateUIState();
+            
+            // Show success message
+            if (this.submitVolunteerBtn) {
+                this.submitVolunteerBtn.innerHTML = '<span class="material-icons">check</span> Dados recebidos com sucesso!';
+                this.submitVolunteerBtn.style.backgroundColor = 'var(--success-color)';
+
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    this.submitVolunteerBtn.disabled = false;
+                    this.submitVolunteerBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
+                    this.submitVolunteerBtn.style.backgroundColor = 'var(--primary-color)';
+                }, 2000);
+            }
+
+        } catch (error) {
+            console.error('Erro ao salvar dados:', error);
+            alert('Houve um problema ao enviar seus dados. Tente novamente mais tarde.');
+            
+            if (this.submitVolunteerBtn) {
+                this.submitVolunteerBtn.innerHTML = '<span class="material-icons">error</span> Erro ao salvar';
+                this.submitVolunteerBtn.style.backgroundColor = 'var(--error-color)';
+            }
+        }
+    }
+
+    validateForm() {
+        let isValid = true;
+        const errors = [];
+
+        // Validar nome
+        if (!this.volunteerName?.value.trim()) {
+            errors.push('Por favor, preencha o campo obrigatório: Nome Completo');
+            isValid = false;
+        }
+
+        // Validar município
+        if (!this.volunteerCity?.value.trim()) {
+            errors.push('Por favor, preencha o campo obrigatório: Município');
+            isValid = false;
+        }
+
+        // Validar CPF
+        if (this.volunteerCpf?.value && !this.validateCPF(this.volunteerCpf.value)) {
+            errors.push('O CPF informado não é válido. Verifique e tente novamente.');
+            isValid = false;
+        }
+
+        // Validar data de nascimento
+        if (this.volunteerBirthdate?.value && !this.validateBirthDate(this.volunteerBirthdate.value)) {
+            errors.push('Informe uma data válida no formato dd/mm/aaaa.');
+            isValid = false;
+        }
+
+        // Validar situação de rua
+        const homelessRadio = document.querySelector('input[name="homeless"]:checked');
+        if (!homelessRadio) {
+            errors.push('Por favor, informe se está em situação de rua.');
+            isValid = false;
+        }
+
+        // Validar quem está preenchendo
+        const fillingForCheckbox = document.querySelector('input[name="filling_for"]:checked');
+        if (!fillingForCheckbox) {
+            errors.push('Por favor, informe quem está preenchendo o formulário.');
+            isValid = false;
+        }
+
+        // Validar localização
+        if (!this.volunteerLocation?.value) {
+            errors.push('Por favor, obtenha a localização.');
+            isValid = false;
+        }
+
+        return { isValid, errors };
+    }
+
+    validateCPF(cpf) {
+        // Remove all non-numeric characters
+        cpf = cpf.replace(/[^\d]/g, '');
+
+        // Check if it has 11 digits
+        if (cpf.length !== 11) {
+            return false;
+        }
+
+        // Check if all digits are the same
+        if (/^(\d)\1{10}$/.test(cpf)) {
+            return false;
+        }
+
+        // Validate first digit
+        let sum = 0;
+        for (let i = 0; i < 9; i++) {
+            sum += parseInt(cpf.charAt(i)) * (10 - i);
+        }
+        let remainder = 11 - (sum % 11);
+        if (remainder === 10 || remainder === 11) {
+            remainder = 0;
+        }
+        if (remainder !== parseInt(cpf.charAt(9))) {
+            return false;
+        }
+
+        // Validate second digit
+        sum = 0;
+        for (let i = 0; i < 10; i++) {
+            sum += parseInt(cpf.charAt(i)) * (11 - i);
+        }
+        remainder = 11 - (sum % 11);
+        if (remainder === 10 || remainder === 11) {
+            remainder = 0;
+        }
+        if (remainder !== parseInt(cpf.charAt(10))) {
+            return false;
+        }
+
+        return true;
+    }
+
+    validateBirthDate(date) {
+        // Check format
+        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(date)) {
+            return false;
+        }
+
+        // Split date
+        const [day, month, year] = date.split('/').map(Number);
+
+        // Check if date is valid
+        const dateObj = new Date(year, month - 1, day);
+        if (dateObj.getFullYear() !== year || 
+            dateObj.getMonth() !== month - 1 || 
+            dateObj.getDate() !== day) {
+            return false;
+        }
+
+        // Check if date is not in the future
+        const today = new Date();
+        if (dateObj > today) {
+            return false;
+        }
+
+        // Check if age is reasonable (between 0 and 120 years)
+        const age = today.getFullYear() - year;
+        if (age < 0 || age > 120) {
+            return false;
+        }
+
+        return true;
+    }
 }
 
-// Initialize screen when DOM is loaded
+// Initialize the screen when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     const screen = new VolunteerScreen();
     window.screen = screen; // Make screen instance available globally
