@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atendimento Social - CDP</title>
+    <link rel="stylesheet" href="src/screens/social/social.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="social-container">
+        <header class="social-header">
+            <h1>Atendimento Social</h1>
+            <p>Faça login com sua conta gov.br para iniciar o atendimento</p>
+        </header>
+
+        <main class="social-content">
+            <div class="login-section">
+                <div class="login-card">
+                    <div class="login-icon">
+                        <span class="material-icons">verified_user</span>
+                    </div>
+                    <h2>Login gov.br</h2>
+                    <p>Para realizar o atendimento social, é necessário fazer login com sua conta gov.br</p>
+                    <button type="button" class="btn-gov" id="login-btn">
+                        <span class="material-icons">login</span>
+                        Entrar com gov.br
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Loader -->
+        <div class="screen-loader" id="loader">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <script src="src/screens/social/social.js"></script>
+</body>
+</html> 

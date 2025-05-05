@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localização Manual - CDP</title>
+    <link rel="stylesheet" href="/src/screens/manual/manual.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="manual-container">
+        <div class="manual-header">
+            <h1>Localização Manual</h1>
+            <p class="subtitle">Informe seu endereço para encontrar as cozinhas comunitárias mais próximas</p>
+        </div>
+
+        <div class="manual-content">
+            <div class="info-card">
+                <span class="material-icons">info</span>
+                <p>Preencha seu endereço completo para encontrarmos as cozinhas comunitárias mais próximas de você.</p>
+            </div>
+
+            <form id="addressForm" class="address-form">
+                <div class="form-section">
+                    <h2>Endereço</h2>
+                    <div class="form-group">
+                        <label for="cep">CEP</label>
+                        <div class="input-wrapper">
+                            <span class="material-icons search-icon">search</span>
+                            <input type="text" id="cep" class="manual-input" placeholder="00000-000" maxlength="9">
+                            <button type="button" id="searchCepBtn" class="voice-input-btn" title="Buscar CEP">
+                                <span class="material-icons">search</span>
+                            </button>
+                        </div>
+                        <div class="validation-message"></div>
+                        <p class="input-hint">Digite o CEP para preencher automaticamente o endereço</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="street">Rua</label>
+                        <div class="input-wrapper">
+                            <span class="material-icons search-icon">location_on</span>
+                            <input type="text" id="street" class="manual-input" placeholder="Nome da rua">
+                            <button type="button" id="streetVoiceBtn" class="voice-input-btn" title="Falar rua">
+                                <span class="material-icons">mic</span>
+                            </button>
+                        </div>
+                        <div class="validation-message"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="number">Número</label>
+                            <div class="input-wrapper">
+                                <span class="material-icons search-icon">tag</span>
+                                <input type="text" id="number" class="manual-input" placeholder="Número">
+                                <button type="button" id="numberVoiceBtn" class="voice-input-btn" title="Falar número">
+                                    <span class="material-icons">mic</span>
+                                </button>
+                            </div>
+                            <div class="validation-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="complement">Complemento</label>
+                            <div class="input-wrapper">
+                                <span class="material-icons search-icon">apartment</span>
+                                <input type="text" id="complement" class="manual-input" placeholder="Complemento (opcional)">
+                                <button type="button" id="complementVoiceBtn" class="voice-input-btn" title="Falar complemento">
+                                    <span class="material-icons">mic</span>
+                                </button>
+                            </div>
+                            <div class="validation-message"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="neighborhood">Bairro</label>
+                        <div class="input-wrapper">
+                            <span class="material-icons search-icon">location_city</span>
+                            <input type="text" id="neighborhood" class="manual-input" placeholder="Bairro">
+                            <button type="button" id="neighborhoodVoiceBtn" class="voice-input-btn" title="Falar bairro">
+                                <span class="material-icons">mic</span>
+                            </button>
+                        </div>
+                        <div class="validation-message"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">Cidade</label>
+                            <div class="input-wrapper">
+                                <span class="material-icons search-icon">location_city</span>
+                                <input type="text" id="city" class="manual-input" placeholder="Cidade">
+                                <button type="button" id="cityVoiceBtn" class="voice-input-btn" title="Falar cidade">
+                                    <span class="material-icons">mic</span>
+                                </button>
+                            </div>
+                            <div class="validation-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="state">Estado</label>
+                            <select id="state" class="manual-input" required>
+                                <option value="">Selecione...</option>
+                                <option value="AC">Acre</option>
+                                <option value="AL">Alagoas</option>
+                                <option value="AP">Amapá</option>
+                                <option value="AM">Amazonas</option>
+                                <option value="BA">Bahia</option>
+                                <option value="CE">Ceará</option>
+                                <option value="DF">Distrito Federal</option>
+                                <option value="ES">Espírito Santo</option>
+                                <option value="GO">Goiás</option>
+                                <option value="MA">Maranhão</option>
+                                <option value="MT">Mato Grosso</option>
+                                <option value="MS">Mato Grosso do Sul</option>
+                                <option value="MG">Minas Gerais</option>
+                                <option value="PA">Pará</option>
+                                <option value="PB">Paraíba</option>
+                                <option value="PR">Paraná</option>
+                                <option value="PE">Pernambuco</option>
+                                <option value="PI">Piauí</option>
+                                <option value="RJ">Rio de Janeiro</option>
+                                <option value="RN">Rio Grande do Norte</option>
+                                <option value="RS">Rio Grande do Sul</option>
+                                <option value="RO">Rondônia</option>
+                                <option value="RR">Roraima</option>
+                                <option value="SC">Santa Catarina</option>
+                                <option value="SP">São Paulo</option>
+                                <option value="SE">Sergipe</option>
+                                <option value="TO">Tocantins</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="button" id="backBtn" class="btn btn-secondary">
+                        <span class="material-icons">arrow_back</span>
+                        Voltar
+                    </button>
+                    <button type="submit" id="confirmBtn" class="btn btn-primary" disabled>
+                        <span class="material-icons">check</span>
+                        Confirmar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="/src/screens/manual/manual.js"></script>
+</body>
+</html> 

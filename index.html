@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de agendamento de cozinhas comunitárias - PE Sem Fome">
+    <meta name="theme-color" content="#2196F3">
+    <title>PE Sem Fome - Agendamento de Cozinhas Comunitárias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/src/css/shared/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-title">
+                    <img src="/src/assets/images/logo.png" alt="Logo PE Sem Fome" class="header-logo">
+                </div>
+                <nav class="header-nav">
+                    <div class="header-actions">
+                        <button class="header-button" id="helpButton" aria-label="Ajuda">
+                            <span class="material-icons">help_outline</span>
+                            <span class="button-text">Ajuda</span>
+                        </button>
+                        <button class="header-button" id="feedbackButton" aria-label="Feedback">
+                            <span class="material-icons">feedback</span>
+                            <span class="button-text">Feedback</span>
+                        </button>
+                    </div>
+                    <div class="accessibility-tools">
+                        <button id="increaseFont" aria-label="Aumentar fonte">
+                            <span class="material-icons">text_increase</span>
+                        </button>
+                        <button id="decreaseFont" aria-label="Diminuir fonte">
+                            <span class="material-icons">text_decrease</span>
+                        </button>
+                        <button id="highContrast" aria-label="Alto contraste">
+                            <span class="material-icons">contrast</span>
+                        </button>
+                    </div>
+                </nav>
+                <button class="hamburger-menu" id="hamburgerMenu" aria-label="Menu">
+                    <span class="material-icons">menu</span>
+                </button>
+            </div>
+            <div class="mobile-menu" id="mobileMenu">
+                <div class="mobile-menu-content">
+                    <button class="mobile-menu-button" id="mobileHelpButton">
+                        <span class="material-icons">help_outline</span>
+                        Ajuda
+                    </button>
+                    <button class="mobile-menu-button" id="mobileFeedbackButton">
+                        <span class="material-icons">feedback</span>
+                        Feedback
+                    </button>
+                    <div class="mobile-accessibility">
+                        <button class="mobile-menu-button" id="mobileIncreaseFont">
+                            <span class="material-icons">text_increase</span>
+                            Aumentar fonte
+                        </button>
+                        <button class="mobile-menu-button" id="mobileDecreaseFont">
+                            <span class="material-icons">text_decrease</span>
+                            Diminuir fonte
+                        </button>
+                        <button class="mobile-menu-button" id="mobileHighContrast">
+                            <span class="material-icons">contrast</span>
+                            Alto contraste
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <div id="screenContainer" role="main"></div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h2>Links Úteis</h2>
+                    <ul>
+                        <li><a href="https://www.sas.pe.gov.br/" target="_blank" rel="noopener">SAS Pernambuco</a></li>
+                        <li><a href="https://www.sas.pe.gov.br/transparencia" target="_blank" rel="noopener">Transparência</a></li>
+                        <li><a href="https://www.sas.pe.gov.br/fale-conosco" target="_blank" rel="noopener">Fale Conosco</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h2>Contato</h2>
+                    <p>Secretaria de Assistência Social</p>
+                    <p>Avenida Cruz Cabugá, 665 - Santo Amaro</p>
+                    <p>Recife-PE - CEP: 50040-000</p>
+                    <p>PABX: (81) 3183-3000</p>
+                </div>
+                <div class="footer-section">
+                    <h2>Desenvolvido por</h2>
+                    <div class="developer-logos">
+
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> PE Sem Fome - Todos os direitos reservados</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="/src/app.js"></script>
+    <script>
+        // Current year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Mobile menu functionality
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburgerMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            hamburgerMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!mobileMenu.contains(event.target) && !hamburgerMenu.contains(event.target)) {
+                mobileMenu.classList.remove('active');
+                hamburgerMenu.classList.remove('active');
+            }
+        });
+
+        // Accessibility tools
+        const fontControls = [
+            { id: 'increaseFont', size: '1.2em' },
+            { id: 'decreaseFont', size: '1em' },
+            { id: 'mobileIncreaseFont', size: '1.2em' },
+            { id: 'mobileDecreaseFont', size: '1em' }
+        ];
+
+        fontControls.forEach(control => {
+            document.getElementById(control.id).addEventListener('click', () => {
+                document.body.style.fontSize = control.size;
+            });
+        });
+
+        const contrastControls = ['highContrast', 'mobileHighContrast'];
+        contrastControls.forEach(id => {
+            document.getElementById(id).addEventListener('click', () => {
+                document.body.classList.toggle('high-contrast');
+            });
+        });
+    </script>
+</body>
+</html> 

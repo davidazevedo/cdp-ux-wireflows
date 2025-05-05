@@ -1,0 +1,328 @@
+.welcome-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--background);
+}
+
+.welcome-header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md) 0;
+}
+
+.logo-container {
+    margin-bottom: var(--spacing-md);
+}
+
+.logo {
+    height: 200px;
+    width: auto;
+    margin-bottom: var(--spacing-md);
+}
+
+.welcome-header h1 {
+    color: var(--text-primary);
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 var(--spacing-sm) 0;
+    line-height: 1.2;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.welcome-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.feature-card {
+    background: var(--surface);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--primary-light);
+    transition: all 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    background: var(--primary-light);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-md);
+}
+
+.feature-icon .material-icons {
+    color: var(--primary-color);
+    font-size: 28px;
+}
+
+.feature-card h3 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.feature-card p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.action-section {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-top: var(--spacing-lg);
+}
+
+.btn-primary,
+.btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--text-secondary);
+    color: var(--text-secondary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-primary .material-icons,
+.btn-secondary .material-icons {
+    font-size: 1.25rem;
+}
+
+.welcome-footer {
+    text-align: center;
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--primary-light);
+}
+
+.welcome-footer p {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.welcome-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.welcome-footer a:hover {
+    text-decoration: underline;
+}
+
+.navigation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.nav-card {
+    background: var(--surface);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--primary-light);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+    display: block;
+}
+
+.nav-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: var(--primary-light);
+}
+
+.nav-card:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-icon {
+    background: var(--primary-color);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-md);
+}
+
+.nav-icon .material-icons {
+    color: white;
+    font-size: 32px;
+}
+
+.nav-card h3 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.nav-card p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .welcome-container {
+        padding: var(--spacing-md);
+    }
+
+    .welcome-header {
+        padding: var(--spacing-sm) 0;
+    }
+
+    .logo {
+        height: 160px;
+    }
+
+    .welcome-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-card {
+        padding: var(--spacing-md);
+    }
+
+    .feature-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .feature-icon .material-icons {
+        font-size: 24px;
+    }
+
+    .action-section {
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+    }
+
+    .navigation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-card {
+        padding: var(--spacing-md);
+    }
+
+    .nav-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .nav-icon .material-icons {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-container {
+        padding: var(--spacing-sm);
+    }
+
+    .welcome-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .feature-card {
+        padding: var(--spacing-sm);
+    }
+
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .feature-icon .material-icons {
+        font-size: 20px;
+    }
+
+    .nav-card {
+        padding: var(--spacing-sm);
+    }
+
+    .nav-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .nav-icon .material-icons {
+        font-size: 24px;
+    }
+} 

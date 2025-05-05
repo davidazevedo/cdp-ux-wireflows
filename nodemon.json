@@ -1,0 +1,13 @@
+{
+  "ignore": [
+    "package-lock.json",
+    "node_modules/**/*",
+    ".git/**/*"
+  ],
+  "watch": [
+    "src/**/*",
+    "public/**/*",
+    "server.js"
+  ],
+  "ext": "js,html,css,json"
+} 

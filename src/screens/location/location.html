@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localização - CDP</title>
+    <link rel="stylesheet" href="/src/screens/location/location.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="location-container">
+        <div class="location-header">
+            <h1>Localização</h1>
+            <p class="subtitle">Permita o acesso à sua localização para encontrar as cozinhas comunitárias mais próximas</p>
+        </div>
+
+        <div class="location-content">
+            <div class="location-card">
+                <div class="location-icon">
+                    <span class="material-icons">location_on</span>
+                </div>
+                <div class="location-info">
+                    <h3>Por que precisamos da sua localização?</h3>
+                    <p>Usar sua localização atual torna a experiência mais personalizada e eficiente, permitindo que encontremos as cozinhas comunitárias mais próximas de você.</p>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <span class="material-icons search-icon">search</span>
+                    <input type="text" id="locationInput" class="location-input" placeholder="Digite sua localização ou use o botão abaixo">
+                    <button id="voiceInputBtn" class="voice-input-btn" title="Entrada por Voz">
+                        <span class="material-icons">mic</span>
+                    </button>
+                </div>
+                <div id="validationMessage" class="validation-message"></div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="getLocationBtn" class="btn btn-primary">
+                    <span class="material-icons">my_location</span>
+                    Usar minha localização
+                </button>
+                <button id="continueBtn" class="btn btn-primary" disabled>
+                    <span class="material-icons">arrow_forward</span>
+                    Continuar
+                </button>
+                <button id="backBtn" class="btn btn-secondary">
+                    <span class="material-icons">arrow_back</span>
+                    Voltar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ajuda</h2>
+                <button class="close-modal">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Para usar sua localização atual:</p>
+                <ol>
+                    <li>Clique em "Usar minha localização"</li>
+                    <li>Permita o acesso à sua localização quando solicitado pelo navegador</li>
+                    <li>Se preferir, você pode informar manualmente sua localização</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Feedback</h2>
+                <button class="close-modal">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="feedbackForm">
+                    <div class="form-group">
+                        <label for="feedbackType">Tipo de Feedback</label>
+                        <select id="feedbackType" required>
+                            <option value="">Selecione...</option>
+                            <option value="suggestion">Sugestão</option>
+                            <option value="problem">Problema</option>
+                            <option value="compliment">Elogio</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackMessage">Mensagem</label>
+                        <textarea id="feedbackMessage" required placeholder="Descreva seu feedback aqui..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar Feedback</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/screens/location/location.js"></script>
+</body>
+</html> 

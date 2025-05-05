@@ -1,0 +1,7 @@
+// Open Feedback Modal
+if (feedbackBtn) {
+    feedbackBtn.addEventListener('click', () => {
+        helpModal.style.display = 'none';
+        feedbackModal.style.display = 'block';
+    });
+} 

@@ -1,0 +1,209 @@
+.registration-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #f5f5f5;
+    overflow-y: auto;
+}
+
+.registration-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.registration-header h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.registration-header p {
+    font-size: 16px;
+    color: #666;
+}
+
+.btn-skip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    margin-bottom: 24px;
+    background-color: #f0f0f0;
+    color: #666;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-skip:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-1px);
+}
+
+.registration-form {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+}
+
+.form-input::placeholder {
+    color: #999;
+}
+
+.form-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-govbr {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #1976d2;
+    color: white;
+    flex: 1;
+}
+
+.btn-primary:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #1976d2;
+    border: 1px solid #1976d2;
+}
+
+.btn-govbr {
+    background-color: #1351b4;
+    color: white;
+    width: 100%;
+    margin-top: 16px;
+}
+
+.btn-govbr .govbr-logo {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+.btn-primary:hover:not(:disabled),
+.btn-secondary:hover,
+.btn-govbr:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.alternative-actions {
+    margin-top: 32px;
+    text-align: center;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 16px 0;
+    color: #666;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+}
+
+.divider span {
+    padding: 0 16px;
+    font-size: 14px;
+}
+
+/* Feedback visual para erros */
+.form-input.error {
+    border-color: #d32f2f;
+}
+
+.error-message {
+    color: #d32f2f;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+}
+
+.form-input.error + .error-message {
+    display: block;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+    .registration-container {
+        padding: 16px;
+    }
+
+    .registration-form {
+        padding: 24px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+    }
+} 

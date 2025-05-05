@@ -1,0 +1,308 @@
+:root {
+    --primary-color: #2196F3;
+    --secondary-color: #FFC107;
+    --text-color: #333;
+    --background-color: #F5F5F5;
+    --border-color: #E0E0E0;
+    --error-color: #F44336;
+    --success-color: #4CAF50;
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.confirmation-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.confirmation-header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.confirmation-header h1 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.reservation-details, .assisted-info {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.reservation-details h2, .assisted-info h2 {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-color);
+}
+
+.kitchen-info, .assisted-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    background-color: var(--background-color);
+}
+
+.info-item .material-icons {
+    color: var(--primary-color);
+}
+
+.situations-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+}
+
+.situation-tag {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+}
+
+.no-situations {
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.confirmation-form {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 500;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+.input-wrapper input {
+    flex: 1;
+    padding: var(--spacing-sm);
+    border: none;
+    outline: none;
+    font-size: 1rem;
+}
+
+.voice-input {
+    background: none;
+    border: none;
+    padding: var(--spacing-sm);
+    cursor: pointer;
+    color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.voice-input:hover {
+    color: var(--secondary-color);
+}
+
+.voice-input .material-icons {
+    font-size: 1.5rem;
+}
+
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.btn-gov {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    padding: var(--spacing-sm);
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-gov:hover {
+    background-color: #1976D2;
+}
+
+.btn-gov .material-icons {
+    font-size: 1.2rem;
+}
+
+.favorite-section {
+    margin: var(--spacing-md) 0;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    position: relative;
+    transition: var(--transition);
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked + .checkmark::after {
+    content: "✓";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.8rem;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-primary, .btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:disabled {
+    background-color: var(--border-color);
+    cursor: not-allowed;
+    opacity: 0.7;
+    }
+
+.btn-primary:not(:disabled):hover {
+    background-color: #1976D2;
+    }
+
+.btn-secondary {
+    background-color: white;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    }
+
+.btn-secondary:hover {
+    background-color: rgba(33, 150, 243, 0.1);
+}
+
+@media (max-width: 768px) {
+    .confirmation-container {
+        padding: var(--spacing-sm);
+    }
+
+    .confirmation-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .reservation-details, .confirmation-form, .assisted-info, .action-buttons {
+        padding: var(--spacing-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .confirmation-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .info-item {
+        font-size: 0.9rem;
+    }
+
+    .input-wrapper input {
+        font-size: 0.9rem;
+    }
+} 

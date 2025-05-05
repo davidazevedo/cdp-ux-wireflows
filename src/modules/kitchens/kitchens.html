@@ -1,0 +1,44 @@
+<div class="kitchens-module">
+    <h2>Cozinhas Comunitárias</h2>
+    <div class="kitchens-list">
+        <!-- Os cards de cozinhas serão inseridos aqui dinamicamente via JavaScript -->
+    </div>
+</div>
+
+<!-- Template para o card de cozinha -->
+<template id="kitchen-card-template">
+    <div class="kitchen-card">
+        <h3 class="kitchen-name"></h3>
+        <div class="status"></div>
+        <div class="address">
+            <i class="fas fa-map-marker-alt"></i>
+            <span class="address-text"></span>
+        </div>
+        <div class="schedule">
+            <i class="fas fa-clock"></i>
+            <span class="schedule-text"></span>
+        </div>
+        <div class="capacity">
+            <i class="fas fa-users"></i>
+            <span class="capacity-text"></span>
+        </div>
+    </div>
+</template>
+
+<!-- Template para estado vazio -->
+<template id="empty-state-template">
+    <div class="empty-state">
+        <i class="fas fa-utensils"></i>
+        <h3>Nenhuma cozinha disponível</h3>
+        <p>No momento não há cozinhas cadastradas na sua região.</p>
+    </div>
+</template>
+
+<!-- Template para estado de erro -->
+<template id="error-state-template">
+    <div class="error-state">
+        <i class="fas fa-exclamation-circle"></i>
+        <h3>Erro ao carregar cozinhas</h3>
+        <p>Ocorreu um erro ao carregar as cozinhas. Por favor, tente novamente mais tarde.</p>
+    </div>
+</template> 

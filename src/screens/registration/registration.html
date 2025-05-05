@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - CDP UX</title>
+    <link rel="stylesheet" href="/src/screens/registration/registration.css">
+</head>
+<body>
+    <div class="registration-container">
+        <div class="registration-header">
+            <h1>Complete seu Cadastro</h1>
+            <p>Preencha seus dados para continuar</p>
+        </div>
+
+        <button id="skipBtn" class="btn-skip">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14"></path>
+                <path d="M12 5l7 7-7 7"></path>
+            </svg>
+            Pular cadastro por enquanto
+        </button>
+
+        <div class="registration-form">
+            <div class="form-group">
+                <label for="nameInput">Nome Completo</label>
+                <input type="text" id="nameInput" class="form-input" placeholder="Digite seu nome completo">
+            </div>
+
+            <div class="form-group">
+                <label for="emailInput">E-mail</label>
+                <input type="email" id="emailInput" class="form-input" placeholder="Digite seu e-mail">
+            </div>
+
+            <div class="form-group">
+                <label for="phoneInput">Telefone</label>
+                <input type="tel" id="phoneInput" class="form-input" placeholder="(00) 00000-0000">
+            </div>
+
+            <div class="form-actions">
+                <button id="backBtn" class="btn-secondary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5"></path>
+                        <path d="M12 19l-7-7 7-7"></path>
+                    </svg>
+                    Voltar
+                </button>
+                <button id="submitBtn" class="btn-primary" disabled>
+                    Continuar
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14"></path>
+                        <path d="M12 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="alternative-actions">
+                <div class="divider">
+                    <span>ou</span>
+                </div>
+                <button id="govBrBtn" class="btn-primary">
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                    Entrar com Gov.br
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="registration.js" type="module"></script>
+</body>
+</html> 

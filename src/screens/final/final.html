@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação Final - CDP</title>
+    <link rel="stylesheet" href="/src/screens/final/final.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="final-container">
+        <div class="action-buttons">
+            <button id="portalBtn" class="btn-primary">
+                <span class="material-icons">open_in_new</span>
+                Acessar Portal
+            </button>
+            <button id="homeBtn" class="btn-secondary">
+                <span class="material-icons">home</span>
+                Voltar ao Início
+            </button>
+        </div>
+
+        <div class="success-section">
+            <div class="success-content">
+                <div class="success-icon-wrapper">
+                    <span class="material-icons success-icon">check_circle</span>
+                </div>
+                <div class="success-text">
+                    <h1>Check-in Realizado com Sucesso!</h1>
+                    <p class="success-message">Seu check-in foi registrado e você já pode acessar o portal para mais informações.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="confirmation-info">
+            <div class="info-card">
+                <div class="info-group">
+                    <h2>Informações do Check-in</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="material-icons">restaurant</span>
+                            <div>
+                                <label>Cozinha</label>
+                                <p id="kitchenName">Cozinha Central - Unidade Paulista</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="material-icons">location_on</span>
+                            <div>
+                                <label>Endereço</label>
+                                <p id="kitchenAddress">Av. Paulista, 1000 - Bela Vista, São Paulo - SP</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="material-icons">event</span>
+                            <div>
+                                <label>Data</label>
+                                <p id="checkinDate">15 de Março de 2024</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="material-icons">schedule</span>
+                            <div>
+                                <label>Horário</label>
+                                <p id="checkinTime">14:30</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="material-icons">people</span>
+                            <div>
+                                <label>Capacidade</label>
+                                <p id="kitchenCapacity">50 pessoas</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="material-icons">tag</span>
+                            <div>
+                                <label>ID do Check-in</label>
+                                <p id="checkinId">CHK-2024-03-15-001</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/screens/final/final.js"></script>
+</body>
+</html> 

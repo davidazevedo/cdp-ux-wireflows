@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atendimento Assistido - PE Sem Fome</title>
+    <link rel="stylesheet" href="src/screens/help/help.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="help-container">
+        <div class="help-header">
+            <h1>Atendimento Assistido</h1>
+            <p class="subtitle">Escolha como deseja se identificar para ajudar</p>
+        </div>
+
+        <div class="help-content">
+            <div class="identification-grid">
+                <div class="identification-card" id="govCard">
+                    <div class="card-icon">
+                        <span class="material-icons">verified_user</span>
+                    </div>
+                    <h3>Login .gov</h3>
+                    <p>Identifique-se usando sua conta gov.br</p>
+                    <div class="card-footer">
+                        <span class="material-icons">arrow_forward</span>
+                    </div>
+                </div>
+
+                <div class="identification-card" id="manualCard">
+                    <div class="card-icon">
+                        <span class="material-icons">edit_document</span>
+                    </div>
+                    <h3>Preenchimento Manual</h3>
+                    <p>Informe seus dados e os da pessoa assistida</p>
+                    <div class="card-footer">
+                        <span class="material-icons">arrow_forward</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-info">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <span class="material-icons">info</span>
+                    </div>
+                    <h3>Como funciona?</h3>
+                    <p>Após a identificação, você poderá ajudar pessoas que precisam de assistência para realizar o check-in nas cozinhas industriais.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="help-footer">
+            <button id="backBtn" class="btn-secondary">
+                <span class="material-icons">arrow_back</span>
+                Voltar
+            </button>
+        </div>
+    </div>
+
+    <script src="src/screens/help/help.js"></script>
+</body>
+</html> 

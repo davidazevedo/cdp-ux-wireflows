@@ -1,0 +1,316 @@
+:root {
+    --primary-color: #2196F3;
+    --primary-light: #E3F2FD;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --background: #FFFFFF;
+    --surface: #F5F5F5;
+    --error: #F44336;
+    --success: #4CAF50;
+    --border-radius: 8px;
+    --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.final-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--background);
+    padding: var(--spacing-lg);
+    gap: var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.btn-primary,
+.btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    flex: 1;
+    min-width: 200px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--background);
+}
+
+.btn-primary:hover {
+    background-color: #1976D2;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.btn-secondary {
+    background-color: var(--surface);
+    color: var(--text-primary);
+    border: 1px solid var(--primary-light);
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.btn-primary .material-icons,
+.btn-secondary .material-icons {
+    margin-right: var(--spacing-sm);
+    font-size: 20px;
+}
+
+.success-section {
+    background-color: var(--background);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--primary-light);
+}
+
+.success-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.success-icon-wrapper {
+    flex-shrink: 0;
+    background-color: #E8F5E9;
+    border-radius: 50%;
+    padding: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-icon {
+    color: var(--success);
+    font-size: 48px;
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.success-text {
+    flex: 1;
+}
+
+.success-text h1 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+}
+
+.success-message {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.confirmation-info {
+    margin-top: var(--spacing-lg);
+}
+
+.info-card {
+    background-color: var(--background);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--primary-light);
+}
+
+.info-group h2 {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-lg);
+    font-weight: 600;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background-color: var(--surface);
+    border-radius: var(--border-radius);
+    transition: all 0.2s ease;
+}
+
+.info-item:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.info-item .material-icons {
+    color: var(--primary-color);
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.info-item div {
+    flex: 1;
+}
+
+.info-item label {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.info-item p {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .final-container {
+        padding: var(--spacing-md);
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .success-section {
+        padding: var(--spacing-md);
+    }
+
+    .success-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .success-icon {
+        font-size: 40px;
+    }
+
+    .success-text h1 {
+        font-size: 1.25rem;
+    }
+
+    .success-message {
+        font-size: 0.875rem;
+    }
+
+    .info-card {
+        padding: var(--spacing-md);
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .info-group h2 {
+        font-size: 1.125rem;
+    }
+
+    .info-item {
+        padding: var(--spacing-sm);
+    }
+
+    .info-item .material-icons {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .success-section {
+        padding: var(--spacing-sm);
+    }
+
+    .success-icon {
+        font-size: 32px;
+    }
+
+    .success-text h1 {
+        font-size: 1.125rem;
+    }
+
+    .info-card {
+        padding: var(--spacing-sm);
+    }
+
+    .info-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .info-item .material-icons {
+        margin-bottom: var(--spacing-sm);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-primary,
+    .btn-secondary,
+    .info-item {
+        transition: none;
+    }
+
+    .success-icon {
+        animation: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .btn-primary,
+    .btn-secondary {
+        border: 2px solid currentColor;
+    }
+
+    .info-item {
+        border: 1px solid currentColor;
+    }
+} 

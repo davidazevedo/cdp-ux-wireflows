@@ -1,0 +1,269 @@
+.help-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--background);
+}
+
+.help-header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md) 0;
+}
+
+.help-header h1 {
+    color: var(--text-primary);
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 var(--spacing-sm) 0;
+    line-height: 1.2;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.help-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.identification-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.identification-card {
+    background: var(--surface);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--primary-light);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.identification-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: var(--primary-light);
+}
+
+.identification-card:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon {
+    background: var(--primary-color);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-md);
+}
+
+.card-icon .material-icons {
+    color: white;
+    font-size: 40px;
+}
+
+.identification-card h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.identification-card p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin: 0 0 var(--spacing-md) 0;
+    line-height: 1.5;
+}
+
+.card-footer {
+    margin-top: auto;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--primary-light);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-footer .material-icons {
+    color: var(--primary-color);
+    font-size: 24px;
+    transition: transform 0.2s ease;
+}
+
+.identification-card:hover .card-footer .material-icons {
+    transform: translateX(4px);
+}
+
+.help-info {
+    margin-top: var(--spacing-lg);
+}
+
+.info-card {
+    background: var(--surface);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    border: 1px solid var(--primary-light);
+}
+
+.info-icon {
+    background: var(--primary-light);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.info-icon .material-icons {
+    color: var(--primary-color);
+    font-size: 24px;
+}
+
+.info-card h3 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.info-card p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.help-footer {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--primary-light);
+    display: flex;
+    justify-content: center;
+}
+
+.btn-secondary {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: transparent;
+    border: 1px solid var(--text-secondary);
+    color: var(--text-secondary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-secondary .material-icons {
+    font-size: 1.25rem;
+}
+
+@media (max-width: 768px) {
+    .help-container {
+        padding: var(--spacing-md);
+    }
+
+    .help-header {
+        padding: var(--spacing-sm) 0;
+    }
+
+    .help-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .identification-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .identification-card {
+        padding: var(--spacing-md);
+    }
+
+    .card-icon {
+        width: 64px;
+        height: 64px;
+    }
+
+    .card-icon .material-icons {
+        font-size: 32px;
+    }
+
+    .info-card {
+        padding: var(--spacing-md);
+    }
+
+    .info-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .info-icon .material-icons {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .help-container {
+        padding: var(--spacing-sm);
+    }
+
+    .help-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .identification-card {
+        padding: var(--spacing-sm);
+    }
+
+    .card-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .card-icon .material-icons {
+        font-size: 28px;
+    }
+
+    .info-card {
+        padding: var(--spacing-sm);
+    }
+} 

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificação de CPF - CDP</title>
+    <link rel="stylesheet" href="src/screens/cpf/cpf.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="cpf-container">
+        <div class="cpf-header">
+            <h1>Verificação de CPF</h1>
+            <p class="subtitle">Digite seu CPF para continuar ou use o reconhecimento de voz</p>
+        </div>
+
+        <div class="cpf-content">
+            <div class="search-container">
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <span class="material-icons search-icon">search</span>
+                        <input type="text" id="cpfInput" class="cpf-input" placeholder="Digite seu CPF (000.000.000-00)" maxlength="14">
+                        <button id="voiceInputBtn" class="voice-input-btn" title="Entrada por Voz">
+                            <span class="material-icons">mic</span>
+                        </button>
+                    </div>
+                    <div class="validation-message" id="validationMessage"></div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="backBtn" class="btn btn-secondary">
+                        <span class="material-icons">arrow_back</span>
+                        Voltar
+                    </button>
+                    <button id="helpBtn" class="btn btn-secondary">
+                        <span class="material-icons">help_outline</span>
+                        Pedir Ajuda
+                    </button>
+                    <button id="continueBtn" class="btn btn-primary" disabled>
+                        <span class="material-icons">arrow_forward</span>
+                        Continuar
+                    </button>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <div class="info-card">
+                    <span class="material-icons">info</span>
+                    <div class="info-content">
+                        <h3>Por que precisamos do seu CPF?</h3>
+                        <p>O CPF é necessário para verificar sua elegibilidade para o programa e garantir que você receba o benefício correto.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="src/screens/cpf/cpf.js"></script>
+</body>
+</html> 

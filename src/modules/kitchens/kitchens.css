@@ -1,0 +1,103 @@
+.kitchens-module {
+    padding: var(--spacing-md);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.kitchens-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.kitchen-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease;
+}
+
+.kitchen-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.kitchen-card h3 {
+    margin: 0 0 var(--spacing-sm) 0;
+    color: var(--text-primary);
+    font-size: var(--font-size-lg);
+}
+
+.status {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+}
+
+.status.open {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.status.closed {
+    background-color: var(--error-color);
+    color: white;
+}
+
+.address,
+.schedule,
+.capacity {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.address i,
+.schedule i,
+.capacity i {
+    color: var(--primary-color);
+}
+
+.empty-state,
+.error-state {
+    text-align: center;
+    padding: var(--spacing-xl);
+    color: var(--text-secondary);
+}
+
+.empty-state i,
+.error-state i {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--primary-color);
+}
+
+@media (max-width: 480px) {
+    .kitchens-module {
+        padding: var(--spacing-sm);
+    }
+
+    .kitchens-list {
+        grid-template-columns: 1fr;
+    }
+
+    .kitchen-card {
+        padding: var(--spacing-sm);
+    }
+
+    .kitchen-card h3 {
+        font-size: var(--font-size-md);
+    }
+} 

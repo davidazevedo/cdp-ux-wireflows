@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados - CDP UX</title>
+    <link rel="stylesheet" href="/src/screens/result/result.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="result-container">
+        <div class="result-header">
+            <div class="header-content">
+                <div class="header-icon">
+                    <span class="material-icons">restaurant</span>
+                </div>
+                <div class="header-text">
+                    <h2>Cozinhas disponíveis</h2>
+                    <p>Encontramos as seguintes cozinhas próximas a você</p>
+                </div>
+            </div>
+            <div class="search-bar">
+                <span class="material-icons">search</span>
+                <input type="text" placeholder="Buscar cozinhas..." id="searchInput">
+            </div>
+        </div>
+
+        <div class="result-filters">
+            <button class="filter-tag active">
+                <span class="material-icons">place</span>
+                Mais próximas
+            </button>
+            <button class="filter-tag">
+                <span class="material-icons">star</span>
+                Melhor avaliadas
+            </button>
+            <button class="filter-tag">
+                <span class="material-icons">schedule</span>
+                Abertas agora
+            </button>
+        </div>
+
+        <div class="result-list" id="kitchensList">
+            <!-- As cozinhas serão inseridas aqui dinamicamente -->
+        </div>
+
+        <div class="result-actions">
+            <button id="backBtn" class="btn-secondary">
+                <span class="material-icons">arrow_back</span>
+                Voltar
+            </button>
+            <button id="filterBtn" class="btn-primary">
+                <span class="material-icons">filter_list</span>
+                Filtrar
+            </button>
+        </div>
+    </div>
+    <script src="/src/screens/result/result.js" type="module"></script>
+</body>
+</html> 

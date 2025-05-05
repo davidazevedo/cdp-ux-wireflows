@@ -1,0 +1,23 @@
+# Development stage
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install live-server globally
+RUN npm install -g live-server
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Expose port for live-server
+EXPOSE 3000
+
+# Start live-server with watch
+CMD ["live-server", "--port=3000", "--host=0.0.0.0", "--no-browser", "--entry-file=index.html"] 

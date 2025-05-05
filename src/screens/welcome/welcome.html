@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo - CDP</title>
+    <link rel="stylesheet" href="/src/screens/welcome/welcome.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="welcome-header">
+            <h1>Bem-vindo ao Sistema de Check-in</h1>
+            <p class="subtitle">Gerencie suas visitas às cozinhas industriais de forma simples e eficiente</p>
+        </div>
+
+        <div class="welcome-content">
+            <div class="navigation-grid">
+                <div class="nav-card" id="cpfCard">
+                    <div class="nav-icon">
+                        <span class="material-icons">badge</span>
+                    </div>
+                    <h3>Verificação de CPF</h3>
+                    <p>Inicie seu check-in verificando seu CPF</p>
+                </div>
+
+                <div class="nav-card" id="helpCard">
+                    <div class="nav-icon">
+                        <span class="material-icons">volunteer_activism</span>
+                    </div>
+                    <h3>Atendimento Assistido</h3>
+                    <p>Receba ajuda de outro cidadão para realizar seu check-in</p>
+                </div>
+
+                <div class="nav-card" id="serveCard">
+                    <div class="nav-icon">
+                        <span class="material-icons">social_services</span>
+                    </div>
+                    <h3>Atendimento Social</h3>
+                    <p>Agentes da secretaria social disponíveis para auxiliar</p>
+                </div>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-icons">location_on</span>
+                    </div>
+                    <h3>Localização Fácil</h3>
+                    <p>Encontre a cozinha mais próxima com nossa tecnologia de geolocalização</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-icons">schedule</span>
+                    </div>
+                    <h3>Check-in Rápido</h3>
+                    <p>Registre sua presença em segundos com nosso sistema simplificado</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-icons">analytics</span>
+                    </div>
+                    <h3>Gestão Eficiente</h3>
+                    <p>Acompanhe seu histórico de visitas e gerencie suas informações</p>
+                </div>
+            </div>
+
+            <div class="action-section">
+                <button id="startBtn" class="btn-primary">
+                    <span class="material-icons">play_arrow</span>
+                    Começar Agora
+                </button>
+                <button id="tutorialBtn" class="btn-secondary">
+                    <span class="material-icons">help_outline</span>
+                    Ver Tutorial
+                </button>
+            </div>
+        </div>
+
+        <div class="welcome-footer">
+            <p>Precisa de ajuda? <a href="#" id="helpLink">Fale conosco</a></p>
+        </div>
+    </div>
+
+    <script type="module" src="/src/screens/welcome/welcome.js"></script>
+</body>
+</html> 
