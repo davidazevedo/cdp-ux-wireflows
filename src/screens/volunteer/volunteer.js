@@ -275,6 +275,13 @@ export class VolunteerScreen {
             // Reset form when opening
             this.resetAssistedForm();
             
+            // Reset submit button state
+            if (this.submitAssistedBtn) {
+                this.submitAssistedBtn.disabled = false;
+                this.submitAssistedBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
+                this.submitAssistedBtn.style.backgroundColor = 'var(--primary-color)';
+            }
+            
             // Show modal
             this.assistedForm.style.display = 'flex';
             this.assistedForm.classList.add('active');
@@ -384,6 +391,20 @@ export class VolunteerScreen {
         const autoFillBtn = this.assistedForm.querySelector('.auto-fill-assisted');
         if (autoFillBtn) {
             autoFillBtn.remove();
+        }
+
+        // Reset error states
+        const errorMessages = this.assistedForm.querySelectorAll('.error-message');
+        errorMessages.forEach(msg => msg.remove());
+        
+        const invalidInputs = this.assistedForm.querySelectorAll('.invalid');
+        invalidInputs.forEach(input => input.classList.remove('invalid'));
+
+        // Reset submit button state
+        if (this.submitAssistedBtn) {
+            this.submitAssistedBtn.disabled = false;
+            this.submitAssistedBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
+            this.submitAssistedBtn.style.backgroundColor = 'var(--primary-color)';
         }
     }
 
@@ -1303,37 +1324,53 @@ export class VolunteerScreen {
         this.checkFormValidity();
     }
 
-    autoFillForm() {
+    autoFillForm(type = 'other') {
         try {
             // Dados fictícios para teste
             const fakeData = {
-                name: 'João da Silva Santos',
-                gender: 'male',
-                birthdate: '15/05/1985',
-                city: 'Recife',
-                address: 'Rua das Flores, 123 - Boa Viagem',
-                cpf: '123.456.789-00',
-                nis: '12345678901',
-                homeless: 'nao',
-                fillingFor: ['self'],
-                location: '-8.047562, -34.877002'
+                self: {
+                    name: 'João da Silva Santos',
+                    gender: 'male',
+                    birthdate: '15/05/1985',
+                    city: 'Recife',
+                    address: 'Rua das Flores, 123 - Boa Viagem',
+                    cpf: '123.456.789-00',
+                    nis: '12345678901',
+                    homeless: 'nao',
+                    fillingFor: ['self'],
+                    location: '-8.047562, -34.877002'
+                },
+                other: {
+                    name: 'Maria Oliveira',
+                    gender: 'female',
+                    birthdate: '20/08/1990',
+                    city: 'Recife',
+                    address: 'Av. Boa Viagem, 500 - Boa Viagem',
+                    cpf: '987.654.321-00',
+                    nis: '98765432109',
+                    homeless: 'nao',
+                    fillingFor: ['other'],
+                    location: '-8.047562, -34.877002'
+                }
             };
 
+            const data = fakeData[type] || fakeData.other;
+
             // Preencher campos do formulário
-            if (this.volunteerName) this.volunteerName.value = fakeData.name;
-            if (this.volunteerGender) this.volunteerGender.value = fakeData.gender;
-            if (this.volunteerBirthdate) this.volunteerBirthdate.value = fakeData.birthdate;
-            if (this.volunteerCity) this.volunteerCity.value = fakeData.city;
-            if (this.volunteerAddress) this.volunteerAddress.value = fakeData.address;
-            if (this.volunteerCpf) this.volunteerCpf.value = fakeData.cpf;
-            if (this.volunteerNis) this.volunteerNis.value = fakeData.nis;
-            if (this.volunteerLocation) this.volunteerLocation.value = fakeData.location;
+            if (this.volunteerName) this.volunteerName.value = data.name;
+            if (this.volunteerGender) this.volunteerGender.value = data.gender;
+            if (this.volunteerBirthdate) this.volunteerBirthdate.value = data.birthdate;
+            if (this.volunteerCity) this.volunteerCity.value = data.city;
+            if (this.volunteerAddress) this.volunteerAddress.value = data.address;
+            if (this.volunteerCpf) this.volunteerCpf.value = data.cpf;
+            if (this.volunteerNis) this.volunteerNis.value = data.nis;
+            if (this.volunteerLocation) this.volunteerLocation.value = data.location;
 
             // Selecionar opções de rádio e checkbox
-            const homelessRadio = document.querySelector(`input[name="homeless"][value="${fakeData.homeless}"]`);
+            const homelessRadio = document.querySelector(`input[name="homeless"][value="${data.homeless}"]`);
             if (homelessRadio) homelessRadio.checked = true;
 
-            fakeData.fillingFor.forEach(value => {
+            data.fillingFor.forEach(value => {
                 const fillingForCheckbox = document.querySelector(`input[name="filling_for"][value="${value}"]`);
                 if (fillingForCheckbox) fillingForCheckbox.checked = true;
             });
@@ -1467,7 +1504,6 @@ export class VolunteerScreen {
 
             // Update UI
             this.updateAssistedList();
-            this.hideAssistedForm();
             
             // Show success message
             this.submitAssistedBtn.innerHTML = '<span class="material-icons">check</span> Salvo com sucesso!';
@@ -1475,14 +1511,26 @@ export class VolunteerScreen {
 
             // Fecha o modal após 1 segundo
             setTimeout(() => {
-                this.closeAssistedModal();
+                this.hideAssistedForm();
                 this.updateAssistedList();
+                
+                // Reset submit button state
+                this.submitAssistedBtn.disabled = false;
+                this.submitAssistedBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
+                this.submitAssistedBtn.style.backgroundColor = 'var(--primary-color)';
             }, 1000);
 
         } catch (error) {
             console.error('Erro ao salvar dados do assistido:', error);
             this.submitAssistedBtn.innerHTML = '<span class="material-icons">error</span> Erro ao salvar';
             this.submitAssistedBtn.style.backgroundColor = 'var(--error-color)';
+
+            // Reset button after error
+            setTimeout(() => {
+                this.submitAssistedBtn.disabled = false;
+                this.submitAssistedBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
+                this.submitAssistedBtn.style.backgroundColor = 'var(--primary-color)';
+            }, 2000);
 
             if (typeof showMessage === 'function') {
                 showMessage('Erro ao salvar dados do assistido.', 'error');
@@ -1656,6 +1704,108 @@ export class VolunteerScreen {
                 }
             });
 
+            // Add auto-fill buttons event listeners
+            const autoFillSelfBtn = document.getElementById('auto-fill-self');
+            const autoFillOtherBtn = document.getElementById('auto-fill-other');
+
+            if (autoFillSelfBtn) {
+                autoFillSelfBtn.addEventListener('click', () => {
+                    autoFillSelfBtn.disabled = true;
+                    autoFillSelfBtn.innerHTML = '<span class="material-icons">hourglass_empty</span> Preenchendo...';
+                    this.autoFillForm('self');
+                    setTimeout(() => {
+                        autoFillSelfBtn.disabled = false;
+                        autoFillSelfBtn.innerHTML = '<span class="material-icons">person</span> Preencher para Mim';
+                    }, 1000);
+                });
+            }
+
+            if (autoFillOtherBtn) {
+                autoFillOtherBtn.addEventListener('click', () => {
+                    autoFillOtherBtn.disabled = true;
+                    autoFillOtherBtn.innerHTML = '<span class="material-icons">hourglass_empty</span> Preenchendo...';
+                    this.autoFillForm('other');
+                    setTimeout(() => {
+                        autoFillOtherBtn.disabled = false;
+                        autoFillOtherBtn.innerHTML = '<span class="material-icons">group</span> Preencher para Outra Pessoa';
+                    }, 1000);
+                });
+            }
+
+            // Add handler for filling_for checkbox
+            const fillingForCheckboxes = document.querySelectorAll('input[name="filling_for"]');
+            fillingForCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    if (e.target.value === 'self' && e.target.checked) {
+                        // Desmarca o outro checkbox se estiver marcado
+                        fillingForCheckboxes.forEach(otherCheckbox => {
+                            if (otherCheckbox !== e.target) {
+                                otherCheckbox.checked = false;
+                            }
+                        });
+                        
+                        // Valida os campos obrigatórios
+                        const requiredFields = ['volunteer-name', 'volunteer-city', 'volunteer-location'];
+                        let isValid = true;
+                        let firstInvalidField = null;
+
+                        requiredFields.forEach(fieldId => {
+                            const field = document.getElementById(fieldId);
+                            if (!field || !field.value.trim()) {
+                                isValid = false;
+                                if (!firstInvalidField) firstInvalidField = field;
+                                
+                                // Adiciona classe de erro
+                                const wrapper = field.closest('.input-wrapper');
+                                if (wrapper) {
+                                    wrapper.classList.add('invalid');
+                                    let errorMessage = wrapper.querySelector('.error-message');
+                                    if (!errorMessage) {
+                                        errorMessage = document.createElement('div');
+                                        errorMessage.className = 'error-message';
+                                        wrapper.appendChild(errorMessage);
+                                    }
+                                    errorMessage.textContent = 'Este campo é obrigatório';
+                                    errorMessage.classList.add('show');
+                                }
+                            }
+                        });
+
+                        if (!isValid) {
+                            // Desmarca o checkbox
+                            e.target.checked = false;
+                            
+                            // Mostra mensagem de erro
+                            showMessage('Por favor, preencha todos os campos obrigatórios antes de continuar.', 'error');
+                            
+                            // Rola até o primeiro campo inválido
+                            if (firstInvalidField) {
+                                firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                firstInvalidField.focus();
+                            }
+                            return;
+                        }
+                        
+                        // Salva os dados do voluntário como assistido
+                        const volunteerData = {
+                            name: this.volunteerName?.value || '',
+                            socialName: this.volunteerSocialName?.value || '',
+                            cpf: this.volunteerCpf?.value || '',
+                            nis: this.volunteerNis?.value || '',
+                            location: this.volunteerLocation?.value || '',
+                            photo: this.volunteerPhoto?.files[0] || null,
+                            timestamp: new Date().toISOString()
+                        };
+                        
+                        localStorage.setItem('currentAssisted', JSON.stringify(volunteerData));
+                        localStorage.setItem('userOrigin', 'volunteer');
+                        
+                        // Redireciona para a tela de resultado
+                        this.screenLoader.loadScreen('result');
+                    }
+                });
+            });
+
             // Add submit button event listener
             if (this.submitVolunteerBtn) {
                 this.submitVolunteerBtn.addEventListener('click', (e) => {
@@ -1739,20 +1889,6 @@ export class VolunteerScreen {
                 this.volunteerForm.addEventListener('submit', (e) => {
                     e.preventDefault();
                     this.handleVolunteerSubmit();
-                });
-            }
-
-            // Add auto-fill button event listener
-            const autoFillBtn = document.getElementById('auto-fill');
-            if (autoFillBtn) {
-                autoFillBtn.addEventListener('click', () => {
-                    autoFillBtn.disabled = true;
-                    autoFillBtn.innerHTML = '<span class="material-icons">hourglass_empty</span> Preenchendo...';
-                    this.autoFillForm();
-                    setTimeout(() => {
-                        autoFillBtn.disabled = false;
-                        autoFillBtn.innerHTML = '<span class="material-icons">auto_fix_high</span> Preencher Automaticamente';
-                    }, 1000);
                 });
             }
 

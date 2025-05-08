@@ -83,7 +83,8 @@ export class CpfScreen {
     updateButtonStates() {
         if (this.elements.continueBtn) {
             const cpf = CPFModule.clean(this.elements.cpfInput.value);
-            this.elements.continueBtn.disabled = !CPFModule.validate(cpf);
+            // Enable continue button if CPF is empty or valid
+            this.elements.continueBtn.disabled = cpf !== '' && !CPFModule.validate(cpf);
         }
     }
 
@@ -102,27 +103,33 @@ export class CpfScreen {
 
     async handleContinue() {
         const cpf = CPFModule.clean(this.elements.cpfInput.value);
-        if (CPFModule.validate(cpf)) {
-            try {
-                // Salva o CPF e marca a origem como 'cpf'
-                const currentAssisted = {
-                    cpf: cpf,
-                    timestamp: new Date().toISOString()
-                };
-                localStorage.setItem('currentAssisted', JSON.stringify(currentAssisted));
-                localStorage.setItem('userOrigin', 'cpf');
-                
+        
+        // If CPF is provided, validate it
+        if (cpf && !CPFModule.validate(cpf)) {
+            showMessage('CPF inválido!', 'error');
+            return;
+        }
+
+        try {
+            // Save CPF only if it was provided
+            const currentAssisted = {
+                cpf: cpf || null,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('currentAssisted', JSON.stringify(currentAssisted));
+            localStorage.setItem('userOrigin', 'cpf');
+            
+            if (cpf) {
                 showMessage('CPF válido!', 'success');
-                const success = await this.screenLoader.loadScreen('location');
-                if (!success) {
-                    showMessage('Erro ao carregar próxima tela', 'error');
-                }
-            } catch (error) {
-                console.error('Erro ao carregar próxima tela:', error);
+            }
+            
+            const success = await this.screenLoader.loadScreen('location');
+            if (!success) {
                 showMessage('Erro ao carregar próxima tela', 'error');
             }
-        } else {
-            showMessage('CPF inválido!', 'error');
+        } catch (error) {
+            console.error('Erro ao carregar próxima tela:', error);
+            showMessage('Erro ao carregar próxima tela', 'error');
         }
     }
 
