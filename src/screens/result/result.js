@@ -137,18 +137,19 @@ export class ResultScreen {
                     </div>
                 </div>
                 <div class="kitchen-actions">
-                    <button class="btn-share" data-id="${kitchen.id}" title="Compartilhar">
+                    <button class="btn btn-secondary btn-share" data-id="${kitchen.id}" title="Compartilhar">
                         <span class="material-icons">share</span>
                         Compartilhar
                     </button>
-                    <button class="btn-navigate" data-id="${kitchen.id}" title="Ir pelo mapa">
+                    <button class="btn btn-secondary btn-navigate" data-id="${kitchen.id}" title="Ir pelo mapa">
                         <span class="material-icons">navigation</span>
                         Ir pelo mapa
                     </button>
                     ${kitchen.status === 'aberta' ? `
-                        <button class="btn-checkin" data-id="${kitchen.id}">
+                        <button class="btn btn-secondary btn-checkin" data-id="${kitchen.id}">
                             <span class="material-icons">check_circle</span>
-                            Fazer Reserva
+                            Confirmar Presença
+                        <span class="checkin-status"></span>
                         </button>
                     ` : ''}
                 </div>

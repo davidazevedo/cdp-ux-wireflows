@@ -83,7 +83,7 @@ export class KitchensModule {
                     ${kitchen.status === 'aberta' ? `
                         <button class="md-button secondary" onclick="window.location.href='/checkin/${kitchen.id}'">
                             <span class="material-icons">check_circle</span>
-                            Fazer check-in
+                            Registrar presença
                         </button>
                     ` : ''}
                 </div>
