@@ -77,8 +77,12 @@ export class ConfirmationScreen {
             // Atualizar informações da cozinha
             this.kitchenName.textContent = selectedKitchen.name;
             this.kitchenAddress.textContent = selectedKitchen.address;
-            this.kitchenTime.textContent = selectedKitchen.time;
-            this.kitchenCapacity.textContent = selectedKitchen.capacity;
+            if (this.kitchenTime) {
+                this.kitchenTime.textContent = selectedKitchen.operatingHours || selectedKitchen.time || 'Horário não informado';
+            }
+            if (this.kitchenCapacity) {
+                this.kitchenCapacity.textContent = selectedKitchen.capacity || '';
+            }
 
             // Verificar origem do usuário
             const userOrigin = localStorage.getItem('userOrigin');
@@ -108,10 +112,30 @@ export class ConfirmationScreen {
                 throw new Error('Dados da pessoa atendida não encontrados');
             }
 
-            this.assistedName.textContent = currentAssisted.name || 'Não informado';
-            this.assistedCpf.textContent = currentAssisted.cpf || 'Não informado';
-            
-            // Mostrar situações se existirem
+            // Nome sensível
+            let displayName = '';
+            if (currentAssisted.name) {
+                const parts = currentAssisted.name.trim().split(' ');
+                displayName = parts[0];
+                if (parts.length > 1) {
+                    displayName += ' ' + parts[1][0] + '.';
+                }
+            } else {
+                displayName = 'Não informado';
+            }
+
+            // CPF sensível
+            let cpfMasked = '';
+            if (currentAssisted.cpf) {
+                cpfMasked = currentAssisted.cpf.substring(0, 3) + '.***.***-**';
+            } else {
+                cpfMasked = 'Não informado';
+            }
+
+            this.assistedName.textContent = displayName;
+            this.assistedCpf.textContent = cpfMasked;
+
+            // Situações
             if (currentAssisted.situations && currentAssisted.situations.length > 0) {
                 this.assistedSituations.innerHTML = currentAssisted.situations
                     .map(situation => `<span class="situation-tag">${situation}</span>`)

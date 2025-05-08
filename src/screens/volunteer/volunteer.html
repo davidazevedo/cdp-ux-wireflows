@@ -61,14 +61,17 @@
 
                     <div class="form-group">
                         <label for="volunteerGender">Gênero</label>
-                        <select id="volunteerGender" required>
-                            <option value="">Selecione</option>
-                            <option value="male">Masculino</option>
-                            <option value="female">Feminino</option>
-                            <option value="transgender">Transgênero</option>
-                            <option value="non_binary">Não Binário</option>
-                            <option value="other">Outro</option>
-                        </select>
+                        <div class="input-wrapper">
+                            <select id="volunteerGender" required>
+                                <option value="">Selecione</option>
+                                <option value="male">Masculino</option>
+                                <option value="female">Feminino</option>
+                                <option value="transgender">Transgênero</option>
+                                <option value="non_binary">Não Binário</option>
+                                <option value="other">Outro</option>
+                            </select>
+                            <span class="material-icons">expand_more</span>
+                        </div>
                     </div>
 
                     <div id="social-name-group" class="form-group">
@@ -78,7 +81,7 @@
                                 <span>Deseja informar um nome social?</span>
                             </label>
                         </div>
-                        <div class="input-wrapper">
+                        <div class="input-wrapper" id="social-name-group-input">
                             <input type="text" id="volunteer-social-name" placeholder="Nome Social">
                             <button class="voice-input-btn" title="Entrada por Voz">
                                 <span class="material-icons">mic</span>
@@ -224,8 +227,8 @@
         </main>
     </div>
 
-    <!-- Modal de Cadastro de Assistido -->
-    <div id="assisted-form" class="modal" role="dialog" aria-labelledby="assisted-form-title">
+      <!-- Modal de Cadastro de Assistido -->
+      <div id="assistedForm" class="modal" role="dialog" aria-labelledby="assisted-form-title">
         <div class="modal-content">
             <span class="close-modal" aria-label="Fechar">&times;</span>
             <div class="form-section">
@@ -375,7 +378,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal de Visualização de Foto -->
     <div id="photo-modal" class="modal" role="dialog" aria-labelledby="photo-modal-title">
         <div class="modal-content">

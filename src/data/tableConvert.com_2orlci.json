@@ -1,0 +1,1452 @@
+[
+    {
+        "Nome": "Afetivas Marmita Saudável",
+        "Email": "afetivasmarmitasaudavel@gmail.com",
+        "Endereço": "Rua primeiro de janeiro,",
+        "Bairro": "Peixinhos",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "AMA - Associação Missão Adonay",
+        "Email": "caboama2@gmail.com",
+        "Endereço": "R PRESIDENTE TANCREDO NEVES",
+        "Bairro": "Cohab",
+        "Município": "Cabo de Santo Agostinho",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "AMIGOS SOLIDÁRIOS",
+        "Email": "pedrodojordao@gmail.com",
+        "Endereço": "Rua São Bento 765",
+        "Bairro": "Jardim Jordão",
+        "Município": "Jaboatão dos Guararapes",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Ampac - associação de Mãe, Pai e Adolescentes",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "Rua Catalão",
+        "Bairro": "Joana Bazerra",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Analy correia da silva",
+        "Email": "Analycorreias@gmail.com",
+        "Endereço": "Rua chaval",
+        "Bairro": "Santo amaro",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Anjos da Noite Zona Sul",
+        "Email": "anjosdanoite.anjosdanoite.ong@gmail.com",
+        "Endereço": "Rua jacy",
+        "Bairro": "Imbiribeira",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Associação centro de capacitação Paulo freire",
+        "Email": "leonardopereiralopes1998@gmail.com",
+        "Endereço": "assentamento normandia",
+        "Bairro": "zona rural",
+        "Município": "caruaru",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Associação comunitária Cristo Rei",
+        "Email": "edvaldo.accr@hotmail.com",
+        "Endereço": "Rua av Dr. Carlito pita Didier",
+        "Bairro": "pitanga",
+        "Município": "Pesqueira",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Associação comunitária de dois unidos e adjacências",
+        "Email": "associacaodoisunidos@gmail.com",
+        "Endereço": "Avenida Hildebrando de Vasconcelos n771",
+        "Bairro": "Dois unidos",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Associação das Mulheres de Salgueiro",
+        "Email": "amusasalgueiro@gmail.com",
+        "Endereço": "Rua Buenos Aires",
+        "Bairro": "Augusto Alencar Sampaio",
+        "Município": "Salgueiro",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "ASSOCIAÇÃO ESPERANÇA E AÇÃO",
+        "Email": "ivonemestrado@hotmail.com",
+        "Endereço": "RUA CANTORA CLARA NUNES",
+        "Bairro": "TORRE",
+        "Município": "RECIFE",
+        "Estado": "PE",
+        "Situação": "Não Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Associação Mães e Anjos Azuis",
+        "Email": "associacaomaeseanjosazuis@gmail.com",
+        "Endereço": "Rua Guarací",
+        "Bairro": "Caçote",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Campo do Onze - Mãe Arte",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "Rua Getúlio Vargas",
+        "Bairro": "Santo Amaro",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Casa Cores",
+        "Email": "coresmovimentolgbt@gmail.com",
+        "Endereço": "Rua Manoel Borba",
+        "Bairro": "Centro",
+        "Município": "Petrolina",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Casa de Meu Pai",
+        "Email": "casademeupaiong@gmail.com",
+        "Endereço": "Rua Ana Rita",
+        "Bairro": "Rio Doce",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Casa do Pão da Arquidiocese de Olinda e Recife",
+        "Email": "diretoria.casadopao@aor.org.br",
+        "Endereço": "Rua do Imperador Pedro II",
+        "Bairro": "Santo Antônio",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Casa Vincular",
+        "Email": "casa@projetovincular.com.br",
+        "Endereço": "Amaro Bezerra",
+        "Bairro": "Derby",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Centro africano Nossa senhora da conceição",
+        "Email": "Aryanept@hotmail.com",
+        "Endereço": "Rua Dos Carneiros",
+        "Bairro": "Caixa d água",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "CENTRO DE CONVIVÊNCIA SOCIAL DO RECIFE",
+        "Email": "josefabiano12987@gmail.com",
+        "Endereço": "Avenida Gedalha",
+        "Bairro": "Fundão",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Centro dos Jovens Unidos na Militância Comunitária de Paulista - CEJUMIC",
+        "Email": "cejumic2021@gmail.com",
+        "Endereço": "Rua Itinga",
+        "Bairro": "Engenho Maranguape",
+        "Município": "Paulista",
+        "Estado": "PE",
+        "Situação": "Pendência",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Centro Geriátrico Vicente Pinzon",
+        "Email": "centrogeriatricovicentepinzon@gmail.com",
+        "Endereço": "rua jose lins teles",
+        "Bairro": "vila doutor manoel clementino",
+        "Município": "cabo",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Ciranda contra a fome",
+        "Email": "MARILIAARRUDA@OUTLOOK.COM",
+        "Endereço": "Avenida Conselheiro Rosa e Silva",
+        "Bairro": "Graças",
+        "Município": "RECIFE",
+        "Estado": "PE",
+        "Situação": "Não Habilitada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Comunidade Acolhedora Terapêutica São Miguel Arcanjo",
+        "Email": "catsmape@gmail.com",
+        "Endereço": "Av. Vicente Alves Ferreira, nº 221",
+        "Bairro": "Fazenda Nova",
+        "Município": "Brejo da Madre de Deus",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "ConduzAmor",
+        "Email": "conduzamor.pe@gmail.com",
+        "Endereço": "Rua Copacabana 20 Jardim Fragoso Olinda",
+        "Bairro": "Jardim Fragoso Olinda",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Conzinha dos pequenos produtores da arara E adjacências",
+        "Email": "Ysaacnunes.25@gmail.com",
+        "Endereço": "Fazenda arara",
+        "Bairro": "Zona rural",
+        "Município": "Serra talhada",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha Afetiva",
+        "Email": "spsolinda@gmail.com",
+        "Endereço": "Rua Herculano de Holanda Cunha",
+        "Bairro": "Ouro Preto",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha agrofamiliar delícia da Creuza",
+        "Email": "windysonmoura@gmail.com",
+        "Endereço": "Sítio panorama",
+        "Bairro": "Zona rural",
+        "Município": "Timbaúba",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha AMI Bezerros",
+        "Email": "br542@aenpaz.org.br",
+        "Endereço": "Rua Santo Antônio",
+        "Bairro": "Asa Branca",
+        "Município": "Bezerros",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha AMI Catende",
+        "Email": "br549@aenpaz.org.br",
+        "Endereço": "Rua Gasparino da Mata",
+        "Bairro": "Jardim Diamante",
+        "Município": "Catende",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha AMI Janga",
+        "Email": "br214@aenpaz.org.br",
+        "Endereço": "Rua Pastor Issac Martins Rodrigues",
+        "Bairro": "Janga",
+        "Município": "Paulista",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Cozinha AMI Planalto",
+        "Email": "Adriana.patricia@aenpaz.org.br",
+        "Endereço": "Rua Sanharó",
+        "Bairro": "Planalto",
+        "Município": "Abreu e Lima",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha AMI Queimadas de Jurema",
+        "Email": "br579@aenpaz.org.br",
+        "Endereço": "Rua Ana Rosa Barros",
+        "Bairro": "Queimadas",
+        "Município": "Jurema",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha Anjos da Noite",
+        "Email": "anjoconceicaorodrigues@hotmail.com",
+        "Endereço": "Rua da Borboleta, 23",
+        "Bairro": "Jardim Fragoso",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha aqui tem amor",
+        "Email": "tiagoferreira5040@icloud.com",
+        "Endereço": "Rua da Paz",
+        "Bairro": "Barra de Jangada",
+        "Município": "Jaboatão dos Guararapes",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "COZINHA BATISTA KARIS",
+        "Email": "associacaokaris@hotmail.com",
+        "Endereço": "Rua Anita Mendes da Silva",
+        "Bairro": "COHAB",
+        "Município": "Cabo de Santo Agostinho",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "cozinha comunitária 15 de Novembro",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "avenida palmares",
+        "Bairro": "arthu lundgren",
+        "Município": "Paulista",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha comunitária da associação do litoral norte do tururu",
+        "Email": "Admamigosdolitoral@gmail.com",
+        "Endereço": "Avenida Procurador Pedro Jorge",
+        "Bairro": "Janga",
+        "Município": "Paulista",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha comunitária Helena Alves de Andrade",
+        "Email": "",
+        "Endereço": "Rua João Inojosa",
+        "Bairro": "Centro",
+        "Município": "São Vicente Férrer",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha Comunitária Indígena Fulni-ô",
+        "Email": "yaradecruzfulnio@gmail.com",
+        "Endereço": "Aldeia Indígena Fulni-ô, s/n, Ponto de Cultura Fulni-ô",
+        "Bairro": "Aldeia Indígena Fulni-ô",
+        "Município": "Águas Belas",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Cozinha Comunitária Instituto Cristovam",
+        "Email": "instituicaocristovam@gmail.com",
+        "Endereço": "Rua Amora",
+        "Bairro": "Sitio Canoas - Nossa Senhora do Ó",
+        "Município": "Ipojuca",
+        "Estado": "PE",
+        "Situação": "Não Habilitada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Cozinha comunitária Macassar",
+        "Email": "ongmacassar@gmail.com",
+        "Endereço": "Avenida Mário Melo",
+        "Bairro": "Monte",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha Comunitária Maria José Lins",
+        "Email": "ggeisiferraz2@autlook.com",
+        "Endereço": "R. Projetada, 55 - Lot Soco, Ipojuca",
+        "Bairro": "R. Projetada, 55 - Lot Soco, Ipojuca",
+        "Município": "Ipojuca",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha Comunitária Maria José Lins",
+        "Email": "Ggeisiferraz2@autlook.com",
+        "Endereço": "Rua Pantanal dois porto de galinhas",
+        "Bairro": "Salinas",
+        "Município": "Ipojuca",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha Comunitária Maria José Lins",
+        "Email": "ggeisiferraz2@autlook.com",
+        "Endereço": "Rua do Pantanal dois porto de galinhas",
+        "Bairro": "R. Projetada, 55 - Lot Soco, Ipojuca - PE,",
+        "Município": "Ipojuca",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha Comunitária Quilombola Rios dos Manguezais",
+        "Email": "cozinhacomunitariadosmangue@gmail.com",
+        "Endereço": "Granja Boa Vista PovoadoDemanda",
+        "Bairro": "Engenho Siqueira",
+        "Município": "Rio Formoso",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Cozinha da Casa Samaritanos",
+        "Email": "gruposamaritanosrecife@gmail.com",
+        "Endereço": "Rua Álvares de Azevedo",
+        "Bairro": "Santo Amaro",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha da Turma do Flau",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "Rua espadarte",
+        "Bairro": "Brasília Teimosa",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha de Ismael Felipe",
+        "Email": "mcp.pernambuco@gmail.com",
+        "Endereço": "assentamento ismael felipe",
+        "Bairro": "Zona rural",
+        "Município": "Tracunhaém",
+        "Estado": "PE",
+        "Situação": "Não Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "COZINHA DO ABRIGO CRISTO REDENTOR",
+        "Email": "gerencia@abrigocristoredentorpe.com.br",
+        "Endereço": "Av. Gov. Agamenon Magalhães",
+        "Bairro": "Curado",
+        "Município": "Jaboatão dos Guararapes",
+        "Estado": "PE",
+        "Situação": "Não Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha do Coletivo Unificados Pop Rua",
+        "Email": "unificadospsr2020@gmail.com",
+        "Endereço": "Rua Major Codeceira, 74",
+        "Bairro": "Santo Amaro",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha do conselho de mães",
+        "Email": "marcioangelica19@gmail.com",
+        "Endereço": "Rua Madrid 241",
+        "Bairro": "Imbiribeira",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha do ilê axé obá omim sessú",
+        "Email": "obajanacilececa@gmail.com",
+        "Endereço": "Rua da Glória 266",
+        "Bairro": "Águas compridas",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha do Pina",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "Avenida Encanta Moça",
+        "Bairro": "Pina",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha Leão de Judá",
+        "Email": "cleonicemaria443@gmail.com",
+        "Endereço": "Rua alto 13 de Maio",
+        "Bairro": "Vasco da Gama",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha Maria da Barra",
+        "Email": "cozinhamariadabarra@gmail.com",
+        "Endereço": "Rua Manoel  Bione de Araujo",
+        "Bairro": "Vera Cruz",
+        "Município": "Camaragibe",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha missionária",
+        "Email": "missoessandro@gmail.com",
+        "Endereço": "Rua Dez",
+        "Bairro": "Curado",
+        "Município": "Jaboatão dos Guararapes",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha popular solidária assentamento mata escura",
+        "Email": "santomst603@gmail.com",
+        "Endereço": "Assentamento Mata escura",
+        "Bairro": "Zona rural",
+        "Município": "Águas Belas",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "cozinha popular solidária comunidade V8",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "Rua da Boa Hora",
+        "Bairro": "Varadouro",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha Popular Solidária do Alto do Refúgio",
+        "Email": "lenicem.maos.pe@gmail.com",
+        "Endereço": "Rua Senador Oscar Passos",
+        "Bairro": "Nova Descoberta/Alto do Refúgio",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha popular solidária fé e esperança",
+        "Email": "paulianapatriciadearaujorodrig@gmail.com",
+        "Endereço": "Rua do Riachuelo",
+        "Bairro": "Alberto Maia",
+        "Município": "Camaragibe",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha Popular Solidária Frei Beda",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "Rua Brazópolis",
+        "Bairro": "Brasília Teimosa",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha Popular Solidária Irmã Dorothy",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "Rua Josué Pereira de Oliveira",
+        "Bairro": "Santa Tereza (loteamento)",
+        "Município": "Camaragibe",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha Popular Solidaria JCO",
+        "Email": "leonardopereiralopes1998@gmail.com",
+        "Endereço": "rua americo luiz da silva",
+        "Bairro": "jose carlos de oliveira",
+        "Município": "caruaru",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "cozinha popular solidária Luiz Lorenzon",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "Rua  Poeta Vinicius de Morais",
+        "Bairro": "Ouro Preto",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha popular solidária na Tabajara Anastácia Livre",
+        "Email": "otibaoficial@gmail.com",
+        "Endereço": "Travessa Potiguar",
+        "Bairro": "Cidade Tabajara",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Cozinha Popular Solidária Odete de Oxóssi",
+        "Email": "m.lauramouranobre@gmail.com",
+        "Endereço": "Rua Sodrelândia, 159, Linha do Tiro",
+        "Bairro": "Linha do Tiro",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha Popular Solidária Tiazinha",
+        "Email": "institutotiazinha@gmail.com",
+        "Endereço": "rua 05",
+        "Bairro": "Rio Doce",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha Popular Solídária União Vila da Paz",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "Rua sessenta e quatro, 319-D, Maranguape 2, Paulista.",
+        "Bairro": "Maranguape 2",
+        "Município": "Paulista",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "cozinha popular solidária  Vale  da Paz",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "Rua das palmeiras",
+        "Bairro": "Parque do Janga",
+        "Município": "Paulista",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha popular solidária Vila dos Milagres",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "Rua cantor Jessé",
+        "Bairro": "Barro",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "cozinha popula solidaria armazém do campo",
+        "Email": "fabiolasantosamaro25@gmeil.com",
+        "Endereço": "AVENIDA MARTINS DE BARROS",
+        "Bairro": "SANTO ANTONIO",
+        "Município": "RECIFE",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha Prática",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "rua Campos Tabaiares",
+        "Bairro": "Ilha do Retiro",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Não Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha Prato cheio",
+        "Email": "sansilvaheroito@gmail.com",
+        "Endereço": "Rua Motorista Antônio Paulino de Lima",
+        "Bairro": "Iputinga",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha Semeando Amor",
+        "Email": "semeandoamor2023@gmail.com",
+        "Endereço": "Rua São Geraldo",
+        "Bairro": "Zumbi do Pacheco",
+        "Município": "Jaboatão dos Guararapes",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "COZINHA SOCIAL TABATINGA",
+        "Email": "institutosaojorge@gmail.com",
+        "Endereço": "Rua Aprígio Alves",
+        "Bairro": "Tabatinga",
+        "Município": "Camarigibe",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Cozinha Solidária Coque Connecta",
+        "Email": "coqueconnecta@gmail.com",
+        "Endereço": "Av. Central, 1839",
+        "Bairro": "São José",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Não Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha solidária CTAM",
+        "Email": "projetoctam@gmail.com",
+        "Endereço": "Rua Ligia Gomes",
+        "Bairro": "Ouro Preto",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha solidária da Lagoinha",
+        "Email": "santosangelica3986@gmail.com",
+        "Endereço": "Sítio lagoinha",
+        "Bairro": "Zona rural",
+        "Município": "Iati",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha Solidária da Vila Santa Luzia",
+        "Email": "correiaedilene6@gmail.com",
+        "Endereço": "Rua Eliéser Olímpio de Moura",
+        "Bairro": "Torre",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha Solidaria do Maracatu Nação de Oxalá",
+        "Email": "rededecozinhas.maos.pe@gmail.com",
+        "Endereço": "Av Rio Capibaribe",
+        "Bairro": "Sao José",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "COZINHA SOLIDÁRIA DOM HÉLDER CÂMARA",
+        "Email": "redemulherpedra@gmail.com",
+        "Endereço": "RUA JORGE ALBUQUERQUE NEIVA",
+        "Bairro": "CENTRO",
+        "Município": "Pedra",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "COZINHA SOLIDÁRIA DO POVO",
+        "Email": "contato@bombeirocivilvoluntario.org",
+        "Endereço": "RUA CARNEIRO DE MARIZ",
+        "Bairro": "ENGENHO DO MEIO",
+        "Município": "RECIFE",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Cozinha Solidária do Ternura",
+        "Email": "projeto.ternura.contato@gmail.com",
+        "Endereço": "Rua Córrego da Bica",
+        "Bairro": "Passarinho",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Cozinha Solidária Espaço Verde",
+        "Email": "mcp.pernambuco@gmail.com",
+        "Endereço": "Rua João de Deus",
+        "Bairro": "Prazeres",
+        "Município": "Jaboatão dos Guararapes",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha Solidaria Filhos da Camboriu",
+        "Email": "jeremiasdir@gmail.com",
+        "Endereço": "Rua Camboriu",
+        "Bairro": "Vasco da Gama",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha solidária - Igreja Batista da Cohab / Karis",
+        "Email": "associacaokaris@hotmail.com",
+        "Endereço": "RUA ANITA MENDES DA SILVA",
+        "Bairro": "Cohab",
+        "Município": "CABO DE SANTO AGOSTINHO",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "COZINHA SOLIDÁRIA ILÊ AXÉ KIAMBÁ OJU OYA",
+        "Email": "kiambaflavio@hotmail.com",
+        "Endereço": "RUA DJALMA SANTOS",
+        "Bairro": "JOSÉ CARLOS DE OLIVEIRA",
+        "Município": "CARUARU",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "COZINHA SOLIDÁRIA LAÇOS DE AMOR",
+        "Email": "projetovidaverde01@gmail.com",
+        "Endereço": "RUA PADRE TENORIO",
+        "Bairro": "QUATRO CANTOS",
+        "Município": "ILHA  DE ITAMARACÁ",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha Solidária Mãe Nida",
+        "Email": "egbebabarogbo@gmail.com",
+        "Endereço": "Rua Maria de Lourdes da Silva",
+        "Bairro": "Sancho",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha Solidária Margarida Alves",
+        "Email": "amspetrolina@gmail.com",
+        "Endereço": "Rua Antônio Pereira de Paiva",
+        "Bairro": "João de Deus",
+        "Município": "PETROLINA",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha Solidária MCP Afogados",
+        "Email": "mcp.pernambuco@gmail.com",
+        "Endereço": "Rua conjunto Habitacional Miguel Arrais de Alencar",
+        "Bairro": "centro",
+        "Município": "Afogados da Ingazeira",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha Solidária MCP Cordeiro",
+        "Email": "mcp.pernambuco@gmail.com",
+        "Endereço": "Rua professor Evaldo Altino",
+        "Bairro": "Cordeiro",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha Solidária Popular Vila Manchete",
+        "Email": "rocicleidepinheiro157@gmail.mail.com",
+        "Endereço": "Rua ALBERT SABIN, 15 - Ouro Preto - Olinda",
+        "Bairro": "Ouro Preto",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Cozinha Solidária Quintal Agroecologico",
+        "Email": "mcp.pernambuco@gmail.com",
+        "Endereço": "rua da mata",
+        "Bairro": "Dois irmãos",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Não Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha Solidaria Sopão da Vida",
+        "Email": "sopaodavidarecife@gmail.com",
+        "Endereço": "Rua do Bambu",
+        "Bairro": "Várzea",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha solidária Vila Marcela",
+        "Email": "graziela.moura.pinto@gmail.com",
+        "Endereço": "Rua 14",
+        "Bairro": "Vila Marcela",
+        "Município": "PETROLINA",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "COZINHA SOLIDIÁRIA CANAL DE BENÇÃO",
+        "Email": "dowglasdejesus2013jc@gmail.com",
+        "Endereço": "Rua Odon Franco de Souza",
+        "Bairro": "Bairro Novo do Carmelo",
+        "Município": "Camaragibe",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Cozinha TiaZinha",
+        "Email": "institutotiazinha@gmail.com",
+        "Endereço": "Rua Cinco, Trav. São Cosme e Damião",
+        "Bairro": "Rio Doce",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Não Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cozinha uma gota de esperança",
+        "Email": "umagtesperanca@gmail.com",
+        "Endereço": "Rua bosque,",
+        "Bairro": "Mirueira",
+        "Município": "Paulista",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Cuzinha solidária de combate a fome",
+        "Email": "marcoantoniod583@gmail.com",
+        "Endereço": "Rua procurador Pedro Jorge",
+        "Bairro": "Janga",
+        "Município": "Paulista",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Danado de bom",
+        "Email": "JOSEADRIANOzoliveira@hotmail.com",
+        "Endereço": "Rua da Paz",
+        "Bairro": "Boa Vista",
+        "Município": "Gravatá",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Dona Ciça",
+        "Email": "Silvanetep25@gmail.com",
+        "Endereço": "Rua Martin Luther King",
+        "Bairro": "Coronel Siqueira Campos Sucupira",
+        "Município": "Arcoverde",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "EDVALDO MORAES GOMES",
+        "Email": "edvaldo.accr@hotmail.com",
+        "Endereço": "av joaquim nabuco, 327",
+        "Bairro": "PITANGA",
+        "Município": "pesqueira",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Fitness da Periferia",
+        "Email": "rozangelasilva05@gmail.com",
+        "Endereço": "Rua mariano Teixeira",
+        "Bairro": "Peixinhos",
+        "Município": "OLINDA",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Gledson Silva",
+        "Email": "gjsillva@gamil.com",
+        "Endereço": "Rua Severina Paraiso da Silva",
+        "Bairro": "São Benedito",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Graziela Ferreira da Silva Pinto",
+        "Email": "graziela.fpc@hotmail.com",
+        "Endereço": "Rua 14",
+        "Bairro": "Vila Marcela",
+        "Município": "Petrolina",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "grupo de ação social das crianças e adolescentes carentes.",
+        "Email": "",
+        "Endereço": "RUA CARPINA ALTO DO SOL NASCENTE OLINDA",
+        "Bairro": "ALTO DO SOL NASCENTE",
+        "Município": "OLINDA",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "GRUPO ESPIRITA ESPERANCA E RENOVACAO",
+        "Email": "ciceromunir@gmail.com",
+        "Endereço": "Rua Antônio Tomé de Souza",
+        "Bairro": "São Cristóvão",
+        "Município": "Serra Talhada",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Grupo social Cultural Ilumine essa ideia",
+        "Email": "patricialms.andre@gmail.com",
+        "Endereço": "Rua marcelon de castro Lira",
+        "Bairro": "Campo grande",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Horta Cafesopolis resistência",
+        "Email": "anapaula231985@gmail.com",
+        "Endereço": "Rua Desembargador Agenor Ferreira de Lima",
+        "Bairro": "Imbiribeira",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Igreja Evangélica Batista do Cabo",
+        "Email": "iebcacolhedora@hotmail.com",
+        "Endereço": "Rua anita mendes da silva",
+        "Bairro": "vila da cohab",
+        "Município": "cabo",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Ilê axé ilu tapa",
+        "Email": "Madzarodrigues97@gmail.com",
+        "Endereço": "Rua austro Costa n222",
+        "Bairro": "Vila popular",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Não Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Instituto Rompendo em fé",
+        "Email": "Institutorompendoemfe21@gmail.com",
+        "Endereço": "Rua Brasitânia",
+        "Bairro": "Vasco da Gama",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Instituto Yaa",
+        "Email": "Instituto.yaaa@gmail.com",
+        "Endereço": "Rua Leandro Barreto",
+        "Bairro": "Jardim São Paulo",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Izaura Maria",
+        "Email": "ongizauramaria123@gmail.com",
+        "Endereço": "Rua Félix Barreto",
+        "Bairro": "Penedo",
+        "Município": "São Lourenço da Mata",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Jardim da Alegria",
+        "Email": "pastoriljardimdaalegria@gmail.com",
+        "Endereço": "Avenida Beberibe, 3530",
+        "Bairro": "porto da madeira",
+        "Município": "recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "JC SABOR SOLIDÁRIO",
+        "Email": "jesuscristodoacoes@gmail.com",
+        "Endereço": "Rua Artur Wanderley",
+        "Bairro": "Várzea",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Josefa Eloi Dos Santos",
+        "Email": "atendimentoadvocaciarsb@gmail.com",
+        "Endereço": "Avenida Doutor Francisco Correia",
+        "Bairro": "Centro",
+        "Município": "São Lourenço da Mata",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Leonardo silva",
+        "Email": "leonardopereiralopes1998@gmail.com",
+        "Endereço": "rua vassoural",
+        "Bairro": "vassoural",
+        "Município": "caruaru",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "MANOEL SANTOS",
+        "Email": "conzinhasolidria@gmail.com",
+        "Endereço": "ZONA RURAL",
+        "Bairro": "AREA RURAL",
+        "Município": "Serra Talhada",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Mão solidaria garanhuns",
+        "Email": "Thalesgama19@gmail.com",
+        "Endereço": "Rua Capitão Pedro Rodrigues s/n",
+        "Bairro": "Magano",
+        "Município": "Garanhuns",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Mercado Solidário",
+        "Email": "carlos.eduardo.limamonte@gmail.com",
+        "Endereço": "Rua Estudante Jeremias Bastos",
+        "Bairro": "Pina",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Ministério Cuidar",
+        "Email": "missaocuidar@gmail.com",
+        "Endereço": "Rua Joaquim Amaral Cardozo",
+        "Bairro": "Encruzilhada",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Ministerio Ser Igreja nas Ruas",
+        "Email": "Rosangelapaz2004@hotmail.com",
+        "Endereço": "Rua Israel Vieira Ferreira",
+        "Bairro": "Monte",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Missão Educar",
+        "Email": "ernandesvitorino17@gmail.com",
+        "Endereço": "Avenida Vereador Otacílio Azevedo",
+        "Bairro": "Brejo de Beberibe",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Mônica Gleite da Silva",
+        "Email": "grupomaislgbt@gmail.com",
+        "Endereço": "Tv Vera Cruz",
+        "Bairro": "Nossa Senhora Aparecida",
+        "Município": "Gravatá/PE",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Nasci pra Servir",
+        "Email": "denise_mgomes@hotmail.com",
+        "Endereço": "Rua Titanita",
+        "Bairro": "Fragoso",
+        "Município": "Olinda",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "ONG Mãos Amigas",
+        "Email": "grupo.maosamigas.pe@gmail.com",
+        "Endereço": "Rua Guedes Alcoforado",
+        "Bairro": "Jardim São Paulo",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "ONG Portal61",
+        "Email": "ongportal61@gmail.com",
+        "Endereço": "Avenida Marquês de Olinda",
+        "Bairro": "Recife",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Projeto Jaguar Social",
+        "Email": "edinaldajaguarcursos@gmail.com",
+        "Endereço": "Rua valdemar de Oliveira",
+        "Bairro": "Engenho Maranguape",
+        "Município": "Paulista",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Projeto Menino Crescer",
+        "Email": "Projetomeninocrescer@gmail.com",
+        "Endereço": "Rua padre teofilo towrs 1603 A",
+        "Bairro": "Afogados",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Quem tem fome tem presa",
+        "Email": "heltonsimplicio141285@gmail.com",
+        "Endereço": "Rua Amorinópolis",
+        "Bairro": "Nossa Senhora do Ó",
+        "Município": "Paulista",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "QUILOMBO PEDRA DO AMOLA",
+        "Email": "edileuzacris56@gmail.com",
+        "Endereço": "QUILOMBO PEDRA DO AMOLAR",
+        "Bairro": "ZONA RURAL",
+        "Município": "MIRANDIBA",
+        "Estado": "PE",
+        "Situação": "Não Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Renascer",
+        "Email": "assrenasceroficial@gmail.com",
+        "Endereço": "Quadra H",
+        "Bairro": "Vila holandesa",
+        "Município": "Moreno",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "RESTAURANTE PAPA FRANCISCO",
+        "Email": "adrianabragagnolo@uol.com.br",
+        "Endereço": "Rua Marques de Valença",
+        "Bairro": "Boa Viagem",
+        "Município": "RECIFE",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Restaurante Social Fênix",
+        "Email": "contato@fenixpe.org",
+        "Endereço": "RUA DOS COELHOS, 485",
+        "Bairro": "Coelhos",
+        "Município": "RECIFE",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Sabores de Todas",
+        "Email": "ongcemur@gmail.com",
+        "Endereço": "Rua Mathias José, 88",
+        "Bairro": "Centro",
+        "Município": "Lagoa do Carro",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Se alimente bem",
+        "Email": "grupodeapoiogapes@gmail.com",
+        "Endereço": "Rua Santa Clara",
+        "Bairro": "Mário Bezerra",
+        "Município": "Vitória de Santo Antão",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "Sempre Viva",
+        "Email": "semprevivasocial@gmail.com",
+        "Endereço": "Rua Compositor Raul Valença",
+        "Bairro": "Passarinho",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "Sítio Angico Grande",
+        "Email": "lucicleiapires56@gmail.com",
+        "Endereço": "Sítio Angico Grande",
+        "Bairro": "Zona rural",
+        "Município": "Serra Talhada",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": ""
+    },
+    {
+        "Nome": "SOPÃO AMIGOS DE PAULO FREIRE",
+        "Email": "CENDECSPAULOFREIRE@GMAIL.COM",
+        "Endereço": "RUA PULO, 314",
+        "Bairro": "MANASSU",
+        "Município": "Jaboatão dos Guararapes",
+        "Estado": "PE",
+        "Situação": "Habilitada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "Sopa solidaria",
+        "Email": "aldadasilvamelo217@gmail.com",
+        "Endereço": "av. assembleia de Deus 809",
+        "Bairro": "Capibaribe",
+        "Município": "São Lourenço da Mata",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    },
+    {
+        "Nome": "TERREIRO DE CANDOMBLE E JUREMA ILE ASE IYA AGBA IRA",
+        "Email": "ciceromunir@gmail.com",
+        "Endereço": "Rua Rio Branco,",
+        "Bairro": "BOM JESUS",
+        "Município": "SERRA TALHADA",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Não, a Cozinha encontra-se paralisada, sem atividade"
+    },
+    {
+        "Nome": "Transformar",
+        "Email": "instituto.transformar@outlook.com",
+        "Endereço": "Rua Dona Ana Aurora",
+        "Bairro": "Areias",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Sim, está funcionando normalmente"
+    },
+    {
+        "Nome": "União Campo do Vila",
+        "Email": "Dianalalu@gmail.com",
+        "Endereço": "Rua Sacadura Cabral",
+        "Bairro": "Espinheiro",
+        "Município": "Recife",
+        "Estado": "PE",
+        "Situação": "Mapeada",
+        "Em funcionamento?": "Está funcionando com carga horária reduzida"
+    }
+]

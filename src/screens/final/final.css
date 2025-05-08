@@ -313,4 +313,24 @@ body {
     .info-item {
         border: 1px solid currentColor;
     }
+}
+
+.btn-share, .btn-navigate {
+    background: #E3F2FD;
+    color: #2196F3;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-left: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-share:hover, .btn-navigate:hover {
+    background: #2196F3;
+    color: #fff;
+}
+.btn-share .material-icons, .btn-navigate .material-icons {
+    margin: 0;
 } 

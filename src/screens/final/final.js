@@ -37,19 +37,61 @@ export class FinalScreen {
     }
 
     loadCheckinData() {
-        const checkinData = JSON.parse(localStorage.getItem('checkinData'));
+        const selectedKitchen = JSON.parse(localStorage.getItem('selectedKitchen'));
         const currentAssisted = JSON.parse(localStorage.getItem('currentAssisted'));
         
-        if (checkinData && currentAssisted) {
-            this.elements.kitchenName.textContent = checkinData.kitchenName;
-            this.elements.kitchenAddress.textContent = checkinData.kitchenAddress;
+        if (selectedKitchen) {
+            this.elements.kitchenName.textContent = selectedKitchen.name || '';
+            this.elements.kitchenAddress.textContent = selectedKitchen.address || '';
             this.elements.checkinDate.textContent = this.formatDate(new Date());
-            this.elements.checkinTime.textContent = this.formatTime(new Date());
-            this.elements.kitchenCapacity.textContent = checkinData.kitchenCapacity;
+            this.elements.checkinTime.textContent = selectedKitchen.operatingHours || this.formatTime(new Date());
+            this.elements.kitchenCapacity.textContent = selectedKitchen.capacity || '';
             this.elements.checkinId.textContent = this.generateCheckinId();
-        } else {
-            showMessage('Dados do check-in não encontrados.', 'error');
-           // this.screenLoader.loadScreen('welcome');
+        }
+        if (currentAssisted) {
+            // Nome sensível
+            let displayName = '';
+            if (currentAssisted.name) {
+                const parts = currentAssisted.name.trim().split(' ');
+                displayName = parts[0];
+                if (parts.length > 1) {
+                    displayName += ' ' + parts[1][0] + '.';
+                }
+            } else {
+                displayName = 'Não informado';
+            }
+            // CPF sensível
+            let cpfMasked = '';
+            if (currentAssisted.cpf) {
+                cpfMasked = currentAssisted.cpf.substring(0, 3) + '.***.***-**';
+            } else {
+                cpfMasked = 'Não informado';
+            }
+            const assistedNameEl = document.getElementById('assistedName');
+            const assistedCpfEl = document.getElementById('assistedCpf');
+            if (assistedNameEl) assistedNameEl.textContent = displayName;
+            if (assistedCpfEl) assistedCpfEl.textContent = cpfMasked;
+        }
+        // Compartilhar
+        const shareBtn = document.getElementById('shareBtn');
+        if (shareBtn && selectedKitchen) {
+            shareBtn.onclick = () => {
+                const shareText = `Cozinha Comunitária: ${selectedKitchen.name}\nEndereço: ${selectedKitchen.address}`;
+                if (navigator.share) {
+                    navigator.share({ title: selectedKitchen.name, text: shareText });
+                } else {
+                    navigator.clipboard.writeText(shareText);
+                    showMessage('Endereço copiado para a área de transferência!', 'success');
+                }
+            };
+        }
+        // Navegar
+        const navigateBtn = document.getElementById('navigateBtn');
+        if (navigateBtn && selectedKitchen) {
+            navigateBtn.onclick = () => {
+                const query = encodeURIComponent(selectedKitchen.address);
+                window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+            };
         }
     }
 

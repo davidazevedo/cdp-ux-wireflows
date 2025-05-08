@@ -41,8 +41,14 @@
                             <span class="material-icons">restaurant</span>
                             <div>
                                 <label>Cozinha</label>
-                                <p id="kitchenName">Cozinha Central - Unidade Paulista</p>
+                                <p id="kitchenName"></p>
                             </div>
+                            <button class="btn-share" id="shareBtn" title="Compartilhar">
+                                <span class="material-icons">share</span>
+                            </button>
+                            <button class="btn-navigate" id="navigateBtn" title="Ir pelo mapa">
+                                <span class="material-icons">navigation</span>
+                            </button>
                         </div>
                         <div class="info-item">
                             <span class="material-icons">location_on</span>
@@ -65,7 +71,7 @@
                                 <p id="checkinTime">14:30</p>
                             </div>
                         </div>
-                        <div class="info-item">
+                        <div class="info-item" style="display: none;">
                             <span class="material-icons">people</span>
                             <div>
                                 <label>Capacidade</label>
@@ -77,6 +83,20 @@
                             <div>
                                 <label>ID do Check-in</label>
                                 <p id="checkinId">CHK-2024-03-15-001</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="material-icons">person</span>
+                            <div>
+                                <label>Pessoa Atendida</label>
+                                <p id="assistedName"></p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="material-icons">badge</span>
+                            <div>
+                                <label>CPF</label>
+                                <p id="assistedCpf"></p>
                             </div>
                         </div>
                     </div>

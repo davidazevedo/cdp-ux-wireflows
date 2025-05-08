@@ -68,43 +68,24 @@ export class ResultScreen {
     async loadKitchens() {
         try {
             this.showLoading();
-            
-            // Simula o carregamento das cozinhas (substitua por sua API real)
-            const kitchens = [
-                {
-                    id: 1,
-                    name: "Cozinha Comunitária Centro",
-                    address: "Rua Principal, 123 - Centro",
-                    distance: "0.5 km",
-                    status: "aberta",
-                    currentOccupancy: 15,
-                    capacity: 30,
-                    operatingHours: "08:00 - 22:00",
-                    rating: 4.5
-                },
-                {
-                    id: 2,
-                    name: "Cozinha Comunitária Vila Nova",
-                    address: "Av. Secundária, 456 - Vila Nova",
-                    distance: "1.2 km",
-                    status: "aberta",
-                    currentOccupancy: 20,
-                    capacity: 40,
-                    operatingHours: "07:00 - 21:00",
-                    rating: 4.2
-                },
-                {
-                    id: 3,
-                    name: "Cozinha Comunitária Jardim",
-                    address: "Rua das Flores, 789 - Jardim",
-                    distance: "2.0 km",
-                    status: "fechada",
-                    currentOccupancy: 0,
-                    capacity: 25,
-                    operatingHours: "09:00 - 20:00",
-                    rating: 4.0
-                }
+            // Carrega o arquivo JSON com as cozinhas
+            const response = await fetch('/src/data/tableConvert.com_2orlci.json');
+            const data = await response.json();
+            // Horários fake
+            const fakeHours = [
+                "08:00 - 17:00", "09:00 - 18:00", "07:30 - 16:30", "10:00 - 19:00", "08:30 - 17:30",
+                "09:30 - 18:30", "07:00 - 16:00", "10:30 - 19:30", "08:00 - 16:00", "09:00 - 17:00"
             ];
+            // Pega apenas as 10 primeiras cozinhas
+            const kitchens = data.slice(0, 10).map((item, idx) => ({
+                id: idx + 1,
+                name: item.Nome,
+                address: `${item.Endereço || ''} ${item.Bairro ? '- ' + item.Bairro : ''}, ${item.Município || ''} - ${item.Estado || ''}`.replace(/\s+/g, ' ').trim(),
+                status: (item['Situação'] && item['Situação'].toLowerCase().includes('habilitada')) ? 'aberta' : 'fechada',
+                operatingHours: fakeHours[idx % fakeHours.length],
+                situacao: item['Situação'] || '',
+                municipio: item['Município'] || '',
+            }));
 
             if (!kitchens || kitchens.length === 0) {
                 this.kitchensList.innerHTML = `
@@ -115,7 +96,6 @@ export class ResultScreen {
                 `;
                 return;
             }
-            
             this.kitchens = kitchens;
             this.renderKitchens(kitchens);
         } catch (error) {
@@ -133,7 +113,7 @@ export class ResultScreen {
                 <div class="kitchen-header">
                     <div class="header-left">
                         <h3 class="kitchen-name">${kitchen.name}</h3>
-                        <p class="kitchen-description">${kitchen.description || 'Cozinha especializada em pratos regionais'}</p>
+                        <p class="kitchen-description">${kitchen.situacao ? 'Situação: ' + kitchen.situacao : ''}</p>
                     </div>
                     <div class="header-right">
                         <div class="kitchen-status ${kitchen.status}">
@@ -145,39 +125,33 @@ export class ResultScreen {
                 <div class="kitchen-info">
                     <div class="info-row">
                         <div class="info-item">
-                            <span class="material-icons">place</span>
-                            <span class="distance">${kitchen.distance}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="material-icons">schedule</span>
-                            <span class="hours">${kitchen.operatingHours}</span>
-                        </div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-item">
                             <span class="material-icons">location_on</span>
                             <span class="address">${kitchen.address}</span>
                         </div>
                     </div>
                     <div class="info-row">
                         <div class="info-item">
-                            <span class="material-icons">people</span>
-                            <span class="capacity">${kitchen.currentOccupancy}/${kitchen.capacity} pessoas</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="material-icons">star</span>
-                            <span class="rating">${kitchen.rating}</span>
+                            <span class="material-icons">schedule</span>
+                            <span class="hours">${kitchen.operatingHours}</span>
                         </div>
                     </div>
                 </div>
-                ${kitchen.status === 'aberta' ? `
-                    <div class="kitchen-actions">
+                <div class="kitchen-actions">
+                    <button class="btn-share" data-id="${kitchen.id}" title="Compartilhar">
+                        <span class="material-icons">share</span>
+                        Compartilhar
+                    </button>
+                    <button class="btn-navigate" data-id="${kitchen.id}" title="Ir pelo mapa">
+                        <span class="material-icons">navigation</span>
+                        Ir pelo mapa
+                    </button>
+                    ${kitchen.status === 'aberta' ? `
                         <button class="btn-checkin" data-id="${kitchen.id}">
                             <span class="material-icons">check_circle</span>
                             Fazer Reserva
                         </button>
-                    </div>
-                ` : ''}
+                    ` : ''}
+                </div>
             </div>
         `).join('');
 
@@ -189,6 +163,31 @@ export class ResultScreen {
                 if (!e.target.closest('.btn-checkin')) {
                     this.handleKitchenClick(card.dataset.id);
                 }
+            });
+        });
+
+        // Compartilhar
+        this.kitchensList.querySelectorAll('.btn-share').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const kitchen = this.kitchens.find(k => k.id == button.dataset.id);
+                const shareText = `Cozinha Comunitária: ${kitchen.name}\nEndereço: ${kitchen.address}`;
+                if (navigator.share) {
+                    navigator.share({ title: kitchen.name, text: shareText });
+                } else {
+                    navigator.clipboard.writeText(shareText);
+                    showMessage('Endereço copiado para a área de transferência!', 'success');
+                }
+            });
+        });
+
+        // Navegar
+        this.kitchensList.querySelectorAll('.btn-navigate').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const kitchen = this.kitchens.find(k => k.id == button.dataset.id);
+                const query = encodeURIComponent(kitchen.address);
+                window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
             });
         });
 

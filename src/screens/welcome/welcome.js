@@ -9,21 +9,19 @@ export class WelcomeScreen {
 
     initializeElements() {
         console.log('Inicializando elementos...');
-        this.startBtn = document.getElementById('startBtn');
-        this.cpfCard = document.getElementById('cpfCard');
+        this.lunchCard = document.getElementById('lunchCard');
         this.helpCard = document.getElementById('helpCard');
         this.serveCard = document.getElementById('serveCard');
         this.helpLink = document.getElementById('helpLink');
         
         console.log('Elementos encontrados:', {
-            startBtn: this.startBtn,
-            cpfCard: this.cpfCard,
+            lunchCard: this.lunchCard,
             helpCard: this.helpCard,
             serveCard: this.serveCard,
             helpLink: this.helpLink
         });
         
-        if (this.startBtn && this.cpfCard && this.helpCard && this.serveCard && this.helpLink) {
+        if (this.lunchCard && this.helpCard && this.serveCard && this.helpLink) {
             this.initializeEventListeners();
         } else {
             console.error('Elementos não encontrados! Verifique se os IDs estão corretos no HTML.');
@@ -33,21 +31,15 @@ export class WelcomeScreen {
     initializeEventListeners() {
         console.log('Inicializando event listeners...');
         
-        // Evento para o botão Começar Agora
-        this.startBtn.addEventListener('click', () => {
-            console.log('Botão Começar Agora clicado!');
+        // Evento para o card de Almoçar Agora
+        this.lunchCard.addEventListener('click', () => {
+            console.log('Card de Almoçar Agora clicado!');
             this.handleNavigation('cpf');
         });
 
-        // Evento para o card de CPF
-        this.cpfCard.addEventListener('click', () => {
-            console.log('Card de CPF clicado!');
-            this.handleNavigation('cpf');
-        });
-
-        // Evento para o card de Atendimento Assistido
+        // Evento para o card de Ajudar Alguém
         this.helpCard.addEventListener('click', () => {
-            console.log('Card de Atendimento Assistido clicado!');
+            console.log('Card de Ajudar Alguém clicado!');
             this.handleNavigation('help');
         });
 
@@ -61,7 +53,7 @@ export class WelcomeScreen {
         this.helpLink.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('Link de ajuda clicado!');
-            this.handleNavigation('volunteer');
+            this.handleNavigation('help');
         });
     }
 

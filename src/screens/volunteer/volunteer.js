@@ -1,4 +1,5 @@
 import { ScreenLoader } from '../../utils/screenLoader.js';
+import { showMessage } from '../../utils/messages.js';
 
 // Variável global para controlar o carregamento da API
 let googleMapsLoading = false;
@@ -67,6 +68,7 @@ export class VolunteerScreen {
         // Make methods available globally
         window.navigateToKitchens = (index) => this.navigateToKitchens(index);
         window.removeAssisted = (index) => this.removeAssisted(index);
+        this.setupAssistedForm();
     }
 
     initialize() {
@@ -178,6 +180,7 @@ export class VolunteerScreen {
 
             // Add social name elements
             this.socialNameGroup = document.getElementById('social-name-group');
+            this.socialNameGroupInput = document.getElementById('social-name-group-input');
             this.socialNameCheckbox = document.getElementById('social-name-checkbox');
 
             // Add gender event listener
@@ -191,8 +194,8 @@ export class VolunteerScreen {
             }
 
             // Hide social name group initially
-            if (this.socialNameGroup) {
-                this.socialNameGroup.style.display = 'none';
+            if (this.socialNameGroupInput) {
+                this.socialNameGroupInput.style.display = 'none';
             }
 
             // Initialize modals
@@ -280,23 +283,77 @@ export class VolunteerScreen {
             if (this.assistedName) {
                 this.assistedName.focus();
             }
+
+            // Adiciona botão de auto-preenchimento
+            const modalHeader = this.assistedForm.querySelector('.form-section');
+            if (modalHeader) {
+                const autoFillBtn = document.createElement('button');
+                autoFillBtn.type = 'button';
+                autoFillBtn.className = 'btn-secondary auto-fill-assisted';
+                autoFillBtn.innerHTML = '<span class="material-icons">auto_fix_high</span> Preencher Automaticamente';
+                autoFillBtn.addEventListener('click', () => this.autoFillAssistedForm());
+                modalHeader.insertBefore(autoFillBtn, modalHeader.firstChild);
+            }
         } catch (error) {
             console.error('Erro ao mostrar formulário de assistido:', error);
         }
     }
 
-    hideAssistedForm() {
+    autoFillAssistedForm() {
         try {
-            if (!this.assistedForm) {
-                console.error('Modal de assistido não encontrado');
-                return;
+            // Dados fictícios para teste
+            const fakeData = {
+                name: 'Maria Oliveira Santos',
+                nickname: 'Mari',
+                cpf: '987.654.321-00',
+                nis: '98765432100',
+                phone: '(81) 98765-4321',
+                location: '-8.047562, -34.877002',
+                situations: ['idoso', 'doente']
+            };
+
+            // Preencher campos do formulário
+            if (this.assistedName) this.assistedName.value = fakeData.name;
+            if (this.assistedNickname) this.assistedNickname.value = fakeData.nickname;
+            if (this.assistedCpf) this.assistedCpf.value = fakeData.cpf;
+            if (this.assistedNis) this.assistedNis.value = fakeData.nis;
+            if (this.assistedPhone) this.assistedPhone.value = fakeData.phone;
+            if (this.assistedLocation) this.assistedLocation.value = fakeData.location;
+
+            // Selecionar situações de vulnerabilidade
+            fakeData.situations.forEach(situation => {
+                const checkbox = document.querySelector(`input[name="situation"][value="${situation}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+
+            // Simular upload de foto
+            if (this.assistedPhotoPreview) {
+                this.assistedPhotoPreview.style.backgroundImage = 'url("https://avatars.githubusercontent.com/u/984221?v=4&size=64")';
+                this.assistedPhotoPreview.classList.add('has-photo');
             }
 
-            this.assistedForm.style.display = 'none';
-            this.assistedForm.classList.remove('active');
-            this.resetAssistedForm();
+            // Disparar eventos de input para todos os campos preenchidos
+            const formInputs = document.querySelectorAll('#assisted-form input, #assisted-form select');
+            formInputs.forEach(input => {
+                if (input) {
+                    const inputEvent = new Event('input', { bubbles: true });
+                    input.dispatchEvent(inputEvent);
+                }
+            });
+
+            // Mostrar mensagem de sucesso
+            if (typeof showMessage === 'function') {
+                showMessage('Formulário preenchido automaticamente!', 'success');
+            } else {
+                alert('Formulário preenchido automaticamente!');
+            }
         } catch (error) {
-            console.error('Erro ao esconder formulário de assistido:', error);
+            console.error('Erro ao preencher formulário automaticamente:', error);
+            if (typeof showMessage === 'function') {
+                showMessage('Erro ao preencher formulário automaticamente.', 'error');
+            } else {
+                alert('Erro ao preencher formulário automaticamente.');
+            }
         }
     }
 
@@ -315,20 +372,44 @@ export class VolunteerScreen {
                 <span class="material-icons">add_a_photo</span>
                 <p>Adicionar foto</p>
             `;
+            this.assistedPhotoPreview.classList.remove('has-photo');
         }
 
         // Reset checkboxes
         document.querySelectorAll('.situation-checkbox input').forEach(checkbox => {
             checkbox.checked = false;
         });
+
+        // Remove botão de auto-preenchimento se existir
+        const autoFillBtn = this.assistedForm.querySelector('.auto-fill-assisted');
+        if (autoFillBtn) {
+            autoFillBtn.remove();
+        }
+    }
+
+    hideAssistedForm() {
+        try {
+            if (!this.assistedForm) {
+                console.error('Modal de assistido não encontrado');
+                return;
+            }
+
+            this.assistedForm.style.display = 'none';
+            this.assistedForm.classList.remove('active');
+            this.resetAssistedForm();
+        } catch (error) {
+            console.error('Erro ao esconder formulário de assistido:', error);
+        }
     }
 
     updateAssistedList() {
         const assistedList = document.getElementById('assisted-list');
-        const emptyListMessage = document.querySelector('.empty-list-message');
-        
-        if (!assistedList || !emptyListMessage) return;
+        if (!assistedList) {
+            console.error('Lista de assistidos não encontrada');
+            return;
+        }
 
+        // Get user data from localStorage
         const userData = JSON.parse(localStorage.getItem('userData') || '{}');
         const assistedListData = userData.assistedList || [];
 
@@ -342,39 +423,111 @@ export class VolunteerScreen {
             return;
         }
 
-        assistedList.innerHTML = assistedListData.map((assisted, index) => `
-            <div class="assisted-card">
-                <div class="assisted-photo">
-                    ${assisted.photo ? 
-                        `<img src="${URL.createObjectURL(assisted.photo)}" alt="Foto de ${assisted.name}">` :
-                        `<span class="material-icons">person</span>`
-                    }
-                </div>
-                <div class="assisted-info">
-                    <h3>${assisted.name}</h3>
-                    ${assisted.nickname ? `<p>Apelido: ${assisted.nickname}</p>` : ''}
-                    <p>CPF: ${assisted.cpf}</p>
-                    ${assisted.nis ? `<p>NIS: ${assisted.nis}</p>` : ''}
-                    <p>Telefone: ${assisted.phone}</p>
-                    <p>Localização: ${assisted.location}</p>
-                    <div class="situations">
-                        ${assisted.situations.map(situation => `
-                            <span class="situation-tag">${situation}</span>
-                        `).join('')}
+        assistedList.innerHTML = assistedListData.map((assisted, index) => {
+            // Nome reduzido ou apelido
+            let displayName = assisted.nickname && assisted.nickname.trim()
+                ? assisted.nickname
+                : this.getShortName(assisted.name);
+            // CPF mascarado
+            let cpfMasked = assisted.cpf ? assisted.cpf.substring(0, 3) + '.***.***-**' : '';
+            // Situações
+            let situationsHtml = (assisted.situations || []).map(situation => `
+                <span class="situation-tag" title="${this.getSituationLabel(situation)}">
+                    <span class="material-icons situation-icon">${this.getSituationIcon(situation)}</span>
+                </span>
+            `).join(' ');
+            return `
+                <div class="assisted-card">
+                    <div class="assisted-photo">
+                        ${assisted.photo ? 
+                            `<img src="${URL.createObjectURL(assisted.photo)}" alt="Foto de ${displayName}">` :
+                            `<span class="material-icons">person</span>`
+                        }
+                    </div>
+                    <div class="assisted-info">
+                        <h3>${displayName}</h3>
+                        <p class="cpf">CPF: ${cpfMasked}</p>
+                        <div class="situations">${situationsHtml}</div>
+                    </div>
+                    <div class="assisted-actions">
+                        <button class="btn-primary" onclick="window.navigateToKitchens(${index})" title="Buscar Cozinhas">
+                            <span class="material-icons">restaurant</span>
+                        </button>
+                        <button onclick="window.removeAssisted(${index})" class="btn-secondary" title="Remover">
+                            <span class="material-icons">delete</span>
+                        </button>
                     </div>
                 </div>
-                <div class="assisted-actions">
-                    <button onclick="window.navigateToKitchens(${index})" class="btn-primary">
-                        <span class="material-icons">restaurant</span>
-                        Buscar Cozinhas
-                    </button>
-                    <button onclick="window.removeAssisted(${index})" class="btn-secondary">
-                        <span class="material-icons">delete</span>
-                        Remover
-                    </button>
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
+     
+    }
+
+    getShortName(name) {
+        if (!name) return '';
+        const parts = name.trim().split(' ');
+        if (parts.length === 1) return parts[0];
+        return `${parts[0]} ${parts[1][0]}.`;
+    }
+
+    getSituationIcon(situation) {
+        const icons = {
+            'homeless': 'home',
+            'unemployed': 'work_off',
+            'elderly': 'elderly',
+            'disabled': 'accessible',
+            'single-parent': 'family_restroom',
+            'lgbtqia': 'diversity_3',
+            'refugee': 'flight_takeoff',
+            'indigenous': 'groups'
+        };
+        return icons[situation] || 'help_outline';
+    }
+
+    getSituationLabel(situation) {
+        const labels = {
+            'homeless': 'Em situação de rua',
+            'unemployed': 'Desempregado',
+            'elderly': 'Idoso',
+            'disabled': 'Pessoa com deficiência',
+            'single-parent': 'Mãe/Pai solo',
+            'lgbtqia': 'LGBTQIA+',
+            'refugee': 'Refugiado',
+            'indigenous': 'Indígena'
+        };
+        return labels[situation] || situation;
+    }
+
+    removeAssisted(index) {
+        try {
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            if (!userData.assistedList || !userData.assistedList[index]) {
+                console.error('Assistido não encontrado');
+                return;
+            }
+
+            // Remove o assistido da lista
+            userData.assistedList.splice(index, 1);
+            
+            // Atualiza o localStorage
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            // Atualiza a UI
+            this.updateAssistedList();
+
+            if (typeof showMessage === 'function') {
+                showMessage('Assistido removido com sucesso!', 'success');
+            } else {
+                alert('Assistido removido com sucesso!');
+            }
+        } catch (error) {
+            console.error('Erro ao remover assistido:', error);
+            if (typeof showMessage === 'function') {
+                showMessage('Erro ao remover assistido.', 'error');
+            } else {
+                alert('Erro ao remover assistido.');
+            }
+        }
     }
 
     getNickname(name) {
@@ -385,30 +538,32 @@ export class VolunteerScreen {
     }
 
     navigateToKitchens(index) {
+        console.log('[navigateToKitchens] Called with index:', index);
         localStorage.setItem('userOrigin', 'volunteer');
-        this.addAssistedBtn.style.display = 'show';
-        if (this.assistedList && this.assistedList[index]) {
-            const assisted = this.assistedList[index];
+        if (this.addAssistedBtn) {
+            console.log('[navigateToKitchens] addAssistedBtn found, setting display to show');
+            this.addAssistedBtn.style.display = 'show';
+        } else {
+            console.warn('[navigateToKitchens] addAssistedBtn not found');
+        }
+        // Log the assistedList from localStorage
+        const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+        const assistedListData = userData.assistedList || [];
+        console.log('[navigateToKitchens] assistedList from localStorage:', assistedListData);
+        if (Array.isArray(assistedListData) && assistedListData[index]) {
+            const assisted = assistedListData[index];
+            console.log('[navigateToKitchens] Found assisted:', assisted);
             // Salvar dados do assistido para a próxima tela
             localStorage.setItem('currentAssisted', JSON.stringify(assisted));
             // Navegar para a tela de cozinhas
-            this.screenLoader.loadScreen('result');
-        }
-    }
-
-    removeAssisted(index) {
-        if (this.assistedList && this.assistedList.length > index) {
-            this.assistedList.splice(index, 1);
-            
-            // Update cache
-            const cachedData = localStorage.getItem('volunteerCache');
-            if (cachedData) {
-                const cache = JSON.parse(cachedData);
-                cache.assistedList = this.assistedList;
-                localStorage.setItem('volunteerCache', JSON.stringify(cache));
+            if (this.screenLoader && typeof this.screenLoader.loadScreen === 'function') {
+                console.log('[navigateToKitchens] Calling screenLoader.loadScreen("result")');
+                this.screenLoader.loadScreen('result');
+            } else {
+                console.error('[navigateToKitchens] screenLoader or loadScreen not available');
             }
-            
-            this.updateAssistedList();
+        } else {
+            console.error('[navigateToKitchens] assistedList is not an array or no assisted at index', index, assistedListData);
         }
     }
 
@@ -438,6 +593,45 @@ export class VolunteerScreen {
         }
     }
 
+    loadCachedData() {
+        try {
+            // Load user data from localStorage
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            
+            // If user data exists, populate the form
+            if (userData && Object.keys(userData).length > 0) {
+                if (this.volunteerName) this.volunteerName.value = userData.name || '';
+                if (this.volunteerSocialName) this.volunteerSocialName.value = userData.socialName || '';
+                if (this.volunteerBirthdate) this.volunteerBirthdate.value = userData.birthdate || '';
+                if (this.volunteerGender) this.volunteerGender.value = userData.gender || '';
+                if (this.volunteerCity) this.volunteerCity.value = userData.city || '';
+                if (this.volunteerAddress) this.volunteerAddress.value = userData.address || '';
+                if (this.volunteerCpf) this.volunteerCpf.value = userData.cpf || '';
+                if (this.volunteerNis) this.volunteerNis.value = userData.nis || '';
+                if (this.volunteerLocation) this.volunteerLocation.value = userData.location || '';
+
+                // Set radio buttons
+                if (userData.homeless) {
+                    const homelessRadio = document.querySelector(`input[name="homeless"][value="${userData.homeless}"]`);
+                    if (homelessRadio) homelessRadio.checked = true;
+                }
+
+                // Set checkboxes
+                if (userData.fillingFor) {
+                    userData.fillingFor.forEach(value => {
+                        const fillingForCheckbox = document.querySelector(`input[name="filling_for"][value="${value}"]`);
+                        if (fillingForCheckbox) fillingForCheckbox.checked = true;
+                    });
+                }
+
+                // Update profile
+                this.updateVolunteerProfile(userData.name, userData.photo);
+            }
+        } catch (error) {
+            console.error('Erro ao carregar dados do cache:', error);
+        }
+    }
+
     updateUIState() {
         try {
             const addAssistedBtn = document.getElementById('add-assisted');
@@ -450,7 +644,7 @@ export class VolunteerScreen {
             const userData = JSON.parse(localStorage.getItem('userData') || '{}');
             const isUserLoggedIn = userData && userData.role === 'volunteer';
             
-            // Ocultar/mostrar seção de assistidos baseado no login
+            // Ocultar/mostrar seção de assistidos baseado no login e cadastro
             if (assistedSection) {
                 assistedSection.style.display = isUserLoggedIn ? 'block' : 'none';
             }
@@ -459,10 +653,7 @@ export class VolunteerScreen {
                 addAssistedBtn.style.display = isUserLoggedIn ? 'block' : 'none';
             }
             
-            if (assistedList) {
-                const assistedListData = userData.assistedList || [];
-                assistedList.style.display = assistedListData.length > 0 ? 'block' : 'none';
-            }
+         
             
             if (volunteerForm) {
                 volunteerForm.style.display = isUserLoggedIn ? 'none' : 'block';
@@ -473,661 +664,8 @@ export class VolunteerScreen {
                 assistedForm.classList.remove('active');
             }
 
-            // Atualizar a lista de assistidos
-            this.updateAssistedList();
         } catch (error) {
             console.error('Erro ao atualizar o estado da UI:', error);
-        }
-    }
-
-    async handleAssistedClick(assisted) {
-        try {
-            // Salva a pessoa em atendimento no localStorage
-            localStorage.setItem('currentAssisted', JSON.stringify(assisted));
-            
-            // Navega para a tela de resultado
-            const success = await this.screenLoader.loadScreen('result');
-            if (!success) {
-                showMessage('Erro ao carregar próxima tela', 'error');
-            }
-        } catch (error) {
-            console.error('Erro ao navegar para próxima tela:', error);
-            showMessage('Erro ao navegar para próxima tela', 'error');
-        }
-    }
-
-    initializeVoiceInput() {
-        const voiceButtons = document.querySelectorAll('.voice-input-btn');
-        voiceButtons.forEach(button => {
-            const inputId = button.closest('.input-wrapper').querySelector('input').id;
-            button.setAttribute('data-input', inputId);
-            button.addEventListener('click', () => this.handleVoiceInput(button));
-        });
-    }
-
-    showPhotoModal(preview) {
-        const backgroundImage = preview.style.backgroundImage;
-        if (backgroundImage && backgroundImage !== 'none') {
-            this.photoModalContent.innerHTML = `<img src="${backgroundImage.slice(5, -2)}" alt="Foto">`;
-            this.photoModal.classList.add('active');
-        }
-    }
-
-    showLocationModal() {
-        console.warn('Método showLocationModal foi removido. Use getLocation diretamente.');
-    }
-
-    initMap() {
-        console.warn('Método initMap foi removido. Use getLocation diretamente.');
-    }
-
-    updateLocationInput() {
-        console.warn('Método updateLocationInput foi removido. Use getLocation diretamente.');
-    }
-
-    confirmLocation() {
-        console.warn('Método confirmLocation foi removido. Use getLocation diretamente.');
-    }
-
-    closeModals() {
-        try {
-            if (this.photoModal) {
-                this.photoModal.style.display = 'none';
-                this.photoModal.classList.remove('active');
-            }
-            if (this.assistedForm) {
-                this.assistedForm.style.display = 'none';
-                this.assistedForm.classList.remove('active');
-            }
-        } catch (error) {
-            console.error('Erro ao fechar modais:', error);
-        }
-    }
-
-    createModals() {
-        try {
-            // Remove modais existentes se houver
-            const existingPhotoModal = document.getElementById('photo-modal');
-            if (existingPhotoModal) {
-                existingPhotoModal.remove();
-            }
-
-            // Cria o modal de foto
-            const photoModal = document.createElement('div');
-            photoModal.id = 'photo-modal';
-            photoModal.className = 'modal';
-            photoModal.style.display = 'none';
-            photoModal.innerHTML = `
-                <div class="modal-content">
-                    <span class="close-modal">&times;</span>
-                    <div id="photo-modal-content"></div>
-                </div>
-            `;
-            this.screensContainer.appendChild(photoModal);
-            this.photoModal = photoModal;
-
-            // Atualiza as referências dos elementos
-            this.elements = {
-                photoModal: this.photoModal,
-                closeModalBtn: document.querySelectorAll('.close-modal'),
-                photoModalContent: document.getElementById('photo-modal-content')
-            };
-
-            // Adiciona event listeners
-            this.elements.closeModalBtn.forEach(button => {
-                button.addEventListener('click', () => this.closeModals());
-            });
-
-            // Adiciona event listener para o botão de adicionar assistido
-            const addAssistedBtn = document.getElementById('add-assisted');
-            if (addAssistedBtn) {
-                addAssistedBtn.addEventListener('click', () => {
-                    const assistedForm = document.getElementById('assistedForm');
-                    if (assistedForm) {
-                        assistedForm.style.display = 'flex';
-                        assistedForm.classList.add('active');
-                    }
-                });
-            }
-
-        } catch (error) {
-            console.error('Erro ao criar modais:', error);
-        }
-    }
-
-    checkFormValidity() {
-        const submitButton = document.getElementById('submit-volunteer');
-        if (!submitButton) return;
-
-        // Lista de campos obrigatórios
-        const requiredFields = [
-            'volunteer-name',
-            'volunteerGender',
-            'volunteer-birthdate',
-            'volunteer-city',
-            'volunteer-cpf',
-            'volunteer-location'
-        ];
-
-        // Verificar se todos os campos obrigatórios estão preenchidos
-        let isValid = true;
-        requiredFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                if (field.type === 'radio' || field.type === 'checkbox') {
-                    // Para grupos de radio/checkbox, verificar se algum está selecionado
-                    const groupName = field.name;
-                    const isChecked = document.querySelector(`input[name="${groupName}"]:checked`);
-                    if (!isChecked) {
-                        isValid = false;
-                    }
-                } else {
-                    // Para outros campos, verificar se tem valor
-                    if (!field.value || !field.value.trim()) {
-                        isValid = false;
-                    }
-                }
-            }
-        });
-
-        // Verificar se o nome social é obrigatório (quando checkbox está marcado)
-        if (this.socialNameCheckbox && this.socialNameCheckbox.checked) {
-            if (!this.volunteerSocialName || !this.volunteerSocialName.value.trim()) {
-                isValid = false;
-            }
-        }
-
-        // Verificar se está em situação de rua foi selecionado
-        const homelessSelected = document.querySelector('input[name="homeless"]:checked');
-        if (!homelessSelected) {
-            isValid = false;
-        }
-
-        // Verificar se quem está preenchendo foi selecionado
-        const fillingForSelected = document.querySelector('input[name="filling_for"]:checked');
-        if (!fillingForSelected) {
-            isValid = false;
-        }
-
-        // Habilitar/desabilitar o botão de submit
-        submitButton.disabled = !isValid;
-
-        // Atualizar o estilo do botão
-        if (isValid) {
-            submitButton.classList.remove('disabled');
-            submitButton.classList.add('enabled');
-        } else {
-            submitButton.classList.remove('enabled');
-            submitButton.classList.add('disabled');
-        }
-
-        console.log('Form validation:', isValid);
-        console.log('Submit button disabled:', submitButton.disabled);
-    }
-
-    checkAssistedFormValidity() {
-        const submitButton = document.getElementById('submit-assisted');
-        if (!submitButton) return;
-
-        const isValid = this.assistedRequiredFields.every(fieldId => {
-            const field = document.getElementById(fieldId);
-            return field && field.value.trim() !== '';
-        });
-
-        submitButton.disabled = !isValid;
-    }
-
-    handleGenderChange() {
-        if (!this.volunteerGender || !this.socialNameGroup) return;
-
-        const selectedGender = this.volunteerGender.value;
-        const uncommonGenders = ['transgender', 'non_binary', 'other'];
-
-        if (uncommonGenders.includes(selectedGender)) {
-            this.socialNameGroup.style.display = 'block';
-        } else {
-            this.socialNameGroup.style.display = 'none';
-            if (this.socialNameCheckbox) {
-                this.socialNameCheckbox.checked = false;
-            }
-            if (this.volunteerSocialName) {
-                this.volunteerSocialName.value = '';
-            }
-        }
-
-        this.checkFormValidity();
-    }
-
-    handleSocialNameCheckbox() {
-        if (!this.socialNameCheckbox || !this.volunteerSocialName) return;
-
-        if (this.socialNameCheckbox.checked) {
-            this.volunteerSocialName.required = true;
-        } else {
-            this.volunteerSocialName.required = false;
-            this.volunteerSocialName.value = '';
-        }
-
-        this.checkFormValidity();
-    }
-
-    autoFillForm() {
-        // Dados fictícios para teste
-        const fakeData = {
-            name: 'João da Silva Santos',
-            gender: 'male',
-            birthdate: '15/05/1985',
-            city: 'Recife',
-            address: 'Rua das Flores, 123 - Boa Viagem',
-            cpf: '123.456.789-00',
-            nis: '12345678901',
-            homeless: 'nao',
-            fillingFor: ['self'],
-            location: '-8.047562, -34.877002'
-        };
-
-        // Preencher campos do formulário
-        if (this.volunteerName) this.volunteerName.value = fakeData.name;
-        if (this.volunteerGender) this.volunteerGender.value = fakeData.gender;
-        if (this.volunteerBirthdate) this.volunteerBirthdate.value = fakeData.birthdate;
-        if (this.volunteerCity) this.volunteerCity.value = fakeData.city;
-        if (this.volunteerAddress) this.volunteerAddress.value = fakeData.address;
-        if (this.volunteerCpf) this.volunteerCpf.value = fakeData.cpf;
-        if (this.volunteerNis) this.volunteerNis.value = fakeData.nis;
-        if (this.volunteerLocation) this.volunteerLocation.value = fakeData.location;
-
-        // Selecionar opções de rádio e checkbox
-        const homelessRadio = document.querySelector(`input[name="homeless"][value="${fakeData.homeless}"]`);
-        if (homelessRadio) homelessRadio.checked = true;
-
-        fakeData.fillingFor.forEach(value => {
-            const fillingForCheckbox = document.querySelector(`input[name="filling_for"][value="${value}"]`);
-            if (fillingForCheckbox) fillingForCheckbox.checked = true;
-        });
-
-        // Simular upload de foto
-        if (this.volunteerPhotoPreview) {
-            this.volunteerPhotoPreview.style.backgroundImage = 'url("https://avatars.githubusercontent.com/u/984221?v=4&size=64")';
-            this.volunteerPhotoPreview.classList.add('has-photo');
-        }
-
-        // Disparar eventos de input para todos os campos preenchidos
-        const formInputs = document.querySelectorAll('#volunteer-form input, #volunteer-form select');
-        formInputs.forEach(input => {
-            const event = new Event('input', { bubbles: true });
-            input.dispatchEvent(event);
-        });
-
-        // Disparar eventos de change para radio buttons e checkboxes
-        const radioGroups = document.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
-        radioGroups.forEach(input => {
-            const event = new Event('change', { bubbles: true });
-            input.dispatchEvent(event);
-        });
-
-        // Forçar atualização da validação
-        setTimeout(() => {
-            this.checkFormValidity();
-        }, 100);
-
-        // Mostrar mensagem de sucesso
-        alert('Formulário preenchido automaticamente com dados de teste!');
-    }
-
-    async handleAssistedSubmit() {
-        try {
-            // Get form data
-            const formData = {
-                name: this.assistedName.value,
-                nickname: this.assistedNickname.value,
-                cpf: this.assistedCpf.value,
-                nis: this.assistedNis.value,
-                phone: this.assistedPhone.value,
-                location: this.assistedLocation.value,
-                photo: this.assistedPhoto.files[0],
-                situations: Array.from(document.querySelectorAll('.situation-checkbox input:checked'))
-                    .map(checkbox => checkbox.value)
-            };
-
-            // Validate required fields
-            if (!formData.name || !formData.cpf || !formData.phone || !formData.location) {
-                alert('Por favor, preencha todos os campos obrigatórios.');
-                return;
-            }
-
-            // Disable submit button and show loading state
-            this.submitAssistedBtn.disabled = true;
-            this.submitAssistedBtn.innerHTML = '<span class="material-icons">sync</span> Salvando...';
-
-            // Simulate backend call
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            // Save to localStorage
-            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-            if (!userData.assistedList) {
-                userData.assistedList = [];
-            }
-            userData.assistedList.push(formData);
-            localStorage.setItem('userData', JSON.stringify(userData));
-
-            // Update UI
-            this.updateAssistedList();
-            this.hideAssistedForm();
-            
-            // Show success message
-            this.submitAssistedBtn.innerHTML = '<span class="material-icons">check</span> Salvo com sucesso!';
-            this.submitAssistedBtn.style.backgroundColor = 'var(--success-color)';
-
-            // Reset button after 2 seconds
-            setTimeout(() => {
-                this.submitAssistedBtn.disabled = false;
-                this.submitAssistedBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
-                this.submitAssistedBtn.style.backgroundColor = 'var(--primary-color)';
-            }, 2000);
-
-        } catch (error) {
-            console.error('Erro ao salvar dados do assistido:', error);
-            this.submitAssistedBtn.innerHTML = '<span class="material-icons">error</span> Erro ao salvar';
-            this.submitAssistedBtn.style.backgroundColor = 'var(--error-color)';
-        }
-    }
-
-    applyMasks() {
-        try {
-            // CPF mask
-            if (this.volunteerCpf) {
-                this.volunteerCpf.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 11) {
-                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-                        e.target.value = value;
-                    }
-                });
-            }
-
-            if (this.assistedCpf) {
-                this.assistedCpf.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 11) {
-                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-                        e.target.value = value;
-                    }
-                });
-            }
-
-            // Birth date mask
-            if (this.volunteerBirthdate) {
-                this.volunteerBirthdate.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 8) {
-                        value = value.replace(/(\d{2})(\d)/, '$1/$2');
-                        value = value.replace(/(\d{2})(\d)/, '$1/$2');
-                        e.target.value = value;
-                    }
-                });
-            }
-
-            // Phone mask
-            if (this.assistedPhone) {
-                this.assistedPhone.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 11) {
-                        if (value.length <= 10) {
-                            value = value.replace(/(\d{2})(\d)/, '($1) $2');
-                            value = value.replace(/(\d{4})(\d)/, '$1-$2');
-                        } else {
-                            value = value.replace(/(\d{2})(\d)/, '($1) $2');
-                            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-                        }
-                        e.target.value = value;
-                    }
-                });
-            }
-
-            // NIS mask (11 digits)
-            if (this.volunteerNis) {
-                this.volunteerNis.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 11) {
-                        e.target.value = value;
-                    }
-                });
-            }
-        } catch (error) {
-            console.error('Erro ao aplicar máscaras:', error);
-        }
-    }
-
-    initializeCityAutocomplete() {
-        try {
-            // Lista de municípios de Pernambuco
-            const cities = [
-                "Recife", "Olinda", "Jaboatão dos Guararapes", "Caruaru", "Petrolina",
-                "Paulista", "Cabo de Santo Agostinho", "Camaragibe", "Garanhuns", "Vitória de Santo Antão"
-            ];
-
-            if (this.volunteerCity && this.citySuggestions) {
-                this.volunteerCity.addEventListener('input', () => {
-                    const input = this.volunteerCity.value.toLowerCase();
-                    const filteredCities = cities.filter(city => 
-                        city.toLowerCase().includes(input)
-                    );
-
-                    this.showCitySuggestions(filteredCities);
-                });
-
-                this.volunteerCity.addEventListener('blur', () => {
-                    setTimeout(() => {
-                        if (this.citySuggestions) {
-                            this.citySuggestions.style.display = 'none';
-                        }
-                    }, 200);
-                });
-            }
-        } catch (error) {
-            console.error('Erro ao inicializar autocomplete de municípios:', error);
-        }
-    }
-
-    showCitySuggestions(cities) {
-        if (!this.citySuggestions) return;
-
-        this.citySuggestions.innerHTML = '';
-        this.citySuggestions.style.display = 'block';
-
-        cities.forEach(city => {
-            const div = document.createElement('div');
-            div.textContent = city;
-            div.addEventListener('click', () => {
-                if (this.volunteerCity) {
-                    this.volunteerCity.value = city;
-                    this.citySuggestions.style.display = 'none';
-                }
-            });
-            this.citySuggestions.appendChild(div);
-        });
-    }
-
-    addLocationButtons() {
-        try {
-            // Add location button to volunteer form
-            if (this.volunteerLocationBtn && this.volunteerForm) {
-                const volunteerLocationGroup = document.createElement('div');
-                volunteerLocationGroup.className = 'form-group';
-                volunteerLocationGroup.appendChild(this.volunteerLocationBtn);
-                const formSection = this.volunteerForm.querySelector('.form-section');
-                if (formSection) {
-                    formSection.appendChild(volunteerLocationGroup);
-                }
-            }
-
-            // Add location button to assisted form
-            if (this.assistedLocationBtn && this.assistedForm) {
-                const assistedLocationGroup = document.createElement('div');
-                assistedLocationGroup.className = 'form-group';
-                assistedLocationGroup.appendChild(this.assistedLocationBtn);
-                const formSection = this.assistedForm.querySelector('.form-section');
-                if (formSection) {
-                    formSection.appendChild(assistedLocationGroup);
-                }
-            }
-        } catch (error) {
-            console.error('Error adding location buttons:', error);
-        }
-    }
-
-    setupEventListeners() {
-        try {
-            // Volunteer form event listeners
-            if (this.volunteerPhoto) {
-                this.volunteerPhoto.addEventListener('change', (event) => this.handlePhotoUpload(event, 'volunteer'));
-            }
-            if (this.volunteerPhotoPreview) {
-                this.volunteerPhotoPreview.addEventListener('click', () => this.volunteerPhoto?.click());
-            }
-
-            // Assisted form event listeners
-            if (this.addAssistedBtn) {
-                this.addAssistedBtn.addEventListener('click', () => {
-                    this.showAssistedForm();
-                });
-            }
-
-            // Add photo upload event listeners for assisted form
-            if (this.assistedPhoto && this.assistedPhotoPreview) {
-                this.assistedPhoto.addEventListener('change', (event) => this.handlePhotoUpload(event, 'assisted'));
-                this.assistedPhotoPreview.addEventListener('click', () => this.assistedPhoto.click());
-            }
-
-            // Add location button event listener for assisted form
-            if (this.assistedLocationBtn) {
-                this.assistedLocationBtn.addEventListener('click', () => this.getLocation(this.assistedLocationBtn));
-            }
-
-            // Add location button event listener for volunteer form
-            if (this.volunteerLocationBtn) {
-                this.volunteerLocationBtn.addEventListener('click', () => this.getLocation(this.volunteerLocationBtn));
-            }
-
-            // Add form submission event listener
-            if (this.volunteerForm) {
-                this.volunteerForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.handleVolunteerSubmit();
-                });
-            }
-
-            // Add click event listener for submit button
-            if (this.submitVolunteerBtn) {
-                this.submitVolunteerBtn.addEventListener('click', () => this.handleVolunteerSubmit());
-            }
-
-            // Add auto-fill button event listener
-            const autoFillBtn = document.getElementById('auto-fill');
-            if (autoFillBtn) {
-                autoFillBtn.addEventListener('click', () => this.autoFillForm());
-            }
-
-            // Add input event listeners for form validation
-            if (this.requiredFields) {
-                this.requiredFields.forEach(fieldId => {
-                    const field = document.getElementById(fieldId);
-                    if (field) {
-                        field.addEventListener('input', () => this.checkFormValidity());
-                    }
-                });
-            }
-
-            if (this.assistedRequiredFields) {
-                this.assistedRequiredFields.forEach(fieldId => {
-                    const field = document.getElementById(fieldId);
-                    if (field) {
-                        field.addEventListener('input', () => this.checkAssistedFormValidity());
-                    }
-                });
-            }
-
-            // Add logout event listener
-            if (this.logoutBtn) {
-                this.logoutBtn.addEventListener('click', () => this.handleLogout());
-            }
-
-            // Initialize voice input
-            this.initializeVoiceInput();
-        } catch (error) {
-            console.error('Erro ao configurar event listeners:', error);
-        }
-    }
-
-    loadCachedData() {
-        try {
-            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-            if (userData && userData.role === 'volunteer') {
-                const now = new Date().getTime();
-                const oneDay = 24 * 60 * 60 * 1000;
-
-                if (now - userData.timestamp < oneDay) {
-                    // Preencher formulário com dados em cache
-                    if (this.volunteerCpf) this.volunteerCpf.value = userData.cpf || '';
-                    if (this.volunteerName) this.volunteerName.value = userData.name || '';
-                    if (this.volunteerSocialName) this.volunteerSocialName.value = userData.socialName || '';
-                    if (this.volunteerBirthdate) this.volunteerBirthdate.value = userData.birthdate || '';
-                    if (this.volunteerGender) this.volunteerGender.value = userData.gender || '';
-                    if (this.volunteerCity) this.volunteerCity.value = userData.city || '';
-                    if (this.volunteerAddress) this.volunteerAddress.value = userData.address || '';
-                    if (this.volunteerNis) this.volunteerNis.value = userData.nis || '';
-                    
-                    if (userData.photo) {
-                        if (this.volunteerPhotoPreview) {
-                            this.volunteerPhotoPreview.style.backgroundImage = `url(${userData.photo})`;
-                            this.volunteerPhotoPreview.classList.add('has-photo');
-                        }
-                        
-                        if (this.volunteerAvatar) {
-                            this.volunteerAvatar.style.backgroundImage = `url(${userData.photo})`;
-                            this.volunteerAvatar.classList.add('has-photo');
-                        }
-                    }
-
-                    if (userData.location && this.volunteerLocation) {
-                        this.volunteerLocation.value = userData.location;
-                        if (this.volunteerLocationBtn) {
-                            this.volunteerLocationBtn.innerHTML = '<span class="material-icons">check_circle</span> Localização Obtida';
-                            this.volunteerLocationBtn.disabled = true;
-                        }
-                    }
-
-                    // Carregar lista de assistidos do cache
-                    if (userData.assistedList) {
-                        this.assistedList = userData.assistedList;
-                    }
-
-                    // Update profile
-                    this.updateVolunteerProfile(userData.name, userData.photo);
-
-                    // Update UI state
-                    this.updateUIState();
-                } else {
-                    // Cache expirado
-                    localStorage.removeItem('userData');
-                    this.assistedList = [];
-                    this.updateUIState();
-                }
-            } else {
-                // Cache vazio - habilitar formulário
-                this.assistedList = [];
-                this.updateUIState();
-            }
-        } catch (error) {
-            console.error('Erro ao carregar dados em cache:', error);
-            // Em caso de erro, limpa o cache e reseta o estado
-            localStorage.removeItem('userData');
-            this.assistedList = [];
-            this.updateUIState();
         }
     }
 
@@ -1136,6 +674,12 @@ export class VolunteerScreen {
             // Validate form
             if (!this.validateForm('volunteer')) {
                 return;
+            }
+
+            // Disable submit button and show loading state
+            if (this.submitVolunteerBtn) {
+                this.submitVolunteerBtn.disabled = true;
+                this.submitVolunteerBtn.innerHTML = '<span class="material-icons">sync</span> Salvando...';
             }
 
             // Collect form data
@@ -1153,14 +697,9 @@ export class VolunteerScreen {
                 location: this.volunteerLocation?.value || '',
                 photo: this.volunteerPhoto?.files[0] || null,
                 role: 'volunteer',
-                timestamp: new Date().getTime()
+                timestamp: new Date().getTime(),
+                assistedList: [] // Inicializa a lista de assistidos vazia
             };
-
-            // Disable submit button and show loading state
-            if (this.submitVolunteerBtn) {
-                this.submitVolunteerBtn.disabled = true;
-                this.submitVolunteerBtn.innerHTML = '<span class="material-icons">sync</span> Salvando...';
-            }
 
             // Save to localStorage
             localStorage.setItem('userData', JSON.stringify(formData));
@@ -1172,10 +711,8 @@ export class VolunteerScreen {
             this.updateUIState();
             
             // Show success message
-            showMessage('Dados salvos com sucesso!', 'success');
-            
             if (this.submitVolunteerBtn) {
-                this.submitVolunteerBtn.innerHTML = '<span class="material-icons">check</span> Dados recebidos com sucesso!';
+                this.submitVolunteerBtn.innerHTML = '<span class="material-icons">check</span> Dados salvos com sucesso!';
                 this.submitVolunteerBtn.style.backgroundColor = 'var(--success-color)';
 
                 // Reset button after 2 seconds
@@ -1186,9 +723,15 @@ export class VolunteerScreen {
                 }, 2000);
             }
 
+            // Show success message
+            if (typeof showMessage === 'function') {
+                showMessage('Dados salvos com sucesso!', 'success');
+            } else {
+                alert('Dados salvos com sucesso!');
+            }
+
         } catch (error) {
             console.error('Erro ao salvar dados:', error);
-            showMessage('Erro ao salvar dados. Por favor, tente novamente.', 'error');
             
             if (this.submitVolunteerBtn) {
                 this.submitVolunteerBtn.innerHTML = '<span class="material-icons">error</span> Erro ao salvar';
@@ -1200,6 +743,12 @@ export class VolunteerScreen {
                     this.submitVolunteerBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
                     this.submitVolunteerBtn.style.backgroundColor = 'var(--primary-color)';
                 }, 2000);
+            }
+
+            if (typeof showMessage === 'function') {
+                showMessage('Erro ao salvar dados. Por favor, tente novamente.', 'error');
+            } else {
+                alert('Erro ao salvar dados. Por favor, tente novamente.');
             }
         }
     }
@@ -1249,7 +798,12 @@ export class VolunteerScreen {
         if (!isValid && firstInvalidField) {
             firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
             firstInvalidField.focus();
-            showMessage('Por favor, corrija os campos marcados em vermelho.', 'error');
+            // Usar alert como fallback se showMessage não estiver disponível
+            if (typeof showMessage === 'function') {
+                showMessage('Por favor, corrija os campos marcados em vermelho.', 'error');
+            } else {
+                alert('Por favor, corrija os campos marcados em vermelho.');
+            }
         }
 
         return isValid;
@@ -1419,10 +973,1150 @@ export class VolunteerScreen {
             button.innerHTML = '<span class="material-icons">my_location</span> Obter Localização';
         }
     }
+
+    setupFormValidation() {
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            // Adiciona contagem de caracteres para campos de texto
+            if (input.type === 'text' || input.type === 'tel') {
+                const wrapper = input.closest('.input-wrapper');
+                if (!wrapper) return;
+
+                const charCount = document.createElement('div');
+                charCount.className = 'char-count';
+                wrapper.appendChild(charCount);
+                
+                input.addEventListener('input', () => {
+                    const count = input.value.length;
+                    const maxLength = input.maxLength || 100;
+                    charCount.textContent = `${count}/${maxLength}`;
+                    
+                    if (count > maxLength * 0.9) {
+                        charCount.classList.add('warning');
+                    } else if (count === maxLength) {
+                        charCount.classList.add('error');
+                    } else {
+                        charCount.classList.remove('warning', 'error');
+                    }
+                });
+            }
+            
+            // Adiciona validação em tempo real
+            input.addEventListener('input', () => {
+                const wrapper = input.closest('.input-wrapper');
+                if (!wrapper) return;
+
+                const errorMessage = wrapper.querySelector('.error-message') || document.createElement('div');
+                if (!errorMessage.classList.contains('error-message')) {
+                    errorMessage.className = 'error-message';
+                    wrapper.appendChild(errorMessage);
+                }
+                
+                if (input.validity.valid) {
+                    wrapper.classList.remove('invalid');
+                    wrapper.classList.add('valid');
+                    errorMessage.classList.remove('show');
+                } else {
+                    wrapper.classList.remove('valid');
+                    wrapper.classList.add('invalid');
+                    errorMessage.textContent = this.getValidationMessage(input);
+                    errorMessage.classList.add('show');
+                }
+            });
+            
+            // Adiciona feedback visual ao focar
+            input.addEventListener('focus', () => {
+                const wrapper = input.closest('.input-wrapper');
+                if (wrapper) {
+                    wrapper.classList.add('focused');
+                }
+            });
+            
+            input.addEventListener('blur', () => {
+                const wrapper = input.closest('.input-wrapper');
+                if (wrapper) {
+                    wrapper.classList.remove('focused');
+                }
+            });
+        });
+    }
+
+    validateAssistedField(input) {
+        const wrapper = input.closest('.input-wrapper');
+        if (!wrapper) return;
+
+        const errorMessage = wrapper.querySelector('.error-message') || document.createElement('div');
+        if (!errorMessage.classList.contains('error-message')) {
+            errorMessage.className = 'error-message';
+            wrapper.appendChild(errorMessage);
+        }
+        
+        if (input.validity.valid) {
+            wrapper.classList.remove('invalid');
+            wrapper.classList.add('valid');
+            errorMessage.classList.remove('show');
+        } else {
+            wrapper.classList.remove('valid');
+            wrapper.classList.add('invalid');
+            errorMessage.textContent = this.getValidationMessage(input);
+            errorMessage.classList.add('show');
+        }
+    }
+
+    initializeVoiceInput() {
+        const voiceButtons = document.querySelectorAll('.voice-input-btn');
+        voiceButtons.forEach(button => {
+            const inputId = button.closest('.input-wrapper').querySelector('input').id;
+            button.setAttribute('data-input', inputId);
+            
+            // Adiciona feedback visual ao clicar
+            button.addEventListener('click', () => {
+                button.classList.add('recording');
+                const input = document.getElementById(inputId);
+                if (input) {
+                    input.classList.add('loading');
+                    const loadingMessage = document.createElement('div');
+                    loadingMessage.className = 'loading-message';
+                    loadingMessage.textContent = 'Iniciando reconhecimento de voz...';
+                    input.parentElement.appendChild(loadingMessage);
+                    
+                    // Simula o reconhecimento de voz
+                    setTimeout(() => {
+                        button.classList.remove('recording');
+                        input.classList.remove('loading');
+                        loadingMessage.remove();
+                        
+                        // Adiciona feedback de sucesso
+                        const successMessage = document.createElement('div');
+                        successMessage.className = 'success-message show';
+                        successMessage.textContent = 'Voz reconhecida com sucesso!';
+                        input.parentElement.appendChild(successMessage);
+                        
+                        setTimeout(() => {
+                            successMessage.remove();
+                        }, 2000);
+                    }, 2000);
+                }
+            });
+        });
+    }
+
+    showPhotoModal(preview) {
+        const backgroundImage = preview.style.backgroundImage;
+        if (backgroundImage && backgroundImage !== 'none') {
+            this.photoModalContent.innerHTML = `<img src="${backgroundImage.slice(5, -2)}" alt="Foto">`;
+            this.photoModal.classList.add('active');
+        }
+    }
+
+    showLocationModal() {
+        console.warn('Método showLocationModal foi removido. Use getLocation diretamente.');
+    }
+
+    initMap() {
+        console.warn('Método initMap foi removido. Use getLocation diretamente.');
+    }
+
+    updateLocationInput() {
+        console.warn('Método updateLocationInput foi removido. Use getLocation diretamente.');
+    }
+
+    confirmLocation() {
+        console.warn('Método confirmLocation foi removido. Use getLocation diretamente.');
+    }
+
+    closeModals() {
+        try {
+            if (this.photoModal) {
+                this.photoModal.style.display = 'none';
+                this.photoModal.classList.remove('active');
+            }
+            if (this.assistedForm) {
+                this.assistedForm.style.display = 'none';
+                this.assistedForm.classList.remove('active');
+            }
+        } catch (error) {
+            console.error('Erro ao fechar modais:', error);
+        }
+    }
+
+    createModals() {
+        try {
+            // Remove modais existentes se houver
+            const existingPhotoModal = document.getElementById('photo-modal');
+            if (existingPhotoModal) {
+                existingPhotoModal.remove();
+            }
+
+            // Cria o modal de foto
+            const photoModal = document.createElement('div');
+            photoModal.id = 'photo-modal';
+            photoModal.className = 'modal';
+            photoModal.style.display = 'none';
+            photoModal.innerHTML = `
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <div id="photo-modal-content"></div>
+                </div>
+            `;
+            this.screensContainer.appendChild(photoModal);
+            this.photoModal = photoModal;
+
+            // Atualiza as referências dos elementos
+            this.elements = {
+                photoModal: this.photoModal,
+                closeModalBtn: document.querySelectorAll('.close-modal'),
+                photoModalContent: document.getElementById('photo-modal-content')
+            };
+
+            // Adiciona event listeners
+            this.elements.closeModalBtn.forEach(button => {
+                button.addEventListener('click', () => this.closeModals());
+            });
+
+            // Adiciona event listener para o botão de adicionar assistido
+            const addAssistedBtn = document.getElementById('add-assisted');
+            if (addAssistedBtn) {
+                addAssistedBtn.addEventListener('click', () => {
+                    const assistedForm = document.getElementById('assistedForm');
+                    if (assistedForm) {
+                        assistedForm.style.display = 'flex';
+                        assistedForm.classList.add('active');
+                    }
+                });
+            }
+
+        } catch (error) {
+            console.error('Erro ao criar modais:', error);
+        }
+    }
+
+    checkFormValidity() {
+        const submitButton = document.getElementById('submit-volunteer');
+        if (!submitButton) return;
+
+        // Lista de campos obrigatórios
+        const requiredFields = [
+            'volunteer-name',
+            'volunteerGender',
+            'volunteer-birthdate',
+            'volunteer-city',
+            'volunteer-cpf',
+            'volunteer-location'
+        ];
+
+        // Verificar se todos os campos obrigatórios estão preenchidos
+        let isValid = true;
+        requiredFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                const wrapper = field.closest('.input-wrapper');
+                if (wrapper) {
+                    if (field.type === 'radio' || field.type === 'checkbox') {
+                        // Para grupos de radio/checkbox, verificar se algum está selecionado
+                        const groupName = field.name;
+                        const isChecked = document.querySelector(`input[name="${groupName}"]:checked`);
+                        if (!isChecked) {
+                            isValid = false;
+                            wrapper.classList.add('invalid');
+                        } else {
+                            wrapper.classList.remove('invalid');
+                        }
+                    } else {
+                        // Para outros campos, verificar se tem valor
+                        if (!field.value || !field.value.trim()) {
+                            isValid = false;
+                            wrapper.classList.add('invalid');
+                        } else {
+                            wrapper.classList.remove('invalid');
+                        }
+                    }
+                }
+            }
+        });
+
+        // Verificar se o nome social é obrigatório (quando checkbox está marcado)
+        if (this.socialNameCheckbox && this.socialNameCheckbox.checked) {
+            if (!this.volunteerSocialName || !this.volunteerSocialName.value.trim()) {
+                isValid = false;
+                const wrapper = this.volunteerSocialName?.closest('.input-wrapper');
+                if (wrapper) wrapper.classList.add('invalid');
+            }
+        }
+
+        // Verificar se está em situação de rua foi selecionado
+        const homelessSelected = document.querySelector('input[name="homeless"]:checked');
+        if (!homelessSelected) {
+            isValid = false;
+        }
+
+        // Verificar se quem está preenchendo foi selecionado
+        const fillingForSelected = document.querySelector('input[name="filling_for"]:checked');
+        if (!fillingForSelected) {
+            isValid = false;
+        }
+
+        // Habilitar/desabilitar o botão de submit
+        submitButton.disabled = !isValid;
+
+        // Atualizar o estilo do botão
+        if (isValid) {
+            submitButton.classList.remove('disabled');
+            submitButton.classList.add('enabled');
+        } else {
+            submitButton.classList.remove('enabled');
+            submitButton.classList.add('disabled');
+        }
+
+
+    }
+
+    checkAssistedFormValidity() {
+        const submitButton = document.getElementById('submit-assisted');
+        if (!submitButton) return;
+
+        const isValid = this.assistedRequiredFields.every(fieldId => {
+            const field = document.getElementById(fieldId);
+            return field && field.value.trim() !== '';
+        });
+
+        submitButton.disabled = !isValid;
+    }
+
+    handleGenderChange() {
+        if (!this.volunteerGender) return;
+        this.checkFormValidity();
+    }
+
+    handleSocialNameCheckbox() {
+        if (!this.socialNameCheckbox || !this.volunteerSocialName || !this.socialNameGroupInput) return;
+
+        if (this.socialNameCheckbox.checked) {
+            this.socialNameGroupInput.style.display = 'block';
+            this.volunteerSocialName.required = true;
+        } else {
+            this.socialNameGroupInput.style.display = 'none';
+            this.volunteerSocialName.required = false;
+            this.volunteerSocialName.value = '';
+        }
+
+        this.checkFormValidity();
+    }
+
+    autoFillForm() {
+        try {
+            // Dados fictícios para teste
+            const fakeData = {
+                name: 'João da Silva Santos',
+                gender: 'male',
+                birthdate: '15/05/1985',
+                city: 'Recife',
+                address: 'Rua das Flores, 123 - Boa Viagem',
+                cpf: '123.456.789-00',
+                nis: '12345678901',
+                homeless: 'nao',
+                fillingFor: ['self'],
+                location: '-8.047562, -34.877002'
+            };
+
+            // Preencher campos do formulário
+            if (this.volunteerName) this.volunteerName.value = fakeData.name;
+            if (this.volunteerGender) this.volunteerGender.value = fakeData.gender;
+            if (this.volunteerBirthdate) this.volunteerBirthdate.value = fakeData.birthdate;
+            if (this.volunteerCity) this.volunteerCity.value = fakeData.city;
+            if (this.volunteerAddress) this.volunteerAddress.value = fakeData.address;
+            if (this.volunteerCpf) this.volunteerCpf.value = fakeData.cpf;
+            if (this.volunteerNis) this.volunteerNis.value = fakeData.nis;
+            if (this.volunteerLocation) this.volunteerLocation.value = fakeData.location;
+
+            // Selecionar opções de rádio e checkbox
+            const homelessRadio = document.querySelector(`input[name="homeless"][value="${fakeData.homeless}"]`);
+            if (homelessRadio) homelessRadio.checked = true;
+
+            fakeData.fillingFor.forEach(value => {
+                const fillingForCheckbox = document.querySelector(`input[name="filling_for"][value="${value}"]`);
+                if (fillingForCheckbox) fillingForCheckbox.checked = true;
+            });
+
+            // Simular upload de foto
+            if (this.volunteerPhotoPreview) {
+                this.volunteerPhotoPreview.style.backgroundImage = 'url("https://avatars.githubusercontent.com/u/984221?v=4&size=64")';
+                this.volunteerPhotoPreview.classList.add('has-photo');
+            }
+
+            // Disparar eventos de input para todos os campos preenchidos
+            const formInputs = document.querySelectorAll('#volunteer-form input, #volunteer-form select');
+            formInputs.forEach(input => {
+                if (input) {
+                    // Criar e disparar evento de input
+                    const inputEvent = new Event('input', { bubbles: true });
+                    input.dispatchEvent(inputEvent);
+
+                    // Validar o campo
+                    const wrapper = input.closest('.input-wrapper');
+                    if (wrapper) {
+                        // Criar ou obter mensagem de erro
+                        let errorMessage = wrapper.querySelector('.error-message');
+                        if (!errorMessage) {
+                            errorMessage = document.createElement('div');
+                            errorMessage.className = 'error-message';
+                            wrapper.appendChild(errorMessage);
+                        }
+
+                        // Atualizar estado visual
+                        if (input.validity.valid) {
+                            wrapper.classList.remove('invalid');
+                            wrapper.classList.add('valid');
+                            errorMessage.classList.remove('show');
+                        } else {
+                            wrapper.classList.remove('valid');
+                            wrapper.classList.add('invalid');
+                            errorMessage.textContent = this.getValidationMessage(input);
+                            errorMessage.classList.add('show');
+                        }
+                    }
+                }
+            });
+
+            // Disparar eventos de change para radio buttons e checkboxes
+            const radioGroups = document.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+            radioGroups.forEach(input => {
+                if (input) {
+                    const changeEvent = new Event('change', { bubbles: true });
+                    input.dispatchEvent(changeEvent);
+                }
+            });
+
+            // Forçar atualização da validação
+            setTimeout(() => {
+                this.checkFormValidity();
+            }, 100);
+
+            // Mostrar mensagem de sucesso
+            alert('Formulário preenchido automaticamente com dados de teste!');
+        } catch (error) {
+            console.error('Erro ao preencher formulário automaticamente:', error);
+            alert('Erro ao preencher formulário automaticamente. Por favor, tente novamente.');
+        }
+    }
+
+    getValidationMessage(input) {
+        if (!input) return 'Campo inválido';
+
+        if (input.validity.valueMissing) {
+            return 'Este campo é obrigatório';
+        }
+        if (input.validity.typeMismatch) {
+            if (input.type === 'email') {
+                return 'Por favor, insira um email válido';
+            }
+            if (input.type === 'tel') {
+                return 'Por favor, insira um telefone válido';
+            }
+        }
+        if (input.validity.tooShort) {
+            return `Mínimo de ${input.minLength} caracteres`;
+        }
+        if (input.validity.tooLong) {
+            return `Máximo de ${input.maxLength} caracteres`;
+        }
+        return 'Campo inválido';
+    }
+
+    async handleAssistedSubmit() {
+        try {
+            // Get form data
+            const formData = {
+                name: this.assistedName.value,
+                nickname: this.assistedNickname.value,
+                cpf: this.assistedCpf.value,
+                nis: this.assistedNis.value,
+                phone: this.assistedPhone.value,
+                location: this.assistedLocation.value,
+                photo: this.assistedPhoto.files[0],
+                situations: Array.from(document.querySelectorAll('.situation-checkbox input:checked'))
+                    .map(checkbox => checkbox.value),
+                id: Date.now(),
+                createdAt: new Date().toISOString()
+            };
+
+            // Validate required fields
+            if (!formData.name || !formData.cpf || !formData.phone || !formData.location) {
+                if (typeof showMessage === 'function') {
+                    showMessage('Por favor, preencha todos os campos obrigatórios.', 'error');
+                } else {
+                    alert('Por favor, preencha todos os campos obrigatórios.');
+                }
+                return;
+            }
+
+            // Disable submit button and show loading state
+            this.submitAssistedBtn.disabled = true;
+            this.submitAssistedBtn.innerHTML = '<span class="material-icons">sync</span> Salvando...';
+
+            // Simulate backend call
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Save to localStorage
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            if (!userData.assistedList) {
+                userData.assistedList = [];
+            }
+            userData.assistedList.push(formData);
+            localStorage.setItem('userData', JSON.stringify(userData));
+
+            // Update UI
+            this.updateAssistedList();
+            this.hideAssistedForm();
+            
+            // Show success message
+            this.submitAssistedBtn.innerHTML = '<span class="material-icons">check</span> Salvo com sucesso!';
+            this.submitAssistedBtn.style.backgroundColor = 'var(--success-color)';
+
+            // Fecha o modal após 1 segundo
+            setTimeout(() => {
+                this.closeAssistedModal();
+                this.updateAssistedList();
+            }, 1000);
+
+        } catch (error) {
+            console.error('Erro ao salvar dados do assistido:', error);
+            this.submitAssistedBtn.innerHTML = '<span class="material-icons">error</span> Erro ao salvar';
+            this.submitAssistedBtn.style.backgroundColor = 'var(--error-color)';
+
+            if (typeof showMessage === 'function') {
+                showMessage('Erro ao salvar dados do assistido.', 'error');
+            } else {
+                alert('Erro ao salvar dados do assistido.');
+            }
+        }
+    }
+
+    applyMasks() {
+        try {
+            // CPF mask
+            if (this.volunteerCpf) {
+                this.volunteerCpf.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length <= 11) {
+                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                        e.target.value = value;
+                    }
+                });
+            }
+
+            if (this.assistedCpf) {
+                this.assistedCpf.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length <= 11) {
+                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                        e.target.value = value;
+                    }
+                });
+            }
+
+            // Birth date mask
+            if (this.volunteerBirthdate) {
+                this.volunteerBirthdate.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length <= 8) {
+                        value = value.replace(/(\d{2})(\d)/, '$1/$2');
+                        value = value.replace(/(\d{2})(\d)/, '$1/$2');
+                        e.target.value = value;
+                    }
+                });
+            }
+
+            // Phone mask
+            if (this.assistedPhone) {
+                this.assistedPhone.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length <= 11) {
+                        if (value.length <= 10) {
+                            value = value.replace(/(\d{2})(\d)/, '($1) $2');
+                            value = value.replace(/(\d{4})(\d)/, '$1-$2');
+                        } else {
+                            value = value.replace(/(\d{2})(\d)/, '($1) $2');
+                            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+                        }
+                        e.target.value = value;
+                    }
+                });
+            }
+
+            // NIS mask (11 digits)
+            if (this.volunteerNis) {
+                this.volunteerNis.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length <= 11) {
+                        e.target.value = value;
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Erro ao aplicar máscaras:', error);
+        }
+    }
+
+    initializeCityAutocomplete() {
+        try {
+            // Lista de municípios de Pernambuco
+            const cities = [
+                "Recife", "Olinda", "Jaboatão dos Guararapes", "Caruaru", "Petrolina",
+                "Paulista", "Cabo de Santo Agostinho", "Camaragibe", "Garanhuns", "Vitória de Santo Antão"
+            ];
+
+            if (this.volunteerCity && this.citySuggestions) {
+                this.volunteerCity.addEventListener('input', () => {
+                    const input = this.volunteerCity.value.toLowerCase();
+                    const filteredCities = cities.filter(city => 
+                        city.toLowerCase().includes(input)
+                    );
+
+                    this.showCitySuggestions(filteredCities);
+                });
+
+                this.volunteerCity.addEventListener('blur', () => {
+                    setTimeout(() => {
+                        if (this.citySuggestions) {
+                            this.citySuggestions.style.display = 'none';
+                        }
+                    }, 200);
+                });
+            }
+        } catch (error) {
+            console.error('Erro ao inicializar autocomplete de municípios:', error);
+        }
+    }
+
+    showCitySuggestions(cities) {
+        if (!this.citySuggestions) return;
+
+        this.citySuggestions.innerHTML = '';
+        this.citySuggestions.style.display = 'block';
+
+        cities.forEach(city => {
+            const div = document.createElement('div');
+            div.textContent = city;
+            div.addEventListener('click', () => {
+                if (this.volunteerCity) {
+                    this.volunteerCity.value = city;
+                    this.citySuggestions.style.display = 'none';
+                }
+            });
+            this.citySuggestions.appendChild(div);
+        });
+    }
+
+    addLocationButtons() {
+        try {
+            // Add location button to volunteer form
+            if (this.volunteerLocationBtn && this.volunteerForm) {
+                const volunteerLocationGroup = document.createElement('div');
+                volunteerLocationGroup.className = 'form-group';
+                volunteerLocationGroup.appendChild(this.volunteerLocationBtn);
+                const formSection = this.volunteerForm.querySelector('.form-section');
+                if (formSection) {
+                    formSection.appendChild(volunteerLocationGroup);
+                }
+            }
+
+            // Add location button to assisted form
+            if (this.assistedLocationBtn && this.assistedForm) {
+                const assistedLocationGroup = document.createElement('div');
+                assistedLocationGroup.className = 'form-group';
+                assistedLocationGroup.appendChild(this.assistedLocationBtn);
+                const formSection = this.assistedForm.querySelector('.form-section');
+                if (formSection) {
+                    formSection.appendChild(assistedLocationGroup);
+                }
+            }
+        } catch (error) {
+            console.error('Error adding location buttons:', error);
+        }
+    }
+
+    setupEventListeners() {
+        try {
+            // Add input focus effects
+            const inputWrappers = document.querySelectorAll('.input-wrapper');
+            inputWrappers.forEach(wrapper => {
+                const input = wrapper.querySelector('input, select');
+                if (input) {
+                    input.addEventListener('focus', () => {
+                        wrapper.classList.add('focused');
+                    });
+                    input.addEventListener('blur', () => {
+                        wrapper.classList.remove('focused');
+                    });
+                }
+            });
+
+            // Add submit button event listener
+            if (this.submitVolunteerBtn) {
+                this.submitVolunteerBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handleVolunteerSubmit();
+                });
+            }
+
+            // Add assisted button event listener
+            const addAssistedBtn = document.getElementById('add-assisted');
+            if (addAssistedBtn) {
+                addAssistedBtn.addEventListener('click', () => {
+                    this.showAssistedForm();
+                });
+            }
+
+            // Add hover effects for buttons
+            const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .voice-input-btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    button.style.transform = 'translateY(-1px)';
+                });
+                button.addEventListener('mouseleave', () => {
+                    button.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Add validation feedback
+            const inputs = document.querySelectorAll('input[required], select[required]');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    const wrapper = input.closest('.input-wrapper');
+                    if (!wrapper) return;
+
+                    let errorMessage = wrapper.querySelector('.error-message');
+                    if (!errorMessage) {
+                        errorMessage = document.createElement('div');
+                        errorMessage.className = 'error-message';
+                        wrapper.appendChild(errorMessage);
+                    }
+                    
+                    if (input.validity.valid) {
+                        wrapper.classList.remove('invalid');
+                        wrapper.classList.add('valid');
+                        errorMessage.classList.remove('show');
+                    } else {
+                        wrapper.classList.remove('valid');
+                        wrapper.classList.add('invalid');
+                        errorMessage.textContent = this.getValidationMessage(input);
+                        errorMessage.classList.add('show');
+                    }
+                });
+            });
+
+            // Add voice input feedback
+            const voiceButtons = document.querySelectorAll('.voice-input-btn');
+            voiceButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    button.classList.add('recording');
+                    setTimeout(() => {
+                        button.classList.remove('recording');
+                    }, 1000);
+                });
+            });
+
+            // Add checkbox and radio button feedback
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            
+            [...checkboxes, ...radioButtons].forEach(input => {
+                input.addEventListener('change', () => {
+                    const label = input.closest('label');
+                    if (label) {
+                        label.style.backgroundColor = input.checked ? 'var(--primary-light)' : 'transparent';
+                    }
+                });
+            });
+
+            // Add form submission feedback
+            if (this.volunteerForm) {
+                this.volunteerForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleVolunteerSubmit();
+                });
+            }
+
+            // Add auto-fill button event listener
+            const autoFillBtn = document.getElementById('auto-fill');
+            if (autoFillBtn) {
+                autoFillBtn.addEventListener('click', () => {
+                    autoFillBtn.disabled = true;
+                    autoFillBtn.innerHTML = '<span class="material-icons">hourglass_empty</span> Preenchendo...';
+                    this.autoFillForm();
+                    setTimeout(() => {
+                        autoFillBtn.disabled = false;
+                        autoFillBtn.innerHTML = '<span class="material-icons">auto_fix_high</span> Preencher Automaticamente';
+                    }, 1000);
+                });
+            }
+
+            // Add input event listeners for form validation
+            if (this.requiredFields) {
+                this.requiredFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.addEventListener('input', () => this.checkFormValidity());
+                    }
+                });
+            }
+
+            if (this.assistedRequiredFields) {
+                this.assistedRequiredFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.addEventListener('input', () => this.checkAssistedFormValidity());
+                    }
+                });
+            }
+
+            // Add logout event listener
+            if (this.logoutBtn) {
+                this.logoutBtn.addEventListener('click', () => this.handleLogout());
+            }
+
+            // Initialize voice input
+            this.initializeVoiceInput();
+        } catch (error) {
+            console.error('Erro ao configurar event listeners:', error);
+        }
+    }
+
+    setupAssistedForm() {
+        const form = document.getElementById('assisted-form');
+        if (!form) {
+            console.warn('Formulário de assistido não encontrado');
+            return;
+        }
+
+        const autoFillBtn = form.querySelector('.auto-fill-assisted');
+        const hasSocialNameCheckbox = form.querySelector('#has-social-name');
+        const socialNameInput = form.querySelector('#assisted-social-name');
+        const getLocationBtn = form.querySelector('#get-location-btn');
+        const locationInput = form.querySelector('#assisted-location');
+        const photoInput = form.querySelector('#assisted-photo');
+        const photoPreview = form.querySelector('.photo-preview');
+
+        // Toggle nome social
+        if (hasSocialNameCheckbox && socialNameInput) {
+            hasSocialNameCheckbox.addEventListener('change', () => {
+                const inputWrapper = socialNameInput.closest('.input-wrapper');
+                if (hasSocialNameCheckbox.checked) {
+                    inputWrapper.classList.add('show');
+                    socialNameInput.focus();
+                } else {
+                    inputWrapper.classList.remove('show');
+                    socialNameInput.value = '';
+                }
+            });
+        }
+
+        // Preenchimento automático
+        if (autoFillBtn) {
+            autoFillBtn.addEventListener('click', () => {
+                const fakeData = {
+                    name: 'Maria Silva',
+                    socialName: 'Maria Luiza',
+                    nickname: 'Malu',
+                    cpf: '123.456.789-00',
+                    nis: '123.45678.90-1',
+                    phone: '(11) 98765-4321',
+                    location: 'Rua das Flores, 123 - São Paulo, SP',
+                    situations: ['homeless', 'unemployed']
+                };
+
+                // Preenche os campos
+                const nameInput = form.querySelector('#assisted-name');
+                if (nameInput) nameInput.value = fakeData.name;
+                
+                if (hasSocialNameCheckbox) {
+                    hasSocialNameCheckbox.checked = true;
+                    if (socialNameInput) {
+                        socialNameInput.closest('.input-wrapper').classList.add('show');
+                        socialNameInput.value = fakeData.socialName;
+                    }
+                }
+
+                const nicknameInput = form.querySelector('#assisted-nickname');
+                if (nicknameInput) nicknameInput.value = fakeData.nickname;
+
+                const cpfInput = form.querySelector('#assisted-cpf');
+                if (cpfInput) cpfInput.value = fakeData.cpf;
+
+                const nisInput = form.querySelector('#assisted-nis');
+                if (nisInput) nisInput.value = fakeData.nis;
+
+                const phoneInput = form.querySelector('#assisted-phone');
+                if (phoneInput) phoneInput.value = fakeData.phone;
+
+                if (locationInput) locationInput.value = fakeData.location;
+
+                // Marca as situações
+                fakeData.situations.forEach(situation => {
+                    const checkbox = form.querySelector(`input[name="situations"][value="${situation}"]`);
+                    if (checkbox) checkbox.checked = true;
+                });
+
+                // Feedback visual
+                autoFillBtn.innerHTML = '<span class="material-icons">check</span> Dados preenchidos!';
+                autoFillBtn.classList.add('success');
+                setTimeout(() => {
+                    autoFillBtn.innerHTML = '<span class="material-icons">auto_fix_high</span> Preencher com dados de exemplo';
+                    autoFillBtn.classList.remove('success');
+                }, 2000);
+            });
+        }
+
+        // Obter localização
+        if (getLocationBtn && locationInput) {
+            getLocationBtn.addEventListener('click', async () => {
+                try {
+                    getLocationBtn.disabled = true;
+                    getLocationBtn.innerHTML = '<span class="material-icons">hourglass_empty</span> Obtendo localização...';
+
+                    const position = await this.getCurrentPosition();
+                    const { latitude, longitude } = position.coords;
+
+                    // Simula obtenção do endereço (em produção, usar API de geocoding)
+                    const address = await this.getAddressFromCoords(latitude, longitude);
+                    locationInput.value = address;
+
+                    getLocationBtn.innerHTML = '<span class="material-icons">check</span> Localização obtida!';
+                    getLocationBtn.classList.add('success');
+                } catch (error) {
+                    console.error('Erro ao obter localização:', error);
+                    getLocationBtn.innerHTML = '<span class="material-icons">error</span> Erro ao obter localização';
+                    getLocationBtn.classList.add('error');
+                } finally {
+                    setTimeout(() => {
+                        getLocationBtn.disabled = false;
+                        getLocationBtn.innerHTML = '<span class="material-icons">my_location</span> Usar minha localização';
+                        getLocationBtn.classList.remove('success', 'error');
+                    }, 2000);
+                }
+            });
+        }
+
+        // Preview da foto
+        if (photoInput && photoPreview) {
+            photoInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        photoPreview.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview da foto">
+                            <button type="button" class="remove-photo">
+                                <span class="material-icons">close</span>
+                            </button>
+                        `;
+                        photoPreview.classList.add('has-photo');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Remover foto
+            photoPreview.addEventListener('click', (e) => {
+                if (e.target.closest('.remove-photo')) {
+                    photoInput.value = '';
+                    photoPreview.innerHTML = '';
+                    photoPreview.classList.remove('has-photo');
+                }
+            });
+        }
+
+        // Validação do formulário
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!this.validateAssistedForm()) {
+                return;
+            }
+
+            const submitBtn = form.querySelector('#submit-assisted');
+            if (!submitBtn) return;
+
+            const originalText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="material-icons">hourglass_empty</span> Salvando...';
+
+                const formData = new FormData(form);
+                const assistedData = {
+                    name: formData.get('name'),
+                    socialName: formData.get('socialName'),
+                    nickname: formData.get('nickname'),
+                    cpf: formData.get('cpf'),
+                    nis: formData.get('nis'),
+                    phone: formData.get('phone'),
+                    location: formData.get('location'),
+                    situations: Array.from(formData.getAll('situations')),
+                    photo: formData.get('photo')
+                };
+
+                // Simula chamada ao backend
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // Salva no localStorage
+                const assistedList = JSON.parse(localStorage.getItem('assistedList') || '[]');
+                assistedList.push({
+                    ...assistedData,
+                    id: Date.now(),
+                    createdAt: new Date().toISOString()
+                });
+                localStorage.setItem('assistedList', JSON.stringify(assistedList));
+
+                // Feedback de sucesso
+                submitBtn.innerHTML = '<span class="material-icons">check</span> Salvo com sucesso!';
+                submitBtn.classList.add('success');
+
+                // Fecha o modal após 1 segundo
+                setTimeout(() => {
+                    this.closeAssistedModal();
+                    this.updateAssistedList();
+                }, 1000);
+
+            } catch (error) {
+                console.error('Erro ao salvar assistido:', error);
+                submitBtn.innerHTML = '<span class="material-icons">error</span> Erro ao salvar';
+                submitBtn.classList.add('error');
+            } finally {
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.classList.remove('success', 'error');
+                }, 2000);
+            }
+        });
+    }
+
+    validateAssistedForm() {
+        const form = document.getElementById('assisted-form');
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                this.showFieldError(field, 'Este campo é obrigatório');
+                isValid = false;
+            } else {
+                this.clearFieldError(field);
+            }
+        });
+
+        // Validação específica para CPF
+        const cpfField = form.querySelector('#assisted-cpf');
+        if (cpfField.value && !this.validateCPF(cpfField.value)) {
+            this.showFieldError(cpfField, 'CPF inválido');
+            isValid = false;
+        }
+
+        // Validação específica para telefone
+        const phoneField = form.querySelector('#assisted-phone');
+        if (phoneField.value && !this.validatePhone(phoneField.value)) {
+            this.showFieldError(phoneField, 'Telefone inválido');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    validateCPF(cpf) {
+        cpf = cpf.replace(/[^\d]/g, '');
+        if (cpf.length !== 11) return false;
+
+        // Validação básica de CPF
+        if (/^(\d)\1{10}$/.test(cpf)) return false;
+
+        let sum = 0;
+        for (let i = 0; i < 9; i++) {
+            sum += parseInt(cpf.charAt(i)) * (10 - i);
+        }
+        let rest = 11 - (sum % 11);
+        let digit1 = rest > 9 ? 0 : rest;
+
+        sum = 0;
+        for (let i = 0; i < 10; i++) {
+            sum += parseInt(cpf.charAt(i)) * (11 - i);
+        }
+        rest = 11 - (sum % 11);
+        let digit2 = rest > 9 ? 0 : rest;
+
+        return digit1 === parseInt(cpf.charAt(9)) && digit2 === parseInt(cpf.charAt(10));
+    }
+
+    validatePhone(phone) {
+        const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
+        return phoneRegex.test(phone);
+    }
+
+    showFieldError(field, message) {
+        const wrapper = field.closest('.input-wrapper');
+        if (!wrapper) return;
+
+        let errorMessage = wrapper.querySelector('.error-message');
+        if (!errorMessage) {
+            errorMessage = document.createElement('div');
+            errorMessage.className = 'error-message';
+            wrapper.appendChild(errorMessage);
+        }
+
+        errorMessage.textContent = message;
+        wrapper.classList.add('error');
+    }
+
+    clearFieldError(field) {
+        const wrapper = field.closest('.input-wrapper');
+        if (!wrapper) return;
+
+        const errorMessage = wrapper.querySelector('.error-message');
+        if (errorMessage) {
+            errorMessage.remove();
+        }
+        wrapper.classList.remove('error');
+    }
+
+    async getCurrentPosition() {
+        return new Promise((resolve, reject) => {
+            if (!navigator.geolocation) {
+                reject(new Error('Geolocalização não suportada'));
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            });
+        });
+    }
+
+    async getAddressFromCoords(latitude, longitude) {
+        // Em produção, usar uma API de geocoding como Google Maps ou OpenStreetMap
+        // Aqui estamos apenas simulando a resposta
+        return `Rua Exemplo, ${Math.floor(Math.random() * 1000)} - São Paulo, SP`;
+    }
+
+    closeAssistedModal() {
+        this.hideAssistedForm();
+    }
 }
 
 // Initialize the screen when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     const screen = new VolunteerScreen();
     window.screen = screen; // Make screen instance available globally
+    // Only call setupAssistedForm if the element exists
+    if (document.getElementById('assisted-form')) {
+        screen.setupAssistedForm();
+    } else {
+        console.warn('assisted-form não encontrado no DOM após DOMContentLoaded');
+    }
 }); 
