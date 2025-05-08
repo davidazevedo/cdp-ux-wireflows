@@ -146,7 +146,7 @@ export class ResultScreen {
                         Ir pelo mapa
                     </button>
                     ${kitchen.status === 'aberta' ? `
-                        <button class="btn btn-secondary btn-checkin" data-id="${kitchen.id}">
+                        <button class="btn btn-secondary btn-checkin" data-id="${kitchen.id}" style="display: none;">
                             <span class="material-icons">check_circle</span>
                             Confirmar Presença
                         <span class="checkin-status"></span>
