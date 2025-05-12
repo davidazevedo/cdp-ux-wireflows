@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +11,10 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <!-- Load Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=Function.prototype"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=Function.prototype"></script>
 </head>
+
 <body>
     <div id="screenContainer" class="volunteer-container">
         <header class="volunteer-header">
@@ -24,19 +27,24 @@
                     <p class="subtitle">Bem-vindo!</p>
                 </div>
             </div>
-            <button id="logoutBtn" class="btn-secondary" aria-label="Sair">
-                <span class="material-icons">logout</span>
-                Sair
-            </button>
+            <div class="header-actions">
+                <button id="autoFillToggle" class="btn-icon" title="Alternar preenchimento automático">
+                    <span class="material-icons">play_arrow</span>
+                </button>
+                <button id="logoutBtn" class="btn-icon" title="Sair">
+                    <span class="material-icons">logout</span>
+                </button>
+            </div>
         </header>
 
         <main class="volunteer-content">
             <div class="auto-fill-buttons">
-                <button type="button" id="auto-fill-self" class="btn-secondary" aria-label="Preencher para mim" style="display: none;">
+                <button type="button" id="auto-fill-self" class="btn-secondary" aria-label="Preencher para mim">
                     <span class="material-icons">person</span>
                     Preencher para Mim
                 </button>
-                <button type="button" id="auto-fill-other" class="btn-secondary" aria-label="Preencher para outra pessoa" style="display: none;">
+                <button type="button" id="auto-fill-other" class="btn-secondary"
+                    aria-label="Preencher para outra pessoa">
                     <span class="material-icons">group</span>
                     Preencher para Outra Pessoa
                 </button>
@@ -45,20 +53,24 @@
                 <!-- Seção de Identificação -->
                 <section class="form-section" aria-labelledby="identification-title">
                     <h2 id="identification-title">Identificação</h2>
-                    
+
                     <div class="photo-upload">
-                        <div id="volunteer-photo-preview" class="photo-preview" role="button" tabindex="0" aria-label="Adicionar foto">
+                        <div id="volunteer-photo-preview" class="photo-preview" role="button" tabindex="0"
+                            aria-label="Adicionar foto">
                             <span class="material-icons">add_a_photo</span>
                             <p>Adicionar foto</p>
                         </div>
-                        <input type="file" id="volunteer-photo" accept="image/*" class="hidden" aria-label="Selecionar foto">
+                        <input type="file" id="volunteer-photo" accept="image/*" class="hidden"
+                            aria-label="Selecionar foto">
                     </div>
 
                     <div class="form-group">
                         <label for="volunteer-name" id="name-label">Nome Completo *</label>
                         <div class="input-wrapper">
-                            <input type="text" id="volunteer-name" placeholder="Nome completo" required maxlength="100" aria-labelledby="name-label">
-                            <button type="button" class="voice-input-btn" data-input="volunteer-name" aria-label="Usar entrada de voz">
+                            <input type="text" id="volunteer-name" placeholder="Nome completo" required maxlength="100"
+                                aria-labelledby="name-label">
+                            <button type="button" class="voice-input-btn" data-input="volunteer-name"
+                                aria-label="Usar entrada de voz">
                                 <span class="material-icons">mic</span>
                             </button>
                         </div>
@@ -103,13 +115,14 @@
                     <div class="form-group">
                         <label for="volunteer-birthdate" id="birthdate-label">Data de Nascimento</label>
                         <div class="input-wrapper">
-                            <input type="text" id="volunteer-birthdate" placeholder="dd/mm/aaaa" aria-labelledby="birthdate-label">
+                            <input type="text" id="volunteer-birthdate" placeholder="dd/mm/aaaa"
+                                aria-labelledby="birthdate-label">
                         </div>
                         <div class="error-message" role="alert"></div>
                     </div>
                 </section>
 
-                
+
                 <!-- Seção de Localização -->
                 <section class="form-section" aria-labelledby="location-title">
                     <h2 id="location-title">Localização</h2>
@@ -125,16 +138,17 @@
                         </div>
                     </div>
                 </section>
-                
+
                 <!-- Seção de Endereço -->
                 <section class="form-section" aria-labelledby="address-title">
-                    
+
                     <h2 id="address-title">Endereço</h2>
 
                     <div class="form-group">
                         <label for="volunteer-city" id="city-label">Município *</label>
                         <div class="input-wrapper">
-                            <input type="text" id="volunteer-city" placeholder="Digite o nome do município" required aria-labelledby="city-label">
+                            <input type="text" id="volunteer-city" placeholder="Digite o nome do município" required
+                                aria-labelledby="city-label">
                             <div id="city-suggestions" class="suggestions" role="listbox"></div>
                         </div>
                         <div class="error-message" role="alert"></div>
@@ -143,7 +157,9 @@
                     <div class="form-group">
                         <label for="volunteer-address" id="address-label">Endereço Completo</label>
                         <div class="input-wrapper">
-                            <input type="text" id="volunteer-address" placeholder="Rua, número, bairro, ponto de referência" maxlength="200" aria-labelledby="address-label">
+                            <input type="text" id="volunteer-address"
+                                placeholder="Rua, número, bairro, ponto de referência" maxlength="200"
+                                aria-labelledby="address-label">
                         </div>
                     </div>
                 </section>
@@ -155,8 +171,10 @@
                     <div class="form-group">
                         <label for="volunteer-cpf" id="cpf-label">CPF</label>
                         <div class="input-wrapper">
-                            <input type="text" id="volunteer-cpf" placeholder="000.000.000-00" aria-labelledby="cpf-label">
-                            <button type="button" class="voice-input-btn" data-input="volunteer-cpf" aria-label="Usar entrada de voz">
+                            <input type="text" id="volunteer-cpf" placeholder="000.000.000-00"
+                                aria-labelledby="cpf-label">
+                            <button type="button" class="voice-input-btn" data-input="volunteer-cpf"
+                                aria-label="Usar entrada de voz">
                                 <span class="material-icons">mic</span>
                             </button>
                         </div>
@@ -166,8 +184,10 @@
                     <div class="form-group">
                         <label for="volunteer-nis" id="nis-label">NIS</label>
                         <div class="input-wrapper">
-                            <input type="text" id="volunteer-nis" placeholder="Número do NIS" maxlength="11" aria-labelledby="nis-label">
-                            <button type="button" class="voice-input-btn" data-input="volunteer-nis" aria-label="Usar entrada de voz">
+                            <input type="text" id="volunteer-nis" placeholder="Número do NIS" maxlength="11"
+                                aria-labelledby="nis-label">
+                            <button type="button" class="voice-input-btn" data-input="volunteer-nis"
+                                aria-label="Usar entrada de voz">
                                 <span class="material-icons">mic</span>
                             </button>
                         </div>
@@ -250,8 +270,10 @@
                     </div>
                 </section>
 
-                <div class="form-actions" style="width: 100%; display: flex; justify-content: center; margin-top: 2rem;">
-                    <button type="button" id="submit-volunteer" class="btn-primary" aria-label="Confirmar cadastro" style="min-width: 200px;">
+                <div class="form-actions"
+                    style="width: 100%; display: flex; justify-content: center; margin-top: 2rem;">
+                    <button type="button" id="submit-volunteer" class="btn-primary" aria-label="Confirmar cadastro"
+                        style="min-width: 200px;">
                         <span class="material-icons">check</span>
                         Confirmar
                     </button>
@@ -273,169 +295,187 @@
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
 
-      <!-- Modal de Cadastro de Assistido -->
-      <div id="assistedForm" class="modal" role="dialog" aria-labelledby="assisted-form-title">
-        <div class="modal-content">
-            <span class="close-modal" aria-label="Fechar">&times;</span>
-            <div class="form-section">
-                <h2 id="assisted-form-title">Cadastro de Assistido</h2>
-                
-                <div class="photo-upload">
-                    <div id="assisted-photo-preview" class="photo-preview" role="button" tabindex="0" aria-label="Adicionar foto">
-                        <span class="material-icons">add_a_photo</span>
-                        <p>Adicionar foto</p>
-                    </div>
-                    <input type="file" id="assisted-photo" accept="image/*" class="hidden" aria-label="Selecionar foto">
-                </div>
 
-                <div class="form-group">
-                    <label for="assisted-name" id="assisted-name-label">Nome Completo *</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="assisted-name" placeholder="Nome completo" required aria-labelledby="assisted-name-label">
-                        <button type="button" class="voice-input-btn" data-input="assisted-name" aria-label="Usar entrada de voz">
-                            <span class="material-icons">mic</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="assisted-nickname" id="assisted-nickname-label">Apelido</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="assisted-nickname" placeholder="Como a pessoa prefere ser chamada" aria-labelledby="assisted-nickname-label">
-                        <button type="button" class="voice-input-btn" data-input="assisted-nickname" aria-label="Usar entrada de voz">
-                            <span class="material-icons">mic</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="assisted-cpf" id="assisted-cpf-label">CPF *</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="assisted-cpf" placeholder="CPF" required aria-labelledby="assisted-cpf-label">
-                        <button type="button" class="voice-input-btn" data-input="assisted-cpf" aria-label="Usar entrada de voz">
-                            <span class="material-icons">mic</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="assisted-nis" id="assisted-nis-label">NIS</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="assisted-nis" placeholder="Número do NIS" maxlength="11" aria-labelledby="assisted-nis-label">
-                        <button type="button" class="voice-input-btn" data-input="assisted-nis" aria-label="Usar entrada de voz">
-                            <span class="material-icons">mic</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="assisted-phone" id="assisted-phone-label">Telefone *</label>
-                    <div class="input-wrapper">
-                        <input type="tel" id="assisted-phone" placeholder="Telefone" required aria-labelledby="assisted-phone-label">
-                        <button type="button" class="voice-input-btn" data-input="assisted-phone" aria-label="Usar entrada de voz">
-                            <span class="material-icons">mic</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="assisted-location" id="assisted-location-label">Localização *</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="assisted-location" placeholder="Localização" readonly required aria-labelledby="assisted-location-label">
-                        <button type="button" id="assisted-location-btn" class="btn btn-primary" aria-label="Obter localização">
-                            <span class="material-icons">location_on</span>
-                            Obter Localização
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label id="situations-label">Situações de Vulnerabilidade</label>
-                    <div id="situations-grid" class="situations-grid" role="group" aria-labelledby="situations-label">
-                        <label class="situation-checkbox">
-                            <input type="checkbox" name="situation" value="idoso">
-                            <span class="material-icons">elderly</span>
-                            Idoso
-                        </label>
-                        <label class="situation-checkbox">
-                            <input type="checkbox" name="situation" value="crianca">
-                            <span class="material-icons">child_care</span>
-                            Criança
-                        </label>
-                        <label class="situation-checkbox">
-                            <input type="checkbox" name="situation" value="gestante">
-                            <span class="material-icons">pregnant_woman</span>
-                            Gestante
-                        </label>
-                        <label class="situation-checkbox">
-                            <input type="checkbox" name="situation" value="deficiente">
-                            <span class="material-icons">accessible</span>
-                            PCD
-                        </label>
-                        <label class="situation-checkbox">
-                            <input type="checkbox" name="situation" value="doente">
-                            <span class="material-icons">sick</span>
-                            Doente Crônico
-                        </label>
-                        <label class="situation-checkbox">
-                            <input type="checkbox" name="situation" value="desempregado">
-                            <span class="material-icons">work_off</span>
-                            Desempregado
-                        </label>
-                        <label class="situation-checkbox">
-                            <input type="checkbox" name="situation" value="sem_teto">
-                            <span class="material-icons">house</span>
-                            Sem Teto
-                        </label>
-                        <label class="situation-checkbox">
-                            <input type="checkbox" name="situation" value="refugiado">
-                            <span class="material-icons">flight</span>
-                            Refugiado
-                        </label>
-                        <label class="situation-checkbox">
-                            <input type="checkbox" name="situation" value="indigena">
-                            <span class="material-icons">groups</span>
-                            Indígena
-                        </label>
-                        <label class="situation-checkbox">
-                            <input type="checkbox" name="situation" value="quilombola">
-                            <span class="material-icons">groups</span>
-                            Quilombola
-                        </label>
-                        <label class="situation-checkbox">
-                            <input type="checkbox" name="situation" value="lgbtqia">
-                            <span class="material-icons">diversity_3</span>
-                            LGBTQIA+
-                        </label>
-                        <label class="situation-checkbox">
-                            <input type="checkbox" name="situation" value="violencia">
-                            <span class="material-icons">gpp_bad</span>
-                            Vítima de Violência
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" id="submit-assisted" class="btn btn-primary" aria-label="Confirmar cadastro">
-                        <span class="material-icons">check</span>
-                        Confirmar
-                    </button>
+            <!-- Modal de Visualização de Foto -->
+            <div id="photo-modal" class="modal" role="dialog" aria-labelledby="photo-modal-title">
+                <div class="modal-content">
+                    <span class="close-modal" aria-label="Fechar">&times;</span>
+                    <div id="photo-modal-content"></div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Modal de Visualização de Foto -->
-    <div id="photo-modal" class="modal" role="dialog" aria-labelledby="photo-modal-title">
-        <div class="modal-content">
-            <span class="close-modal" aria-label="Fechar">&times;</span>
-            <div id="photo-modal-content"></div>
-        </div>
+
+            <!-- Modal de Cadastro de Assistido -->
+            <div id="assistedForm" class="modal" role="dialog" aria-labelledby="assisted-form-title"
+                style="display: none;">
+                <div class="modal-content">
+                    <span class="close-modal" aria-label="Fechar">&times;</span>
+                    <div class="form-section">
+                        <h2 id="assisted-form-title">Cadastro de Assistido</h2>
+
+                        <div class="photo-upload">
+                            <div id="assisted-photo-preview" class="photo-preview" role="button" tabindex="0"
+                                aria-label="Adicionar foto">
+                                <span class="material-icons">add_a_photo</span>
+                                <p>Adicionar foto</p>
+                            </div>
+                            <input type="file" id="assisted-photo" accept="image/*" class="hidden"
+                                aria-label="Selecionar foto">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="assisted-name" id="assisted-name-label">Nome Completo *</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="assisted-name" placeholder="Nome completo" required
+                                    aria-labelledby="assisted-name-label">
+                                <button type="button" class="voice-input-btn" data-input="assisted-name"
+                                    aria-label="Usar entrada de voz">
+                                    <span class="material-icons">mic</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="assisted-nickname" id="assisted-nickname-label">Apelido</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="assisted-nickname"
+                                    placeholder="Como a pessoa prefere ser chamada"
+                                    aria-labelledby="assisted-nickname-label">
+                                <button type="button" class="voice-input-btn" data-input="assisted-nickname"
+                                    aria-label="Usar entrada de voz">
+                                    <span class="material-icons">mic</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="assisted-cpf" id="assisted-cpf-label">CPF *</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="assisted-cpf" placeholder="CPF" required
+                                    aria-labelledby="assisted-cpf-label">
+                                <button type="button" class="voice-input-btn" data-input="assisted-cpf"
+                                    aria-label="Usar entrada de voz">
+                                    <span class="material-icons">mic</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="assisted-nis" id="assisted-nis-label">NIS</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="assisted-nis" placeholder="Número do NIS" maxlength="11"
+                                    aria-labelledby="assisted-nis-label">
+                                <button type="button" class="voice-input-btn" data-input="assisted-nis"
+                                    aria-label="Usar entrada de voz">
+                                    <span class="material-icons">mic</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="assisted-phone" id="assisted-phone-label">Telefone *</label>
+                            <div class="input-wrapper">
+                                <input type="tel" id="assisted-phone" placeholder="Telefone" required
+                                    aria-labelledby="assisted-phone-label">
+                                <button type="button" class="voice-input-btn" data-input="assisted-phone"
+                                    aria-label="Usar entrada de voz">
+                                    <span class="material-icons">mic</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="assisted-location" id="assisted-location-label">Localização *</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="assisted-location" placeholder="Digite o endereço ou use o botão para obter localização" required aria-labelledby="assisted-location-label">
+                                <button type="button" id="assisted-location-btn" class="location-btn" aria-label="Obter localização">
+                                    <span class="material-icons">my_location</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label id="situations-label">Situações de Vulnerabilidade</label>
+                            <div id="situations-grid" class="situations-grid" role="group"
+                                aria-labelledby="situations-label">
+                                <label class="situation-checkbox">
+                                    <input type="checkbox" name="situation" value="idoso">
+                                    <span class="material-icons">elderly</span>
+                                    Idoso
+                                </label>
+                                <label class="situation-checkbox">
+                                    <input type="checkbox" name="situation" value="crianca">
+                                    <span class="material-icons">child_care</span>
+                                    Criança
+                                </label>
+                                <label class="situation-checkbox">
+                                    <input type="checkbox" name="situation" value="gestante">
+                                    <span class="material-icons">pregnant_woman</span>
+                                    Gestante
+                                </label>
+                                <label class="situation-checkbox">
+                                    <input type="checkbox" name="situation" value="deficiente">
+                                    <span class="material-icons">accessible</span>
+                                    PCD
+                                </label>
+                                <label class="situation-checkbox">
+                                    <input type="checkbox" name="situation" value="doente">
+                                    <span class="material-icons">sick</span>
+                                    Doente Crônico
+                                </label>
+                                <label class="situation-checkbox">
+                                    <input type="checkbox" name="situation" value="desempregado">
+                                    <span class="material-icons">work_off</span>
+                                    Desempregado
+                                </label>
+                                <label class="situation-checkbox">
+                                    <input type="checkbox" name="situation" value="sem_teto">
+                                    <span class="material-icons">house</span>
+                                    Sem Teto
+                                </label>
+                                <label class="situation-checkbox">
+                                    <input type="checkbox" name="situation" value="refugiado">
+                                    <span class="material-icons">flight</span>
+                                    Refugiado
+                                </label>
+                                <label class="situation-checkbox">
+                                    <input type="checkbox" name="situation" value="indigena">
+                                    <span class="material-icons">groups</span>
+                                    Indígena
+                                </label>
+                                <label class="situation-checkbox">
+                                    <input type="checkbox" name="situation" value="quilombola">
+                                    <span class="material-icons">groups</span>
+                                    Quilombola
+                                </label>
+                                <label class="situation-checkbox">
+                                    <input type="checkbox" name="situation" value="lgbtqia">
+                                    <span class="material-icons">diversity_3</span>
+                                    LGBTQIA+
+                                </label>
+                                <label class="situation-checkbox">
+                                    <input type="checkbox" name="situation" value="violencia">
+                                    <span class="material-icons">gpp_bad</span>
+                                    Vítima de Violência
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="submit-assisted" class="btn btn-primary"
+                                aria-label="Confirmar cadastro">
+                                <span class="material-icons">check</span>
+                                Confirmar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
     <!-- Scripts -->
     <script src="/src/screens/volunteer/volunteer.js"></script>
 </body>
-</html> 
+
+</html>
