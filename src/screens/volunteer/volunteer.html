@@ -32,11 +32,11 @@
 
         <main class="volunteer-content">
             <div class="auto-fill-buttons">
-                <button type="button" id="auto-fill-self" class="btn-secondary" aria-label="Preencher para mim">
+                <button type="button" id="auto-fill-self" class="btn-secondary" aria-label="Preencher para mim" style="display: none;">
                     <span class="material-icons">person</span>
                     Preencher para Mim
                 </button>
-                <button type="button" id="auto-fill-other" class="btn-secondary" aria-label="Preencher para outra pessoa">
+                <button type="button" id="auto-fill-other" class="btn-secondary" aria-label="Preencher para outra pessoa" style="display: none;">
                     <span class="material-icons">group</span>
                     Preencher para Outra Pessoa
                 </button>
@@ -109,8 +109,26 @@
                     </div>
                 </section>
 
+                
+                <!-- Seção de Localização -->
+                <section class="form-section" aria-labelledby="location-title">
+                    <h2 id="location-title">Localização</h2>
+
+                    <div class="form-group">
+                        <label for="volunteer-location">Localização</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="volunteer-location" name="volunteer-location" readonly>
+                            <button type="button" class="location-btn" id="get-location-btn">
+                                <span class="material-icons">location_on</span>
+                                Obter Localização
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                
                 <!-- Seção de Endereço -->
                 <section class="form-section" aria-labelledby="address-title">
+                    
                     <h2 id="address-title">Endereço</h2>
 
                     <div class="form-group">
@@ -190,25 +208,50 @@
                     </div>
                 </section>
 
-                <!-- Seção de Localização -->
-                <section class="form-section" aria-labelledby="location-title">
-                    <h2 id="location-title">Localização</h2>
-
-                    <div class="form-group">
-                        <label for="volunteer-location" id="location-label">Localização *</label>
-                        <div class="input-wrapper">
-                            <input type="text" id="volunteer-location" placeholder="Localização" readonly required aria-labelledby="location-label">
-                            <button type="button" id="volunteer-location-btn" class="location-btn" aria-label="Obter localização">
-                                <span class="material-icons">location_on</span>
-                                Obter Localização
-                            </button>
-                        </div>
-                        <div class="error-message" role="alert"></div>
+                <!-- Nova Seção de Comunidades -->
+                <section class="form-section" aria-labelledby="communities-title">
+                    <h2 id="communities-title">Comunidades</h2>
+                    <div class="communities-grid">
+                        <label class="community-card">
+                            <input type="checkbox" name="community" value="quilombola">
+                            <div class="community-content">
+                                <span class="material-icons">groups</span>
+                                <span class="community-name">Comunidade Quilombola</span>
+                            </div>
+                        </label>
+                        <label class="community-card">
+                            <input type="checkbox" name="community" value="indigena">
+                            <div class="community-content">
+                                <span class="material-icons">forest</span>
+                                <span class="community-name">Povos Indígenas</span>
+                            </div>
+                        </label>
+                        <label class="community-card">
+                            <input type="checkbox" name="community" value="terreiro">
+                            <div class="community-content">
+                                <span class="material-icons">spa</span>
+                                <span class="community-name">Povos e Comunidades de Terreiro</span>
+                            </div>
+                        </label>
+                        <label class="community-card">
+                            <input type="checkbox" name="community" value="catolica">
+                            <div class="community-content">
+                                <span class="material-icons">church</span>
+                                <span class="community-name">Comunidade Católica Local</span>
+                            </div>
+                        </label>
+                        <label class="community-card">
+                            <input type="checkbox" name="community" value="evangelica">
+                            <div class="community-content">
+                                <span class="material-icons">volunteer_activism</span>
+                                <span class="community-name">Comunidade Evangélica do Bairro</span>
+                            </div>
+                        </label>
                     </div>
                 </section>
 
-                <div class="form-actions">
-                    <button type="button" id="submit-volunteer" class="btn-primary" aria-label="Confirmar cadastro">
+                <div class="form-actions" style="width: 100%; display: flex; justify-content: center; margin-top: 2rem;">
+                    <button type="button" id="submit-volunteer" class="btn-primary" aria-label="Confirmar cadastro" style="min-width: 200px;">
                         <span class="material-icons">check</span>
                         Confirmar
                     </button>

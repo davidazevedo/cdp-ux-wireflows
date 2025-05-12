@@ -102,6 +102,7 @@ export class VolunteerScreen {
             // Volunteer form elements
             this.volunteerForm = document.getElementById('volunteer-form');
             this.volunteerPhoto = document.getElementById('volunteer-photo');
+            this.volunteerPhotoPreview = document.getElementById('volunteer-photo-preview');
             this.volunteerName = document.getElementById('volunteer-name');
             this.volunteerSocialName = document.getElementById('volunteer-social-name');
             this.volunteerBirthdate = document.getElementById('volunteer-birthdate');
@@ -118,6 +119,7 @@ export class VolunteerScreen {
             // Assisted form elements
             this.assistedForm = document.getElementById('assistedForm');
             this.assistedPhoto = document.getElementById('assisted-photo');
+            this.assistedPhotoPreview = document.getElementById('assisted-photo-preview');
             this.assistedName = document.getElementById('assisted-name');
             this.assistedNickname = document.getElementById('assisted-nickname');
             this.assistedCpf = document.getElementById('assisted-cpf');
@@ -166,7 +168,6 @@ export class VolunteerScreen {
                 'volunteerGender',
                 'volunteer-birthdate',
                 'volunteer-city',
-                'volunteer-cpf',
                 'volunteer-location'
             ];
 
@@ -200,6 +201,44 @@ export class VolunteerScreen {
 
             // Initialize modals
             this.initializeModals();
+
+            // Add photo handling
+            if (this.volunteerPhoto && this.volunteerPhotoPreview) {
+                this.volunteerPhotoPreview.addEventListener('click', () => {
+                    this.volunteerPhoto.click();
+                });
+
+                this.volunteerPhoto.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            this.volunteerPhotoPreview.style.backgroundImage = `url(${e.target.result})`;
+                            this.volunteerPhotoPreview.classList.add('has-photo');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Add photo handling for assisted form
+            if (this.assistedPhoto && this.assistedPhotoPreview) {
+                this.assistedPhotoPreview.addEventListener('click', () => {
+                    this.assistedPhoto.click();
+                });
+
+                this.assistedPhoto.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            this.assistedPhotoPreview.style.backgroundImage = `url(${e.target.result})`;
+                            this.assistedPhotoPreview.classList.add('has-photo');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
         } catch (error) {
             console.error('Erro ao inicializar elementos:', error);
         }
@@ -616,40 +655,47 @@ export class VolunteerScreen {
 
     loadCachedData() {
         try {
-            // Load user data from localStorage
-            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-            
-            // If user data exists, populate the form
-            if (userData && Object.keys(userData).length > 0) {
-                if (this.volunteerName) this.volunteerName.value = userData.name || '';
-                if (this.volunteerSocialName) this.volunteerSocialName.value = userData.socialName || '';
-                if (this.volunteerBirthdate) this.volunteerBirthdate.value = userData.birthdate || '';
-                if (this.volunteerGender) this.volunteerGender.value = userData.gender || '';
-                if (this.volunteerCity) this.volunteerCity.value = userData.city || '';
-                if (this.volunteerAddress) this.volunteerAddress.value = userData.address || '';
-                if (this.volunteerCpf) this.volunteerCpf.value = userData.cpf || '';
-                if (this.volunteerNis) this.volunteerNis.value = userData.nis || '';
-                if (this.volunteerLocation) this.volunteerLocation.value = userData.location || '';
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                // Preencher campos básicos
+                document.getElementById('volunteer-name').value = userData.name || '';
+                document.getElementById('volunteer-social-name').value = userData.socialName || '';
+                document.getElementById('volunteer-birthdate').value = userData.birthdate || '';
+                document.getElementById('volunteer-city').value = userData.city || '';
+                document.getElementById('volunteer-address').value = userData.address || '';
+                document.getElementById('volunteer-cpf').value = userData.cpf || '';
+                document.getElementById('volunteer-nis').value = userData.nis || '';
+                document.getElementById('volunteer-location').value = userData.location || '';
+                document.getElementById('volunteer-photo').value = userData.photo || '';
 
-                // Set radio buttons
+                // Preencher radio buttons
+                if (userData.gender) {
+                    document.querySelector(`input[name="gender"][value="${userData.gender}"]`).checked = true;
+                }
                 if (userData.homeless) {
-                    const homelessRadio = document.querySelector(`input[name="homeless"][value="${userData.homeless}"]`);
-                    if (homelessRadio) homelessRadio.checked = true;
+                    document.querySelector(`input[name="homeless"][value="${userData.homeless}"]`).checked = true;
                 }
 
-                // Set checkboxes
-                if (userData.fillingFor) {
+                // Preencher checkboxes de filling_for
+                if (Array.isArray(userData.fillingFor)) {
                     userData.fillingFor.forEach(value => {
-                        const fillingForCheckbox = document.querySelector(`input[name="filling_for"][value="${value}"]`);
-                        if (fillingForCheckbox) fillingForCheckbox.checked = true;
+                        const checkbox = document.querySelector(`input[name="filling_for"][value="${value}"]`);
+                        if (checkbox) checkbox.checked = true;
                     });
                 }
 
-                // Update profile
+                // Preencher checkboxes de comunidades
+                if (Array.isArray(userData.communities)) {
+                    userData.communities.forEach(value => {
+                        const checkbox = document.querySelector(`input[name="community"][value="${value}"]`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                }
+
                 this.updateVolunteerProfile(userData.name, userData.photo);
             }
         } catch (error) {
-            console.error('Erro ao carregar dados do cache:', error);
+            console.error('Erro ao carregar dados:', error);
         }
     }
 
@@ -690,93 +736,69 @@ export class VolunteerScreen {
         }
     }
 
-    async handleVolunteerSubmit() {
+    handleVolunteerSubmit(event) {
+        event.preventDefault();
+        
+        if (!this.validateForm()) {
+            return;
+        }
+
+        const submitBtn = document.getElementById('submit-volunteer');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="material-icons">hourglass_empty</span> Salvando...';
+
         try {
-            // Validate form
-            if (!this.validateForm('volunteer')) {
-                return;
-            }
-
-            // Disable submit button and show loading state
-            if (this.submitVolunteerBtn) {
-                this.submitVolunteerBtn.disabled = true;
-                this.submitVolunteerBtn.innerHTML = '<span class="material-icons">sync</span> Salvando...';
-            }
-
-            // Collect form data
             const formData = {
-                name: this.volunteerName?.value || '',
-                socialName: this.volunteerSocialName?.value || '',
-                birthdate: this.volunteerBirthdate?.value || '',
-                gender: this.volunteerGender?.value || '',
-                city: this.volunteerCity?.value || '',
-                address: this.volunteerAddress?.value || '',
-                cpf: this.volunteerCpf?.value || '',
-                nis: this.volunteerNis?.value || '',
-                homeless: document.querySelector('input[name="homeless"]:checked')?.value || '',
+                name: document.getElementById('volunteer-name').value,
+                socialName: document.getElementById('volunteer-social-name').value,
+                birthdate: document.getElementById('volunteer-birthdate').value,
+                gender: document.querySelector('input[name="gender"]:checked')?.value,
+                city: document.getElementById('volunteer-city').value,
+                address: document.getElementById('volunteer-address').value,
+                cpf: document.getElementById('volunteer-cpf').value,
+                nis: document.getElementById('volunteer-nis').value,
+                homeless: document.querySelector('input[name="homeless"]:checked')?.value,
                 fillingFor: Array.from(document.querySelectorAll('input[name="filling_for"]:checked')).map(cb => cb.value),
-                location: this.volunteerLocation?.value || '',
-                photo: this.volunteerPhoto?.files[0] || null,
-                role: 'volunteer',
-                timestamp: new Date().getTime(),
-                assistedList: [] // Inicializa a lista de assistidos vazia
+                communities: Array.from(document.querySelectorAll('input[name="community"]:checked')).map(cb => cb.value),
+                location: document.getElementById('volunteer-location').value,
+                photo: document.getElementById('volunteer-photo').value,
+                assistedList: []
             };
 
-            // Save to localStorage
             localStorage.setItem('userData', JSON.stringify(formData));
-            
-            // Update volunteer profile
             this.updateVolunteerProfile(formData.name, formData.photo);
+            this.updateUIState('volunteer');
             
-            // Update UI state
-            this.updateUIState();
+            submitBtn.innerHTML = '<span class="material-icons">check_circle</span> Salvo com sucesso!';
+            submitBtn.classList.add('success');
             
-            // Show success message
-            if (this.submitVolunteerBtn) {
-                this.submitVolunteerBtn.innerHTML = '<span class="material-icons">check</span> Dados salvos com sucesso!';
-                this.submitVolunteerBtn.style.backgroundColor = 'var(--success-color)';
-
-                // Reset button after 2 seconds
-                setTimeout(() => {
-                    this.submitVolunteerBtn.disabled = false;
-                    this.submitVolunteerBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
-                    this.submitVolunteerBtn.style.backgroundColor = 'var(--primary-color)';
-                }, 2000);
-            }
-
-            // Show success message
-            if (typeof showMessage === 'function') {
-                showMessage('Dados salvos com sucesso!', 'success');
-            } else {
-                alert('Dados salvos com sucesso!');
-            }
-
+            setTimeout(() => {
+                submitBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('success');
+            }, 2000);
         } catch (error) {
             console.error('Erro ao salvar dados:', error);
+            submitBtn.innerHTML = '<span class="material-icons">error</span> Erro ao salvar';
+            submitBtn.classList.add('error');
             
-            if (this.submitVolunteerBtn) {
-                this.submitVolunteerBtn.innerHTML = '<span class="material-icons">error</span> Erro ao salvar';
-                this.submitVolunteerBtn.style.backgroundColor = 'var(--error-color)';
-                
-                // Reset button after 2 seconds
-                setTimeout(() => {
-                    this.submitVolunteerBtn.disabled = false;
-                    this.submitVolunteerBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
-                    this.submitVolunteerBtn.style.backgroundColor = 'var(--primary-color)';
-                }, 2000);
-            }
-
-            if (typeof showMessage === 'function') {
-                showMessage('Erro ao salvar dados. Por favor, tente novamente.', 'error');
-            } else {
-                alert('Erro ao salvar dados. Por favor, tente novamente.');
-            }
+            setTimeout(() => {
+                submitBtn.innerHTML = '<span class="material-icons">save</span> Salvar';
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('error');
+            }, 2000);
         }
     }
 
-    validateForm(formType = 'volunteer') {
-        const form = formType === 'volunteer' ? this.volunteerForm : this.assistedForm;
-        const requiredFields = formType === 'volunteer' ? this.requiredFields : this.assistedRequiredFields;
+    validateForm() {
+        const form = document.getElementById('volunteer-form');
+        const requiredFields = [
+            'volunteer-name',
+            'volunteerGender',
+            'volunteer-birthdate',
+            'volunteer-city',
+            'volunteer-location'
+        ];
         let isValid = true;
         let firstInvalidField = null;
 
@@ -793,8 +815,6 @@ export class VolunteerScreen {
 
             if (!value) {
                 fieldError = 'Este campo é obrigatório';
-            } else if (fieldId.includes('cpf') && !this.validateCPF(value)) {
-                fieldError = 'CPF inválido';
             } else if (fieldId.includes('birthdate') && !this.validateBirthDate(value)) {
                 fieldError = 'Data de nascimento inválida';
             } else if (fieldId.includes('email') && !this.validateEmail(value)) {
@@ -816,14 +836,81 @@ export class VolunteerScreen {
             }
         });
 
+        // Verificar se o nome social é obrigatório (quando checkbox está marcado)
+        if (this.socialNameCheckbox && this.socialNameCheckbox.checked) {
+            if (!this.volunteerSocialName || !this.volunteerSocialName.value.trim()) {
+                isValid = false;
+                const wrapper = this.volunteerSocialName?.closest('.input-wrapper');
+                if (wrapper) {
+                    wrapper.classList.add('invalid');
+                    let errorMessage = wrapper.querySelector('.error-message');
+                    if (!errorMessage) {
+                        errorMessage = document.createElement('div');
+                        errorMessage.className = 'error-message';
+                        wrapper.appendChild(errorMessage);
+                    }
+                    errorMessage.textContent = 'Este campo é obrigatório';
+                    errorMessage.classList.add('show');
+                }
+            }
+        }
+
+        // Verificar se está em situação de rua foi selecionado
+        const homelessSelected = document.querySelector('input[name="homeless"]:checked');
+        if (!homelessSelected) {
+            isValid = false;
+            const homelessGroup = document.querySelector('.homeless-group');
+            if (homelessGroup) {
+                homelessGroup.classList.add('invalid');
+                let errorMessage = homelessGroup.querySelector('.error-message');
+                if (!errorMessage) {
+                    errorMessage = document.createElement('div');
+                    errorMessage.className = 'error-message';
+                    homelessGroup.appendChild(errorMessage);
+                }
+                errorMessage.textContent = 'Por favor, selecione uma opção';
+                errorMessage.classList.add('show');
+            }
+        }
+
+        // Verificar se quem está preenchendo foi selecionado
+        const fillingForSelected = document.querySelector('input[name="filling_for"]:checked');
+        if (!fillingForSelected) {
+            isValid = false;
+            const fillingForGroup = document.querySelector('.filling-for-group');
+            if (fillingForGroup) {
+                fillingForGroup.classList.add('invalid');
+                let errorMessage = fillingForGroup.querySelector('.error-message');
+                if (!errorMessage) {
+                    errorMessage = document.createElement('div');
+                    errorMessage.className = 'error-message';
+                    fillingForGroup.appendChild(errorMessage);
+                }
+                errorMessage.textContent = 'Por favor, selecione uma opção';
+                errorMessage.classList.add('show');
+            }
+        }
+
         if (!isValid && firstInvalidField) {
             firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
             firstInvalidField.focus();
-            // Usar alert como fallback se showMessage não estiver disponível
             if (typeof showMessage === 'function') {
                 showMessage('Por favor, corrija os campos marcados em vermelho.', 'error');
             } else {
                 alert('Por favor, corrija os campos marcados em vermelho.');
+            }
+        }
+
+        // Atualiza o estado do botão de submit
+        const submitButton = document.getElementById('submit-volunteer');
+        if (submitButton) {
+            submitButton.disabled = !isValid;
+            if (isValid) {
+                submitButton.classList.remove('disabled');
+                submitButton.classList.add('enabled');
+            } else {
+                submitButton.classList.remove('enabled');
+                submitButton.classList.add('disabled');
             }
         }
 
@@ -1090,22 +1177,36 @@ export class VolunteerScreen {
             const inputId = button.closest('.input-wrapper').querySelector('input').id;
             button.setAttribute('data-input', inputId);
             
-            // Adiciona feedback visual ao clicar
             button.addEventListener('click', () => {
+                if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                    showMessage('Reconhecimento de voz não é suportado pelo seu navegador.', 'error');
+                    return;
+                }
+
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                
+                recognition.lang = 'pt-BR';
+                recognition.continuous = false;
+                recognition.interimResults = false;
+
                 button.classList.add('recording');
                 const input = document.getElementById(inputId);
                 if (input) {
                     input.classList.add('loading');
                     const loadingMessage = document.createElement('div');
                     loadingMessage.className = 'loading-message';
-                    loadingMessage.textContent = 'Iniciando reconhecimento de voz...';
+                    loadingMessage.textContent = 'Ouvindo...';
                     input.parentElement.appendChild(loadingMessage);
-                    
-                    // Simula o reconhecimento de voz
-                    setTimeout(() => {
-                        button.classList.remove('recording');
-                        input.classList.remove('loading');
+
+                    recognition.onresult = (event) => {
+                        const transcript = event.results[0][0].transcript;
+                        input.value = transcript;
+                        input.dispatchEvent(new Event('input', { bubbles: true }));
+                        
+                        // Remove mensagem de loading
                         loadingMessage.remove();
+                        input.classList.remove('loading');
                         
                         // Adiciona feedback de sucesso
                         const successMessage = document.createElement('div');
@@ -1116,7 +1217,31 @@ export class VolunteerScreen {
                         setTimeout(() => {
                             successMessage.remove();
                         }, 2000);
-                    }, 2000);
+                    };
+
+                    recognition.onerror = (event) => {
+                        console.error('Erro no reconhecimento de voz:', event.error);
+                        loadingMessage.remove();
+                        input.classList.remove('loading');
+                        
+                        // Adiciona mensagem de erro
+                        const errorMessage = document.createElement('div');
+                        errorMessage.className = 'error-message show';
+                        errorMessage.textContent = 'Erro ao reconhecer voz. Por favor, tente novamente.';
+                        input.parentElement.appendChild(errorMessage);
+                        
+                        setTimeout(() => {
+                            errorMessage.remove();
+                        }, 2000);
+                    };
+
+                    recognition.onend = () => {
+                        button.classList.remove('recording');
+                        input.classList.remove('loading');
+                        loadingMessage.remove();
+                    };
+
+                    recognition.start();
                 }
             });
         });
@@ -1690,6 +1815,122 @@ export class VolunteerScreen {
 
     setupEventListeners() {
         try {
+            // Event listener para o botão de localização
+            const locationBtn = document.getElementById('get-location-btn');
+            if (locationBtn) {
+                locationBtn.addEventListener('click', async () => {
+                    try {
+                        if (!navigator.geolocation) {
+                            showMessage('Geolocalização não é suportada pelo seu navegador.', 'error');
+                            return;
+                        }
+
+                        const input = locationBtn.closest('.input-wrapper').querySelector('input');
+                        if (!input) return;
+
+                        // Desabilita o botão e mostra loading
+                        locationBtn.disabled = true;
+                        locationBtn.innerHTML = '<span class="material-icons">sync</span> Obtendo localização...';
+                        showMessage('Obtendo sua localização...', 'info');
+
+                        const position = await new Promise((resolve, reject) => {
+                            navigator.geolocation.getCurrentPosition(resolve, reject, {
+                                enableHighAccuracy: true,
+                                timeout: 10000,
+                                maximumAge: 0
+                            });
+                        });
+
+                        const { latitude, longitude } = position.coords;
+
+                        // Usa a API do Nominatim para obter o endereço
+                        const response = await fetch(
+                            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+                        );
+
+                        if (!response.ok) {
+                            throw new Error('Erro ao obter endereço');
+                        }
+
+                        const data = await response.json();
+                        const address = data.display_name;
+                        const city = data.address.city || data.address.town || data.address.village || '';
+                        
+                        // Monta o endereço completo
+                        const street = data.address.road || data.address.pedestrian || '';
+                        const number = data.address.house_number || '';
+                        const neighborhood = data.address.suburb || data.address.neighbourhood || '';
+                        const fullAddress = `${street}${number ? ', ' + number : ''}${neighborhood ? ' - ' + neighborhood : ''}`;
+
+                        // Atualiza o input de localização
+                        input.value = address;
+                        input.classList.add('location-obtained');
+
+                        // Atualiza o input de cidade se existir
+                        const cityInput = document.getElementById('volunteer-city');
+                        if (cityInput && city) {
+                            cityInput.value = city;
+                            cityInput.classList.add('location-obtained');
+                        }
+
+                        // Atualiza o input de endereço se existir
+                        const addressInput = document.getElementById('volunteer-address');
+                        if (addressInput && fullAddress) {
+                            addressInput.value = fullAddress;
+                            addressInput.classList.add('location-obtained');
+                        }
+
+                        locationBtn.innerHTML = '<span class="material-icons">check</span> Localização obtida';
+                        locationBtn.disabled = true;
+
+                        // Remove mensagem de erro se existir
+                        const errorMessage = input.parentElement.querySelector('.error-message');
+                        if (errorMessage) {
+                            errorMessage.remove();
+                        }
+
+                        showMessage('Localização obtida com sucesso!', 'success');
+
+                        // Salva os dados da localização
+                        const locationData = {
+                            latitude,
+                            longitude,
+                            address,
+                            city,
+                            street,
+                            number,
+                            neighborhood,
+                            fullAddress,
+                            timestamp: new Date().toISOString()
+                        };
+                        localStorage.setItem('locationData', JSON.stringify(locationData));
+
+                    } catch (error) {
+                        console.error('Erro ao obter localização:', error);
+
+                        // Adiciona mensagem de erro abaixo do input
+                        const input = locationBtn.closest('.input-wrapper').querySelector('input');
+                        if (input) {
+                            input.classList.add('invalid');
+                            const errorMessage = document.createElement('div');
+                            errorMessage.className = 'error-message show';
+                            errorMessage.textContent = 'Erro ao obter localização. Por favor, tente novamente.';
+                            input.parentElement.appendChild(errorMessage);
+
+                            // Rola até o input com erro
+                            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            input.focus();
+                        }
+
+                        showMessage('Erro ao obter localização. Por favor, tente novamente.', 'error');
+
+                        // Reseta o botão
+                        locationBtn.disabled = false;
+                        locationBtn.innerHTML = '<span class="material-icons">my_location</span> Obter Localização';
+                    }
+                });
+            }
+
             // Add input focus effects
             const inputWrappers = document.querySelectorAll('.input-wrapper');
             inputWrappers.forEach(wrapper => {
@@ -2012,28 +2253,109 @@ export class VolunteerScreen {
         if (getLocationBtn && locationInput) {
             getLocationBtn.addEventListener('click', async () => {
                 try {
+                    if (!navigator.geolocation) {
+                        showMessage('Geolocalização não é suportada pelo seu navegador.', 'error');
+                        return;
+                    }
+
+                    // Desabilita o botão e mostra loading
                     getLocationBtn.disabled = true;
-                    getLocationBtn.innerHTML = '<span class="material-icons">hourglass_empty</span> Obtendo localização...';
+                    getLocationBtn.innerHTML = '<span class="material-icons">sync</span> Obtendo localização...';
+                    showMessage('Obtendo sua localização...', 'info');
 
-                    const position = await this.getCurrentPosition();
+                    const position = await new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition(resolve, reject, {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0
+                        });
+                    });
+
                     const { latitude, longitude } = position.coords;
+                    
+                    // Usa a API do Nominatim para obter o endereço
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+                    );
+                    
+                    if (!response.ok) {
+                        throw new Error('Erro ao obter endereço');
+                    }
 
-                    // Simula obtenção do endereço (em produção, usar API de geocoding)
-                    const address = await this.getAddressFromCoords(latitude, longitude);
+                    const data = await response.json();
+                    const address = data.display_name;
+                    const city = data.address.city || data.address.town || data.address.village || '';
+                    
+                    // Monta o endereço completo
+                    const street = data.address.road || data.address.pedestrian || '';
+                    const number = data.address.house_number || '';
+                    const neighborhood = data.address.suburb || data.address.neighbourhood || '';
+                    const fullAddress = `${street}${number ? ', ' + number : ''}${neighborhood ? ' - ' + neighborhood : ''}`;
+
+                    // Atualiza o input de localização
                     locationInput.value = address;
+                    locationInput.classList.add('location-obtained');
 
-                    getLocationBtn.innerHTML = '<span class="material-icons">check</span> Localização obtida!';
-                    getLocationBtn.classList.add('success');
+                    // Atualiza o input de cidade se existir
+                    const cityInput = form.querySelector('#assisted-city');
+                    if (cityInput && city) {
+                        cityInput.value = city;
+                        cityInput.classList.add('location-obtained');
+                    }
+
+                    // Atualiza o input de endereço se existir
+                    const addressInput = form.querySelector('#assisted-address');
+                    if (addressInput && fullAddress) {
+                        addressInput.value = fullAddress;
+                        addressInput.classList.add('location-obtained');
+                    }
+
+                    getLocationBtn.innerHTML = '<span class="material-icons">check</span> Localização obtida';
+                    getLocationBtn.disabled = true;
+
+                    // Remove mensagem de erro se existir
+                    const errorMessage = locationInput.parentElement.querySelector('.error-message');
+                    if (errorMessage) {
+                        errorMessage.remove();
+                    }
+
+                    showMessage('Localização obtida com sucesso!', 'success');
+
+                    // Salva os dados da localização
+                    const locationData = {
+                        latitude,
+                        longitude,
+                        address,
+                        city,
+                        street,
+                        number,
+                        neighborhood,
+                        fullAddress,
+                        timestamp: new Date().toISOString()
+                    };
+                    localStorage.setItem('assistedLocationData', JSON.stringify(locationData));
+
                 } catch (error) {
                     console.error('Erro ao obter localização:', error);
-                    getLocationBtn.innerHTML = '<span class="material-icons">error</span> Erro ao obter localização';
-                    getLocationBtn.classList.add('error');
-                } finally {
-                    setTimeout(() => {
-                        getLocationBtn.disabled = false;
-                        getLocationBtn.innerHTML = '<span class="material-icons">my_location</span> Usar minha localização';
-                        getLocationBtn.classList.remove('success', 'error');
-                    }, 2000);
+
+                    // Adiciona mensagem de erro abaixo do input
+                    if (locationInput) {
+                        locationInput.classList.add('invalid');
+                        const errorMessage = document.createElement('div');
+                        errorMessage.className = 'error-message show';
+                        errorMessage.textContent = 'Erro ao obter localização. Por favor, tente novamente.';
+                        locationInput.parentElement.appendChild(errorMessage);
+
+                        // Rola até o input com erro
+                        locationInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        locationInput.focus();
+                    }
+
+                    showMessage('Erro ao obter localização. Por favor, tente novamente.', 'error');
+
+                    // Reseta o botão
+                    getLocationBtn.disabled = false;
+                    getLocationBtn.innerHTML = '<span class="material-icons">my_location</span> Obter Localização';
                 }
             });
         }
