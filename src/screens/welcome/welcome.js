@@ -11,17 +11,13 @@ export class WelcomeScreen {
         console.log('Inicializando elementos...');
         this.lunchCard = document.getElementById('lunchCard');
         this.helpCard = document.getElementById('helpCard');
-        this.serveCard = document.getElementById('serveCard');
-        this.helpLink = document.getElementById('helpLink');
         
         console.log('Elementos encontrados:', {
             lunchCard: this.lunchCard,
-            helpCard: this.helpCard,
-            serveCard: this.serveCard,
-            helpLink: this.helpLink
+            helpCard: this.helpCard
         });
         
-        if (this.lunchCard && this.helpCard && this.serveCard && this.helpLink) {
+        if (this.lunchCard && this.helpCard) {
             this.initializeEventListeners();
         } else {
             console.error('Elementos não encontrados! Verifique se os IDs estão corretos no HTML.');
@@ -40,20 +36,7 @@ export class WelcomeScreen {
         // Evento para o card de Ajudar Alguém
         this.helpCard.addEventListener('click', () => {
             console.log('Card de Ajudar Alguém clicado!');
-            this.handleNavigation('help');
-        });
-
-        // Evento para o card de Atendimento Social
-        this.serveCard.addEventListener('click', () => {
-            console.log('Card de Atendimento Social clicado!');
-            this.handleNavigation('social');
-        });
-
-        // Evento para o link de ajuda no footer
-        this.helpLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log('Link de ajuda clicado!');
-            this.handleNavigation('help');
+            this.handleNavigation('cpf');
         });
     }
 
@@ -78,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.welcomeScreen = new WelcomeScreen();
 
     // Adicionar animações de entrada
-    const cards = document.querySelectorAll('.nav-card, .feature-card');
+    const cards = document.querySelectorAll('.nav-card');
     cards.forEach((card, index) => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(20px)';

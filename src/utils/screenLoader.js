@@ -78,9 +78,12 @@ export class ScreenLoader {
             const tempContainer = document.createElement('div');
             tempContainer.innerHTML = htmlContent;
             
-            // Try to find the main container
-            const mainContainer = tempContainer.querySelector(`.${screenName}-container`);
-            if (!mainContainer) {
+            // Try to find the content container (support both structures)
+            let contentContainer = tempContainer.querySelector('.content');
+            if (!contentContainer) {
+                contentContainer = tempContainer.querySelector(`.${screenName}-container`);
+            }
+            if (!contentContainer) {
                 throw new Error(`No content found in ${screenName} screen HTML`);
             }
             
@@ -90,10 +93,10 @@ export class ScreenLoader {
             
             // Append the style and content to the screens container
             this.screensContainer.appendChild(styleElement);
-            this.screensContainer.appendChild(mainContainer);
+            this.screensContainer.appendChild(contentContainer);
 
             // Wait for the DOM to be updated
-            await new Promise(resolve => setTimeout(resolve, 0));
+            await new Promise(resolve => setTimeout(resolve, 100));
 
             // Import and initialize the screen module
             const module = await import(`/src/screens/${screenName}/${screenName}.js`);

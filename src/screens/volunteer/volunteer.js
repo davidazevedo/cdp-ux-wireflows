@@ -1,5 +1,7 @@
 import { ScreenLoader } from '../../utils/screenLoader.js';
 import { showMessage } from '../../utils/messages.js';
+import { CPFValidator } from '../../utils/cpfValidator.js';
+import { Formatters } from '../../utils/formatters.js';
 
 // Variável global para controlar o carregamento da API
 let googleMapsLoading = false;
@@ -1628,64 +1630,40 @@ export class VolunteerScreen {
             // CPF mask
             if (this.volunteerCpf) {
                 this.volunteerCpf.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 11) {
-                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-                        e.target.value = value;
-                    }
+                    e.target.value = Formatters.formatCPF(e.target.value);
                 });
             }
 
             if (this.assistedCpf) {
                 this.assistedCpf.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 11) {
-                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                        value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-                        e.target.value = value;
-                    }
+                    e.target.value = Formatters.formatCPF(e.target.value);
                 });
             }
 
             // Birth date mask
             if (this.volunteerBirthdate) {
                 this.volunteerBirthdate.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 8) {
-                        value = value.replace(/(\d{2})(\d)/, '$1/$2');
-                        value = value.replace(/(\d{2})(\d)/, '$1/$2');
-                        e.target.value = value;
-                    }
+                    e.target.value = Formatters.formatDate(e.target.value);
                 });
             }
 
             // Phone mask
             if (this.assistedPhone) {
                 this.assistedPhone.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 11) {
-                        if (value.length <= 10) {
-                            value = value.replace(/(\d{2})(\d)/, '($1) $2');
-                            value = value.replace(/(\d{4})(\d)/, '$1-$2');
-                        } else {
-                            value = value.replace(/(\d{2})(\d)/, '($1) $2');
-                            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-                        }
-                        e.target.value = value;
-                    }
+                    e.target.value = Formatters.formatPhone(e.target.value);
                 });
             }
 
-            // NIS mask (11 digits)
+            // NIS mask
             if (this.volunteerNis) {
                 this.volunteerNis.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length <= 11) {
-                        e.target.value = value;
-                    }
+                    e.target.value = Formatters.formatNIS(e.target.value);
+                });
+            }
+
+            if (this.assistedNis) {
+                this.assistedNis.addEventListener('input', (e) => {
+                    e.target.value = Formatters.formatNIS(e.target.value);
                 });
             }
         } catch (error) {
@@ -2283,7 +2261,7 @@ export class VolunteerScreen {
 
         // Validação específica para CPF
         const cpfField = form.querySelector('#assisted-cpf');
-        if (cpfField && cpfField.value && !this.validateCPF(cpfField.value)) {
+        if (cpfField && cpfField.value && !CPFValidator.validate(cpfField.value)) {
             this.showFieldError(cpfField, 'CPF inválido');
             isValid = false;
         }

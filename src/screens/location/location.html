@@ -4,52 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Localização - CDP</title>
-    <link rel="stylesheet" href="/src/screens/location/location.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="location.css">
 </head>
 <body>
-    <div class="location-container">
-        <div class="location-header">
-            <h1>Localização</h1>
-            <p class="subtitle">Permita o acesso à sua localização para encontrar as cozinhas comunitárias mais próximas</p>
-        </div>
-
-        <div class="location-content">
-            <div class="location-card">
-                <div class="location-icon">
-                    <span class="material-icons">location_on</span>
-                </div>
-                <div class="location-info">
-                    <h3>Por que precisamos da sua localização?</h3>
-                    <p>Usar sua localização atual torna a experiência mais personalizada e eficiente, permitindo que encontremos as cozinhas comunitárias mais próximas de você.</p>
-                </div>
+    <div class="location-screen">
+        <div class="location-container">
+            <div class="location-header">
+                <h1>Onde você está?</h1>
+                <p>Precisamos da sua localização para melhor atendê-lo</p>
             </div>
 
-            <div class="input-group">
-                <div class="input-wrapper">
-                    <span class="material-icons search-icon">search</span>
-                    <input type="text" id="locationInput" class="location-input" placeholder="Digite sua localização ou use o botão abaixo">
-                    <button id="voiceInputBtn" class="voice-input-btn" title="Entrada por Voz">
-                        <span class="material-icons">mic</span>
+            <form id="locationForm" class="location-form">
+                <div class="input-group">
+                    <label for="city">Município *</label>
+                    <input type="text" id="city" name="city" placeholder="Digite o nome do município" required>
+                    <div id="citySuggestions" class="city-suggestions"></div>
+                </div>
+
+                <div class="input-group">
+                    <label for="address">Endereço completo</label>
+                    <input type="text" id="address" name="address" placeholder="Digite seu endereço completo">
+                </div>
+
+                <div class="input-group">
+                    <label for="locationInput">Localização *</label>
+                    <input type="text" id="locationInput" name="location" placeholder="Clique no botão para obter sua localização" readonly>
+                    <div class="error-message">Erro ao obter localização. Por favor, tente novamente.</div>
+                </div>
+
+                <div class="location-actions">
+                    <button type="button" id="getLocationBtn" class="get-location-btn">
+                        <span class="material-icons">my_location</span>
+                        Obter Localização
                     </button>
                 </div>
-                <div id="validationMessage" class="validation-message"></div>
-            </div>
 
-            <div class="action-buttons">
-                <button id="getLocationBtn" class="btn btn-primary">
-                    <span class="material-icons">my_location</span>
-                    Usar minha localização
-                </button>
-                <button id="continueBtn" class="btn btn-primary" disabled>
-                    <span class="material-icons">arrow_forward</span>
-                    Continuar
-                </button>
-                <button id="backBtn" class="btn btn-secondary">
-                    <span class="material-icons">arrow_back</span>
-                    Voltar
-                </button>
-            </div>
+                <div class="location-actions">
+                    <button type="button" id="backBtn" class="back-btn">
+                        <span class="material-icons">arrow_back</span>
+                        Voltar
+                    </button>
+                    <button type="button" id="continueBtn" class="btn btn-primary" disabled>
+                        <span class="material-icons">arrow_forward</span>
+                        Continuar
+                    </button>                    
+                </div>
+            </form>
         </div>
     </div>
 
@@ -103,6 +104,6 @@
         </div>
     </div>
 
-    <script type="module" src="/src/screens/location/location.js"></script>
+    <script type="module" src="location.js"></script>
 </body>
 </html> 

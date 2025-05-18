@@ -47,6 +47,9 @@
             </div>
             <div class="mobile-menu" id="mobileMenu">
                 <div class="mobile-menu-content">
+                    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Fechar menu">
+                        <span class="material-icons">close</span>
+                    </button>
                     <button class="mobile-menu-button" id="mobileHelpButton">
                         <span class="material-icons">help_outline</span>
                         Ajuda
@@ -75,9 +78,9 @@
 
         <!-- Main Content -->
         <main class="app-main">
-            <div id="screenContainer" role="main"></div>
+            <div id="screenContainer"></div>
         </main>
-
+    </div>
         <!-- Footer -->
         <footer class="app-footer">
             <div class="footer-content">
@@ -87,21 +90,32 @@
                         <li><a href="https://www.sas.pe.gov.br/" target="_blank" rel="noopener">SAS Pernambuco</a></li>
                         <li><a href="https://www.sas.pe.gov.br/transparencia" target="_blank" rel="noopener">Transparência</a></li>
                         <li><a href="https://www.sas.pe.gov.br/fale-conosco" target="_blank" rel="noopener">Fale Conosco</a></li>
+                        <li><a href="https://www.sas.pe.gov.br/ouvidoria" target="_blank" rel="noopener">Ouvidoria</a></li>
+                        <li><a href="https://www.sas.pe.gov.br/painel-licitacoes" target="_blank" rel="noopener">Painel de Licitações</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h2>Contato</h2>
-                    <p>Secretaria de Assistência Social</p>
+                    <p>Secretaria de Assistência Social, Combate à Fome e Políticas sobre Drogas</p>
                     <p>Avenida Cruz Cabugá, 665 - Santo Amaro</p>
                     <p>Recife-PE - CEP: 50040-000</p>
                     <p>PABX: (81) 3183-3000</p>
+                </div>
+                <div class="footer-section">
+                    <h2>Redes Sociais</h2>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/saspernambuco" target="_blank" rel="noopener">
+                            <span class="material-icons">instagram</span>
+                            Instagram
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
                 <p>&copy; <span id="currentYear"></span> PE Sem Fome - Todos os direitos reservados</p>
             </div>
         </footer>
-    </div>
+
 
     <!-- Scripts -->
     <script type="module" src="/src/app.js"></script>
@@ -112,10 +126,16 @@
         // Mobile menu functionality
         const hamburgerMenu = document.getElementById('hamburgerMenu');
         const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
 
         hamburgerMenu.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
-            hamburgerMenu.classList.toggle('active');
+            mobileMenu.classList.add('active');
+            hamburgerMenu.classList.add('active');
+        });
+
+        mobileMenuClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            hamburgerMenu.classList.remove('active');
         });
 
         // Close mobile menu when clicking outside

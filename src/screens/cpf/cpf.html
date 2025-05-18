@@ -17,6 +17,7 @@
         <div class="cpf-content">
             <div class="search-container">
                 <div class="input-group">
+                    <label for="nis">CPF</label>
                     <div class="input-wrapper">
                         <span class="material-icons search-icon">search</span>
                         <input type="text" id="cpfInput" class="cpf-input" placeholder="Digite seu CPF (000.000.000-00)" maxlength="14">
@@ -25,6 +26,20 @@
                         </button>
                     </div>
                     <div class="validation-message" id="validationMessage"></div>
+                </div>
+                <!-- NIS Input Group -->
+                <div class="input-group">
+                    <label for="nis">NIS</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="nisInput" class="document-input" placeholder="000.00000.00-0" maxlength="14">
+                        <button id="voiceInputBtnNis" class="voice-input-btn" title="Entrada por Voz">
+                            <span class="material-icons">mic</span>
+                        </button>
+                        <button id="nisHelpBtn" class="voice-input-btn" title="Entrada por Voz">
+                            <span class="material-icons">help</span>
+                        </button>
+                    </div>
+                    <div class="validation-message" id="validationMessageNis"></div>
                 </div>
 
                 <div class="action-buttons">
@@ -53,7 +68,29 @@
                 </div>
             </div>
         </div>
+
+
+    <!-- Modal de Ajuda do NIS -->
+    <div id="nisHelpModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal">
+                <span class="material-icons">close</span>
+            </button>
+            <h2>Como encontrar meu NIS?</h2>
+            <div class="modal-body">
+                <p>O NIS (Número de Identificação Social) pode ser encontrado:</p>
+                <ul>
+                    <li>No cartão do Bolsa Família</li>
+                    <li>No extrato do benefício</li>
+                    <li>No aplicativo Caixa Tem</li>
+                    <li>Na agência da Caixa Econômica Federal</li>
+                </ul>
+                <p>Se você não encontrar seu NIS, não se preocupe! Este campo é opcional e você pode continuar sem informá-lo.</p>
+            </div>
+        </div>
     </div>
-    <script src="src/screens/cpf/cpf.js"></script>
+
+    <script type="module" src="src/screens/cpf/cpf.js"></script>
+</div>
 </body>
 </html> 
