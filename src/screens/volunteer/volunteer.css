@@ -1952,4 +1952,97 @@ body {
 .auto-fill-active .auto-fill-self,
 .auto-fill-active .auto-fill-other {
     display: inline-flex;
+}
+
+.user-type-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    margin-bottom: 24px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user-type-card h2 {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.user-type-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.user-type-option {
+    position: relative;
+    cursor: pointer;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+.user-type-option:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.user-type-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.user-type-option input[type="radio"]:checked + .option-content {
+    color: var(--primary-color);
+}
+
+.user-type-option input[type="radio"]:checked + .option-content .material-icons {
+    color: var(--primary-color);
+}
+
+.user-type-option input[type="radio"]:checked + .option-content h3 {
+    color: var(--primary-color);
+}
+
+.option-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.option-content .material-icons {
+    font-size: 2rem;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.option-text h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.option-text p {
+    margin: 4px 0 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .user-type-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .user-type-card {
+        padding: 16px;
+        margin: 16px;
+    }
 } 

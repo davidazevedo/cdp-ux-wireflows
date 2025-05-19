@@ -66,7 +66,7 @@ class App {
             const { NotificationsModule } = await import('./modules/notifications/notifications.js');
             const { HelpModule } = await import('./modules/help/help.js');
             const { RegistrationModule } = await import('./modules/registration/registration.js');
-            const { CPFModule } = await import('./modules/cpf/cpf.js');
+           // const { CPFModule } = await import('./modules/cpf/cpf.js');
 
             const locationModule = new LocationModule();
             const kitchensModule = new KitchensModule();
@@ -74,7 +74,7 @@ class App {
             const notificationsModule = new NotificationsModule();
             const helpModule = new HelpModule();
             const registrationModule = new RegistrationModule();
-            const cpfModule = new CPFModule();
+          //  const cpfModule = new CPFModule();
 
             await Promise.all([
                 locationModule.init(),
@@ -83,7 +83,7 @@ class App {
                 helpModule.init(),
                 registrationModule.init(),
                 kitchensModule.init(),
-                cpfModule.init()
+              //  cpfModule.init()
             ]);
         } catch (error) {
             console.error('Erro ao carregar módulos adicionais:', error);

@@ -30,12 +30,14 @@ export class WelcomeScreen {
         // Evento para o card de Almoçar Agora
         this.lunchCard.addEventListener('click', () => {
             console.log('Card de Almoçar Agora clicado!');
+            localStorage.setItem('userOrigin', 'cpf');
             this.handleNavigation('cpf');
         });
 
         // Evento para o card de Ajudar Alguém
         this.helpCard.addEventListener('click', () => {
             console.log('Card de Ajudar Alguém clicado!');
+            localStorage.setItem('userOrigin', 'volunteer');
             this.handleNavigation('cpf');
         });
     }

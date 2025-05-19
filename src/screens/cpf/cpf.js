@@ -20,7 +20,7 @@ export class CpfScreen {
 
     async initialize() {
         console.log('Inicializando CpfScreen...');
-        this.clearLocalStorage();
+        //this.clearLocalStorage();
        
         this.elements = {
             cpfInput: document.getElementById('cpfInput'),
@@ -49,7 +49,7 @@ export class CpfScreen {
         localStorage.removeItem('userOrigin');
         localStorage.removeItem('locationData');
         localStorage.removeItem('volunteerCache');
-        localStorage.setItem('userOrigin', 'cpf');
+
     }
 
     initializeElements() {

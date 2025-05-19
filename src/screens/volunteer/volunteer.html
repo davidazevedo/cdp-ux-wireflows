@@ -22,8 +22,8 @@
                 <div class="volunteer-avatar" role="img" aria-label="Foto do cidadão apoiador">
                     <span class="material-icons">person</span>
                 </div>
-                <div class="volunteer-info">
-                    <h1>Cidadão Apoiador</h1>
+                <div id="volunteer-info" class="volunteer-info">
+                    <h1>Fale mais Sobre Você</h1>
                     <p class="subtitle">Bem-vindo!</p>
                 </div>
             </div>
@@ -52,9 +52,9 @@
             <form id="volunteer-form" class="volunteer-form" novalidate>
                 <!-- Seção de Identificação -->
                 <section class="form-section" aria-labelledby="identification-title">
-                    <h2 id="identification-title">Identificação</h2>
+                    <h2  style="display: none;" id="identification-title">Identificação</h2>
 
-                    <div class="photo-upload">
+                    <div class="photo-upload"  style="display: none;">
                         <div id="volunteer-photo-preview" class="photo-preview" role="button" tabindex="0"
                             aria-label="Adicionar foto">
                             <span class="material-icons">add_a_photo</span>
@@ -165,7 +165,7 @@
                 </section>
 
                 <!-- Seção de Documentos -->
-                <section class="form-section" aria-labelledby="documents-title">
+                <section class="form-section" aria-labelledby="documents-title" style="display: none;">
                     <h2 id="documents-title">Documentos</h2>
 
                     <div class="form-group">
@@ -213,7 +213,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" style="display: none;">
                         <label id="filling-for-label">Quem está preenchendo? *</label>
                         <div class="checkbox-group" role="group" aria-labelledby="filling-for-label">
                             <label class="checkbox-label">
@@ -229,7 +229,7 @@
                 </section>
 
                 <!-- Nova Seção de Comunidades -->
-                <section class="form-section" aria-labelledby="communities-title">
+                <section class="form-section" aria-labelledby="communities-title" style="display: none;">
                     <h2 id="communities-title">Comunidades</h2>
                     <div class="communities-grid">
                         <label class="community-card">
@@ -394,7 +394,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="display: none;">
                             <label id="situations-label">Situações de Vulnerabilidade</label>
                             <div id="situations-grid" class="situations-grid" role="group"
                                 aria-labelledby="situations-label">

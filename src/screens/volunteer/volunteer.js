@@ -94,6 +94,12 @@ export class VolunteerScreen {
             
             // Update UI state
             this.updateUIState();
+
+            // Update volunteer info based on userOrigin
+            this.updateVolunteerInfo();
+
+            // Debug log
+            console.log('VolunteerScreen initialized');
         } catch (error) {
             console.error('Error initializing volunteer screen:', error);
         }
@@ -101,6 +107,59 @@ export class VolunteerScreen {
 
     initializeElements() {
         try {
+            const userOrigin = localStorage.getItem('userOrigin');
+            const userTypeCard = document.createElement('div');
+            
+            // Add user type selection card
+            if (userOrigin === 'volunteer') {
+
+
+
+                userTypeCard.className = 'user-type-card';
+                userTypeCard.innerHTML = `
+                    <h2>Selecione seu perfil</h2>
+                    <div class="user-type-options">
+                        <label class="user-type-option">
+                            <input type="radio" name="userType" value="volunteer" checked>
+                            <div class="option-content">
+                                <span class="material-icons">volunteer_activism</span>
+                                <div class="option-text">
+                                    <h3>Cidadão Amigo</h3>
+                                    <p>Estou ajudando alguém em situação de vulnerabilidade</p>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="user-type-option">
+                            <input type="radio" name="userType" value="counter">
+                            <div class="option-content">
+                                <span class="material-icons">badge</span>
+                                <div class="option-text">
+                                    <h3>Profissional</h3>
+                                    <p>Assistente Social, Agente de Saúde, Policial, etc.</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                `;
+            }
+
+            // Insert the card before the form
+            const volunteerForm = document.getElementById('volunteer-form');
+            if (volunteerForm) {
+                volunteerForm.parentNode.insertBefore(userTypeCard, volunteerForm);
+            }
+
+            // Add event listeners for user type selection
+            const userTypeInputs = document.querySelectorAll('input[name="userType"]');
+            userTypeInputs.forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const userType = e.target.value;
+                    localStorage.setItem('userOrigin', userType);
+                    this.updateVolunteerInfo();
+                    this.updateUIState();
+                });
+            });
+
             // Volunteer form elements
             this.volunteerForm = document.getElementById('volunteer-form');
             this.volunteerPhoto = document.getElementById('volunteer-photo');
@@ -685,6 +744,12 @@ export class VolunteerScreen {
 
                 this.updateVolunteerProfile(userData.name, userData.photo);
             }
+
+            // Atualiza o texto do volunteer-info baseado no userOrigin
+            this.updateVolunteerInfo();
+            
+            // Debug log
+            console.log('Cached data loaded, userOrigin:', localStorage.getItem('userOrigin'));
         } catch (error) {
             console.error('Erro ao carregar dados:', error);
         }
@@ -697,6 +762,7 @@ export class VolunteerScreen {
             const volunteerForm = document.getElementById('volunteer-form');
             const assistedForm = document.getElementById('assistedForm');
             const assistedSection = document.getElementById('assisted-section');
+            const userOrigin = localStorage.getItem('userOrigin');
             
             // Verificar se há dados no localStorage
             const userData = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -714,7 +780,28 @@ export class VolunteerScreen {
             if (volunteerForm) {
                 volunteerForm.style.display = hasUserData ? 'none' : 'block';
             }
-            
+
+            // Atualizar campos obrigatórios baseado no userOrigin
+            if (userOrigin === 'volunteer') {
+                const cpfField = document.getElementById('volunteer-cpf');
+                const nisField = document.getElementById('volunteer-nis');
+                
+                if (cpfField) {
+                    cpfField.required = true;
+                    const cpfLabel = cpfField.previousElementSibling;
+                    if (cpfLabel) {
+                        cpfLabel.innerHTML = 'CPF *';
+                    }
+                }
+                
+                if (nisField) {
+                    nisField.required = true;
+                    const nisLabel = nisField.previousElementSibling;
+                    if (nisLabel) {
+                        nisLabel.innerHTML = 'NIS *';
+                    }
+                }
+            }
 
             // Atualizar a lista de assistidos se existir
             if (hasUserData && assistedList) {
@@ -723,6 +810,31 @@ export class VolunteerScreen {
 
         } catch (error) {
             console.error('Erro ao atualizar o estado da UI:', error);
+        }
+    }
+
+    updateVolunteerInfo() {
+        try {
+            const userOrigin = localStorage.getItem('userOrigin');
+            const volunteerInfo = document.getElementById('volunteer-info');
+            
+            if (volunteerInfo) {
+                const title = volunteerInfo.querySelector('h1');
+                if (title) {
+                    if (userOrigin === 'volunteer') {
+                        title.textContent = 'Fale Mais sobre quem você está ajudando';
+                    } else {
+                        title.textContent = 'Fale mais Sobre Você';
+                    }
+                    console.log('Title updated:', title.textContent); // Debug log
+                } else {
+                    console.error('Title element not found in volunteer-info');
+                }
+            } else {
+                console.error('volunteer-info element not found');
+            }
+        } catch (error) {
+            console.error('Error in updateVolunteerInfo:', error);
         }
     }
 
@@ -797,10 +909,19 @@ export class VolunteerScreen {
 
     validateForm() {
         const form = document.getElementById('volunteer-form');
+        const userOrigin = localStorage.getItem('userOrigin');
+        
+        // Campos base obrigatórios
         const requiredFields = [
             'volunteer-name',
-            'volunteer-location'
+            'volunteer-city'
         ];
+
+        // Adiciona CPF e NIS como obrigatórios se for volunteer
+        if (userOrigin === 'volunteer') {
+            requiredFields.push('volunteer-cpf', 'volunteer-nis');
+        }
+
         let isValid = true;
         let firstInvalidField = null;
 
@@ -817,81 +938,22 @@ export class VolunteerScreen {
 
             if (!value) {
                 fieldError = 'Este campo é obrigatório';
-            } else if (fieldId.includes('birthdate') && !this.validateBirthDate(value)) {
-                fieldError = 'Data de nascimento inválida';
-            } else if (fieldId.includes('email') && !this.validateEmail(value)) {
-                fieldError = 'E-mail inválido';
+            } else if (fieldId === 'volunteer-cpf' && !this.validateCPF(value)) {
+                fieldError = 'CPF inválido';
             }
 
             if (fieldError) {
                 isValid = false;
                 field.classList.add('invalid');
-                
                 const errorMessage = document.createElement('div');
                 errorMessage.className = 'error-message show';
                 errorMessage.textContent = fieldError;
                 field.parentElement.appendChild(errorMessage);
-
                 if (!firstInvalidField) {
                     firstInvalidField = field;
                 }
             }
         });
-
-        // Verificar se o nome social é obrigatório (quando checkbox está marcado)
-        if (this.socialNameCheckbox && this.socialNameCheckbox.checked) {
-            if (!this.volunteerSocialName || !this.volunteerSocialName.value.trim()) {
-                isValid = false;
-                const wrapper = this.volunteerSocialName?.closest('.input-wrapper');
-                if (wrapper) {
-                    wrapper.classList.add('invalid');
-                    let errorMessage = wrapper.querySelector('.error-message');
-                    if (!errorMessage) {
-                        errorMessage = document.createElement('div');
-                        errorMessage.className = 'error-message';
-                        wrapper.appendChild(errorMessage);
-                    }
-                    errorMessage.textContent = 'Este campo é obrigatório';
-                    errorMessage.classList.add('show');
-                }
-            }
-        }
-
-        // Verificar se está em situação de rua foi selecionado
-        const homelessSelected = document.querySelector('input[name="homeless"]:checked');
-        if (!homelessSelected) {
-            isValid = false;
-            const homelessGroup = document.querySelector('.homeless-group');
-            if (homelessGroup) {
-                homelessGroup.classList.add('invalid');
-                let errorMessage = homelessGroup.querySelector('.error-message');
-                if (!errorMessage) {
-                    errorMessage = document.createElement('div');
-                    errorMessage.className = 'error-message';
-                    homelessGroup.appendChild(errorMessage);
-                }
-                errorMessage.textContent = 'Por favor, selecione uma opção';
-                errorMessage.classList.add('show');
-            }
-        }
-
-        // Verificar se quem está preenchendo foi selecionado
-        const fillingForSelected = document.querySelector('input[name="filling_for"]:checked');
-        if (!fillingForSelected) {
-            isValid = false;
-            const fillingForGroup = document.querySelector('.filling-for-group');
-            if (fillingForGroup) {
-                fillingForGroup.classList.add('invalid');
-                let errorMessage = fillingForGroup.querySelector('.error-message');
-                if (!errorMessage) {
-                    errorMessage = document.createElement('div');
-                    errorMessage.className = 'error-message';
-                    fillingForGroup.appendChild(errorMessage);
-                }
-                errorMessage.textContent = 'Por favor, selecione uma opção';
-                errorMessage.classList.add('show');
-            }
-        }
 
         if (!isValid && firstInvalidField) {
             firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -902,9 +964,6 @@ export class VolunteerScreen {
                 alert('Por favor, corrija os campos marcados em vermelho.');
             }
         }
-
-   
-
         return isValid;
     }
 
@@ -1328,11 +1387,18 @@ export class VolunteerScreen {
         const submitButton = document.getElementById('submit-volunteer');
         if (!submitButton) return;
 
-        // Lista de campos obrigatórios
+        const userOrigin = localStorage.getItem('userOrigin');
+        
+        // Lista de campos obrigatórios base
         const requiredFields = [
             'volunteer-name',
             'volunteer-location'
         ];
+
+        // Adiciona CPF e NIS como obrigatórios se for volunteer
+        if (userOrigin === 'volunteer') {
+            requiredFields.push('volunteer-cpf', 'volunteer-nis');
+        }
 
         // Verificar se todos os campos obrigatórios estão preenchidos
         let isValid = true;
@@ -1396,8 +1462,6 @@ export class VolunteerScreen {
             submitButton.classList.remove('enabled');
             submitButton.classList.add('disabled');
         }
-
-
     }
 
     checkAssistedFormValidity() {
@@ -1975,7 +2039,7 @@ export class VolunteerScreen {
                         };
                         
                         localStorage.setItem('currentAssisted', JSON.stringify(volunteerData));
-                        localStorage.setItem('userOrigin', 'volunteer');
+                        //localStorage.setItem('userOrigin', 'volunteer');
                         
                         // Redireciona para a tela de resultado
                         this.screenLoader.loadScreen('result');
@@ -1985,9 +2049,23 @@ export class VolunteerScreen {
 
             // Add submit button event listener
             if (this.submitVolunteerBtn) {
-                this.submitVolunteerBtn.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    this.handleVolunteerSubmit(event);
+                this.submitVolunteerBtn.addEventListener('click', () => {
+                    const form = document.getElementById('volunteer-form');
+                    const formData = new FormData(form);
+                    let isFormEmpty = true;
+
+                    for (let value of formData.values()) {
+                        if (value.trim() !== '') {
+                            isFormEmpty = false;
+                            break;
+                        }
+                    }
+
+                    if (isFormEmpty) {
+                        this.screenLoader.loadScreen('result');
+                    } else {
+                        this.handleVolunteerSubmit(event);
+                    }
                 });
             }
 
@@ -2065,6 +2143,7 @@ export class VolunteerScreen {
             const volunteerForm = document.getElementById('volunteer-form');
             if (volunteerForm) {
                 volunteerForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
                     this.handleVolunteerSubmit(event);
                 });
             }

@@ -155,156 +155,134 @@ body {
 }
 
 .kitchen-card {
-    background: var(--background);
-    border-radius: var(--border-radius);
-    padding: var(--spacing-lg);
-    box-shadow: var(--shadow);
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: 1px solid var(--primary-light);
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    padding: 16px;
+    transition: transform 0.2s ease;
 }
 
 .kitchen-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilo específico para CRAS */
+.kitchen-card.cras {
+    border-left: 4px solid #2196F3;
+}
+
+/* Estilo específico para Cozinhas */
+.kitchen-card.kitchen {
+    border-left: 4px solid #4CAF50;
 }
 
 .kitchen-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: var(--spacing-md);
+    margin-bottom: 16px;
 }
 
 .header-left {
     flex: 1;
-    margin-right: var(--spacing-md);
 }
 
 .kitchen-name {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 600;
-    color: var(--text-primary);
-    margin: 0 0 var(--spacing-sm) 0;
+    margin: 0 0 4px 0;
+    color: #333;
 }
 
 .kitchen-description {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
+    font-size: 0.9rem;
+    color: #666;
     margin: 0;
-    line-height: 1.4;
 }
 
 .header-right {
-    display: flex;
-    align-items: center;
+    margin-left: 16px;
 }
 
 .kitchen-status {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
 }
 
-.kitchen-status.aberta {
-    background-color: #e3fcef;
-    color: #00a854;
-}
-
-.kitchen-status.fechada {
-    background-color: #ffeaea;
-    color: #ff4d4f;
+.kitchen-status.aberta,
+.kitchen-status.aberto {
+    background-color: #E8F5E9;
+    color: #2E7D32;
 }
 
 .kitchen-status .material-icons {
-    font-size: 18px;
+    font-size: 1.1rem;
+    margin-right: 4px;
 }
 
 .kitchen-info {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
+    margin-bottom: 16px;
 }
 
 .info-row {
     display: flex;
-    gap: var(--spacing-md);
+    align-items: center;
+    margin-bottom: 8px;
 }
 
 .info-item {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
-    color: var(--text-secondary);
-    font-size: 0.875rem;
+    color: #666;
+    font-size: 0.9rem;
 }
 
 .info-item .material-icons {
-    color: var(--primary-color);
-    font-size: 20px;
-}
-
-.info-item .distance,
-.info-item .address {
-    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-right: 8px;
+    color: #999;
 }
 
 .kitchen-actions {
-    margin-top: var(--spacing-md);
     display: flex;
     justify-content: flex-end;
 }
 
-.btn-checkin {
+.btn-navigate {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-radius: var(--border-radius);
-    background-color: var(--primary-color);
-    color: var(--background);
-    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    color: #333;
     border: none;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background-color 0.2s ease;
 }
 
-.btn-checkin:hover {
-    background-color: #1976D2;
-    transform: translateY(-1px);
+.btn-navigate:hover {
+    background-color: #e0e0e0;
 }
 
-.btn-checkin:active {
-    transform: translateY(0);
+.btn-navigate .material-icons {
+    margin-right: 4px;
 }
 
-.btn-checkin .material-icons {
-    font-size: 20px;
+.empty-state {
+    text-align: center;
+    padding: 32px;
+    color: #666;
 }
 
-.btn-checkin:disabled {
-    background-color: var(--text-secondary);
-    cursor: not-allowed;
-    transform: none;
-}
-
-.btn-checkin.loading {
-    position: relative;
-    color: transparent;
-}
-
-.btn-checkin.loading::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--background);
-    border-radius: 50%;
-    border-top-color: transparent;
-    animation: spin 1s linear infinite;
+.empty-state .material-icons {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #999;
 }
 
 .result-actions {
@@ -354,22 +332,6 @@ body {
     transform: translateY(-1px);
 }
 
-.empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-lg);
-    text-align: center;
-    color: var(--text-secondary);
-}
-
-.empty-state .material-icons {
-    font-size: 48px;
-    color: var(--text-secondary);
-    margin-bottom: var(--spacing-md);
-}
-
 .loading-container {
     display: flex;
     justify-content: center;
@@ -384,6 +346,29 @@ body {
     border-radius: 50%;
     border-top-color: var(--primary-color);
     animation: spin 1s linear infinite;
+}
+
+.situation-notice {
+    background-color: #E3F2FD;
+    border-left: 4px solid #2196F3;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.situation-notice .material-icons {
+    color: #2196F3;
+    font-size: 24px;
+}
+
+.situation-notice p {
+    color: #1976D2;
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.4;
 }
 
 @media (max-width: 768px) {
@@ -438,5 +423,15 @@ body {
 
     .info-item {
         width: 100%;
+    }
+
+    .situation-notice {
+        flex-direction: column;
+        text-align: center;
+        padding: 12px;
+    }
+
+    .situation-notice .material-icons {
+        margin-bottom: 8px;
     }
 } 

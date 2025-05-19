@@ -3,7 +3,14 @@ import { ScreenLoader } from '../../utils/screenLoader.js';
 import { getKitchens } from '../../js/services/kitchensService.js';
 
 export class ResultScreen {
+    static instance = null;
+
     constructor() {
+        if (ResultScreen.instance) {
+            return ResultScreen.instance;
+        }
+        ResultScreen.instance = this;
+
         this.screenLoader = new ScreenLoader();
         this.screensContainer = document.getElementById('screenContainer');
         this.elements = {};
@@ -47,7 +54,7 @@ export class ResultScreen {
                 }
                 return;
             }
-        
+            this.currentAssisted = JSON.parse(currentAssisted);
         } else if (this.origin === 'cpf') {
             if (!currentAssisted) {
                 showMessage('Erro ao carregar dados do usuário', 'error');
@@ -58,6 +65,7 @@ export class ResultScreen {
                 }
                 return;
             }
+            this.currentAssisted = JSON.parse(currentAssisted);
         }
 
         // Atualiza a interface com os dados do usuário
@@ -71,54 +79,97 @@ export class ResultScreen {
             // Carrega o arquivo JSON com as cozinhas
             const response = await fetch('/src/data/tableConvert.com_2orlci.json');
             const data = await response.json();
-            // Horários fake
-            const fakeHours = [
-                "08:00 - 17:00", "09:00 - 18:00", "07:30 - 16:30", "10:00 - 19:00", "08:30 - 17:30",
-                "09:30 - 18:30", "07:00 - 16:00", "10:30 - 19:30", "08:00 - 16:00", "09:00 - 17:00"
-            ];
-            // Pega apenas as 10 primeiras cozinhas
-            const kitchens = data.slice(0, 10).map((item, idx) => ({
+            
+            // Processa as cozinhas do novo formato JSON
+            const kitchens = data.cozinhas_comunitarias.map((item, idx) => ({
                 id: idx + 1,
-                name: item.Nome,
-                address: `${item.Endereço || ''} ${item.Bairro ? '- ' + item.Bairro : ''}, ${item.Município || ''} - ${item.Estado || ''}`.replace(/\s+/g, ' ').trim(),
-                status: (item['Situação'] && item['Situação'].toLowerCase().includes('habilitada')) ? 'aberta' : 'fechada',
-                operatingHours: fakeHours[idx % fakeHours.length],
-                situacao: item['Situação'] || '',
-                municipio: item['Município'] || '',
+                name: item.nome,
+                address: `${item.endereco.rua}, ${item.endereco.bairro}, ${item.endereco.cidade} - ${item.endereco.estado}`,
+                phone: item.telefone,
+                responsible: item.profissional_responsavel,
+                status: 'aberta',
+                cep: item.endereco.cep,
+                additionalInfo: data.informacoes_adicionais.cozinhas_comunitarias,
+                type: 'kitchen'
             }));
 
-            if (!kitchens || kitchens.length === 0) {
+            // Carrega os CRAS
+            const cras = await this.loadCras();
+
+            if ((!kitchens || kitchens.length === 0) && (!cras || cras.length === 0)) {
                 this.kitchensList.innerHTML = `
                     <div class="empty-state">
                         <span class="material-icons">restaurant</span>
-                        <p>Nenhuma cozinha encontrada na sua região.</p>
+                        <p>Nenhuma cozinha ou CRAS encontrado na sua região.</p>
                     </div>
                 `;
                 return;
             }
+
             this.kitchens = kitchens;
-            this.renderKitchens(kitchens);
+            this.cras = cras;
+
+            // Verifica se é situação de rua
+            const isStreetSituation = this.currentAssisted.situations && 
+                                   this.currentAssisted.situations.includes('rua');
+
+            // Se for situação de rua, mostra apenas CRAS
+            const itemsToShow = isStreetSituation ? cras : [...kitchens, ...cras];
+            
+            // Adiciona observação se for situação de rua
+            if (isStreetSituation) {
+                this.kitchensList.innerHTML = `
+                    <div class="situation-notice">
+                        <span class="material-icons">info</span>
+                        <p>Como você está em situação de rua, estamos mostrando apenas os CRAS próximos a você.</p>
+                    </div>
+                `;
+            }
+
+            this.renderKitchens(itemsToShow);
         } catch (error) {
-            showMessage('Erro ao carregar cozinhas. Tente novamente.', 'error');
+            showMessage('Erro ao carregar cozinhas e CRAS. Tente novamente.', 'error');
         } finally {
             this.hideLoading();
         }
     }
 
-    renderKitchens(kitchens) {
+    async loadCras() {
+        try {
+            const response = await fetch('/src/data/tableConvert.com_2orlci.json');
+            const data = await response.json();
+            
+            return data.cras.map((item, idx) => ({
+                id: `cras-${idx + 1}`,
+                name: item.nome,
+                address: `${item.endereco.rua}, ${item.endereco.bairro}, ${item.endereco.cidade} - ${item.endereco.estado}`,
+                phone: item.telefone,
+                responsible: item.profissional_responsavel,
+                status: 'aberto',
+                cep: item.endereco.cep,
+                additionalInfo: data.informacoes_adicionais.cras,
+                type: 'cras'
+            }));
+        } catch (error) {
+            console.error('Erro ao carregar CRAS:', error);
+            return [];
+        }
+    }
+
+    renderKitchens(items) {
         if (!this.kitchensList) return;
 
-        this.kitchensList.innerHTML = kitchens.map(kitchen => `
-            <div class="kitchen-card" data-id="${kitchen.id}">
+        this.kitchensList.innerHTML = items.map(item => `
+            <div class="kitchen-card ${item.type}" data-id="${item.id}">
                 <div class="kitchen-header">
                     <div class="header-left">
-                        <h3 class="kitchen-name">${kitchen.name}</h3>
-                        <p class="kitchen-description">${kitchen.situacao ? 'Situação: ' + kitchen.situacao : ''}</p>
+                        <h3 class="kitchen-name">${item.name}</h3>
+                        <p class="kitchen-description">Responsável: ${item.responsible}</p>
                     </div>
                     <div class="header-right">
-                        <div class="kitchen-status ${kitchen.status}">
-                            <span class="material-icons">${kitchen.status === 'aberta' ? 'restaurant' : 'restaurant_menu'}</span>
-                            <span>${kitchen.status === 'aberta' ? 'Aberta' : 'Fechada'}</span>
+                        <div class="kitchen-status ${item.status}" style="display: none;">
+                            <span class="material-icons">${item.type === 'kitchen' ? 'restaurant' : 'business'}</span>
+                            <span>${item.status === 'aberta' ? 'Aberta' : 'Aberto'}</span>
                         </div>
                     </div>
                 </div>
@@ -126,32 +177,39 @@ export class ResultScreen {
                     <div class="info-row">
                         <div class="info-item">
                             <span class="material-icons">location_on</span>
-                            <span class="address">${kitchen.address}</span>
+                            <span class="address">${item.address}</span>
                         </div>
                     </div>
                     <div class="info-row">
                         <div class="info-item">
-                            <span class="material-icons">schedule</span>
-                            <span class="hours">${kitchen.operatingHours}</span>
+                            <span class="material-icons">phone</span>
+                            <span class="phone">${item.phone}</span>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item">
+                            <span class="material-icons">mail</span>
+                            <span class="email">${item.type === 'kitchen' ? 'crasbongi@gmail.com' : 'contato@cras.gov.br'}</span>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item">
+                            <span class="material-icons">local_post_office</span>
+                            <span class="cep">CEP: ${item.cep}</span>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item">
+                            <span class="material-icons">info</span>
+                            <span class="additional-info">${item.additionalInfo}</span>
                         </div>
                     </div>
                 </div>
                 <div class="kitchen-actions">
-                    <button class="btn btn-secondary btn-share" data-id="${kitchen.id}" title="Compartilhar">
-                        <span class="material-icons">share</span>
-                        Compartilhar
-                    </button>
-                    <button class="btn btn-secondary btn-navigate" data-id="${kitchen.id}" title="Ir pelo mapa">
+                    <button class="btn btn-secondary btn-navigate" data-id="${item.id}" title="Ir pelo mapa">
                         <span class="material-icons">navigation</span>
                         Ir pelo mapa
                     </button>
-                    ${kitchen.status === 'aberta' ? `
-                        <button class="btn btn-secondary btn-checkin" data-id="${kitchen.id}" style="display: none;">
-                            <span class="material-icons">check_circle</span>
-                            Confirmar Presença
-                        <span class="checkin-status"></span>
-                        </button>
-                    ` : ''}
                 </div>
             </div>
         `).join('');
@@ -160,24 +218,8 @@ export class ResultScreen {
         const cards = this.kitchensList.querySelectorAll('.kitchen-card');
         cards.forEach(card => {
             card.addEventListener('click', (e) => {
-                // Evita que o clique no botão de check-in dispare o evento do card
-                if (!e.target.closest('.btn-checkin')) {
+                if (!e.target.closest('.btn-navigate')) {
                     this.handleKitchenClick(card.dataset.id);
-                }
-            });
-        });
-
-        // Compartilhar
-        this.kitchensList.querySelectorAll('.btn-share').forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const kitchen = this.kitchens.find(k => k.id == button.dataset.id);
-                const shareText = `Cozinha Comunitária: ${kitchen.name}\nEndereço: ${kitchen.address}`;
-                if (navigator.share) {
-                    navigator.share({ title: kitchen.name, text: shareText });
-                } else {
-                    navigator.clipboard.writeText(shareText);
-                    showMessage('Endereço copiado para a área de transferência!', 'success');
                 }
             });
         });
@@ -186,18 +228,9 @@ export class ResultScreen {
         this.kitchensList.querySelectorAll('.btn-navigate').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const kitchen = this.kitchens.find(k => k.id == button.dataset.id);
-                const query = encodeURIComponent(kitchen.address);
+                const item = [...this.kitchens, ...this.cras].find(k => k.id === button.dataset.id);
+                const query = encodeURIComponent(item.address);
                 window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
-            });
-        });
-
-        // Adiciona eventos de clique nos botões de check-in
-        const checkinButtons = this.kitchensList.querySelectorAll('.btn-checkin');
-        checkinButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.stopPropagation(); // Evita que o evento se propague para o card
-                this.handleKitchenClick(button.dataset.id);
             });
         });
     }
@@ -379,5 +412,7 @@ export class ResultScreen {
 
 // Inicializa a tela quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', () => {
-    new ResultScreen();
+    if (!ResultScreen.instance) {
+        new ResultScreen();
+    }
 }); 

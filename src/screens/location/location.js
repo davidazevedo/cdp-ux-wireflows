@@ -293,7 +293,7 @@ export class LocationScreen {
                 localStorage.setItem('currentAssisted', JSON.stringify(currentAssisted));
                 
                 showMessage('Localização salva!', 'success');
-                const success = await this.screenLoader.loadScreen('result');
+                const success = await this.screenLoader.loadScreen('volunteer');
                 if (!success) {
                     showMessage('Erro ao carregar próxima tela', 'error');
                 }
