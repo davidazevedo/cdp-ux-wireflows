@@ -293,7 +293,11 @@ export class LocationScreen {
                 localStorage.setItem('currentAssisted', JSON.stringify(currentAssisted));
                 
                 showMessage('Localização salva!', 'success');
-                const success = await this.screenLoader.loadScreen('volunteer');
+
+                // Verifica se o CPF é nulo para determinar a próxima tela
+                const nextScreen = currentAssisted.cpf === null ? 'volunteer' : 'result';
+                const success = await this.screenLoader.loadScreen(nextScreen);
+                
                 if (!success) {
                     showMessage('Erro ao carregar próxima tela', 'error');
                 }
