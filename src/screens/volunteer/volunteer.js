@@ -2061,11 +2061,8 @@ export class VolunteerScreen {
                         }
                     }
 
-                    if (isFormEmpty) {
-                        this.screenLoader.loadScreen('result');
-                    } else {
-                        this.handleVolunteerSubmit(event);
-                    }
+                    this.screenLoader.loadScreen('result');
+
                 });
             }
 
