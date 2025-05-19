@@ -109,7 +109,7 @@ export class VolunteerScreen {
         try {
             const userOrigin = localStorage.getItem('userOrigin');
             const userTypeCard = document.createElement('div');
-            
+
             // Add user type selection card
             if (userOrigin === 'volunteer') {
 
@@ -154,7 +154,7 @@ export class VolunteerScreen {
             userTypeInputs.forEach(input => {
                 input.addEventListener('change', (e) => {
                     const userType = e.target.value;
-                    localStorage.setItem('userOrigin', userType);
+                    //localStorage.setItem('userOrigin', userType);
                     this.updateVolunteerInfo();
                     this.updateUIState();
                 });
